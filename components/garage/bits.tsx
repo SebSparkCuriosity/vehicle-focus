@@ -75,7 +75,7 @@ export function Plate({ reg, className }: { reg: string; className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-[5px] bg-[#f4f3ef] px-1.5 py-px text-[0.68rem] font-bold tracking-[0.14em] whitespace-nowrap text-[#111] uppercase tabular shadow-[inset_0_0_0_1px_rgba(0,0,0,0.14),0_2px_8px_rgba(0,0,0,0.35)]",
+        "inline-flex items-center rounded-[5px] bg-[#f4f3ef] px-1.5 py-px text-xs font-bold tracking-[0.14em] whitespace-nowrap text-[#111] uppercase tabular shadow-[inset_0_0_0_1px_rgba(0,0,0,0.14),0_2px_8px_rgba(0,0,0,0.35)]",
         className,
       )}
     >

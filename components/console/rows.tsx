@@ -14,7 +14,7 @@ export function JobRow({ job, vehicle, client, member }: { job: Job; vehicle?: V
     <li className="flex items-center gap-4 py-3">
       <div className="w-12 shrink-0">
         <p className="text-sm font-medium tabular">{formatTime(job.start)}</p>
-        <p className="text-[0.7rem] text-subtle tabular">{durationLabel(job.durationMins)}</p>
+        <p className="text-xs text-subtle tabular">{durationLabel(job.durationMins)}</p>
       </div>
       <div className="min-w-0 flex-1">
         <Link
@@ -72,11 +72,11 @@ export function RequestCard({
         <>
           <p className="mt-1 truncate text-[0.75rem] text-subtle">{request.location}</p>
           <div className="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5">
-            <span className="truncate text-[0.7rem] text-subtle">
+            <span className="truncate text-xs text-subtle">
               {request.createdBy} · {timeAgo(request.createdAt)}
             </span>
             <span className="flex items-center gap-1.5">
-              {request.quote ? <span className="text-[0.7rem] text-muted tabular">{formatGBP(request.quote)}</span> : null}
+              {request.quote ? <span className="text-xs text-muted tabular">{formatGBP(request.quote)}</span> : null}
               {partner ? (
                 <span title={partner.name} className="grid size-6 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-subtle">
                   <Handshake className="size-3" />
@@ -119,7 +119,7 @@ export function HistoryItem({ event, vehicle, showVehicle = false }: { event: Hi
         <div className="flex flex-wrap items-center gap-2">
           <p className="text-sm font-medium">{event.title}</p>
           {!event.visibleToClient ? (
-            <span className="inline-flex items-center gap-1 text-[0.72rem] font-medium text-warning">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-warning">
               <Lock className="size-3" /> Internal
             </span>
           ) : null}

@@ -21,7 +21,7 @@ export function TierCards({ detailed = false, className }: { detailed?: boolean;
           <article key={t} className={cn("glass-dark flex flex-col rounded-[28px] p-7 sm:p-8", featured && "lg:-translate-y-4")}>
             <div className="flex items-baseline justify-between gap-3">
               <h3 className="font-display text-[2rem] leading-none font-normal">{tier.label}</h3>
-              {featured ? <span className="text-[0.72rem] text-white/50">Full concierge</span> : null}
+              {featured ? <span className="text-xs text-white/50">Full concierge</span> : null}
             </div>
             <p className="mt-3 text-sm text-white/55">{tier.cadence}</p>
             <p className="mt-5 text-[0.95rem] leading-relaxed text-white/75">{detailed ? detail.forWhom : tier.blurb}</p>

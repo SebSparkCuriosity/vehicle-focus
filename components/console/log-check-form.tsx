@@ -49,7 +49,7 @@ export function LogCheckForm({
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {(["fl", "fr", "rl", "rr"] as const).map((k) => (
             <div key={k}>
-              <label htmlFor={`tyre-${k}`} className="mb-1 block text-[0.72rem] text-subtle">
+              <label htmlFor={`tyre-${k}`} className="mb-1 block text-xs text-subtle">
                 {{ fl: "Front left", fr: "Front right", rl: "Rear left", rr: "Rear right" }[k]}
               </label>
               <Input id={`tyre-${k}`} name={k} type="number" step={step} min={10} max={60} inputMode="decimal" defaultValue={target[k]} required />

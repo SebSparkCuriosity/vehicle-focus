@@ -66,7 +66,7 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
               href={`#day-${d.getDate()}`}
               className={cn("rounded-xl px-1 py-2.5 text-center transition-colors hover:bg-white/[0.05]", isToday && "glass-inset")}
             >
-              <p className={cn("text-[0.7rem]", isToday ? "text-text" : "text-subtle")}>{formatDate(d.toISOString(), { weekday: "short" })}</p>
+              <p className={cn("text-xs", isToday ? "text-text" : "text-subtle")}>{formatDate(d.toISOString(), { weekday: "short" })}</p>
               <p className="font-display text-xl tabular">{d.getDate()}</p>
               <div className="mt-1 flex justify-center gap-0.5" aria-label={`${count} items`}>
                 {Array.from({ length: Math.min(count, 5) }, (_, i) => (

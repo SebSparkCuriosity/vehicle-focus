@@ -55,7 +55,7 @@ export function GarageTabBar({ className }: { className?: string }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-[18px] text-[0.68rem] font-medium transition-colors",
+                  "flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-[18px] text-xs font-medium transition-colors",
                   active ? "bg-white/[0.1] text-white" : "text-white/50 hover:text-white",
                 )}
               >

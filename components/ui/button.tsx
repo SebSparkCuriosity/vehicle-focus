@@ -18,10 +18,10 @@ export const buttonVariants = cva(
         link: "text-text underline decoration-white/30 underline-offset-4 hover:decoration-accent px-0 rounded-none",
       },
       size: {
-        sm: "h-8 px-3.5 text-[0.8rem]",
-        md: "h-10 px-5 text-sm",
+        sm: "h-10 px-4 text-[0.85rem] md:h-8 md:px-3.5 md:text-[0.8rem]",
+        md: "h-11 px-5 text-sm md:h-10",
         lg: "h-12 px-7 text-[0.95rem]",
-        icon: "h-9 w-9",
+        icon: "h-11 w-11 md:h-9 md:w-9",
       },
     },
     defaultVariants: { variant: "primary", size: "md" },

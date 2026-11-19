@@ -214,7 +214,7 @@ export function ReadinessTool() {
                       <Icon className={cn("size-4", m.text)} aria-hidden />
                       {f.area}
                     </p>
-                    <span className={cn("text-[0.72rem] font-medium", m.text)}>{m.label}</span>
+                    <span className={cn("text-xs font-medium", m.text)}>{m.label}</span>
                   </div>
                   <p className="mt-1.5 text-xs leading-relaxed text-white/55">{f.note}</p>
                 </li>

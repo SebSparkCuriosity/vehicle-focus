@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <main className="relative isolate flex min-h-screen flex-col overflow-hidden">
+    <main className="relative isolate flex min-h-svh flex-col overflow-hidden">
       <Image src="/images/showroom-blue.jpg" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[25%_50%]" />
       <div className="photo-scrim absolute inset-0 -z-10" aria-hidden />
       <div className="absolute inset-0 -z-10 bg-gradient-to-l from-black/80 via-black/40 to-transparent" aria-hidden />

@@ -277,7 +277,7 @@ export function RequestMock({ className }: { className?: string }) {
           <p>Jersey Airport, private aviation</p>
         </div>
         <div className="mt-1 rounded-full bg-accent py-2.5 text-center text-xs font-medium text-black">Send request</div>
-        <p className="text-center text-[0.7rem] text-white/40">Raised by your PA · confirmed by Vehicle Focus</p>
+        <p className="text-center text-xs text-white/40">Raised by your PA · confirmed by Vehicle Focus</p>
       </div>
     </div>
   );

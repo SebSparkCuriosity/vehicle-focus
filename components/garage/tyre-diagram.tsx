@@ -17,7 +17,7 @@ function Corner({ label, value, target, unit, align }: { label: string; value: n
   const dev = deviation(value, target);
   return (
     <div className={cn("flex flex-col justify-center", align === "right" ? "items-start text-left" : "items-end text-right")}>
-      <span className="text-[0.72rem] text-white/45">{label}</span>
+      <span className="text-xs text-white/45">{label}</span>
       <span
         className={cn(
           "tabular font-display text-[1.7rem] leading-none font-normal",
@@ -27,7 +27,7 @@ function Corner({ label, value, target, unit, align }: { label: string; value: n
         {value}
         <span className="ml-1 font-sans text-xs text-white/45">{unit}</span>
       </span>
-      <span className="mt-1 tabular text-[0.7rem] text-white/40">target {target}</span>
+      <span className="mt-1 tabular text-xs text-white/40">target {target}</span>
     </div>
   );
 }

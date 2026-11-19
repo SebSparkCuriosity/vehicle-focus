@@ -70,7 +70,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
           </div>
           <dl className="glass-dark flex shrink-0 divide-x divide-white/[0.08] rounded-2xl">
             <div className="px-5 py-3">
-              <dt className="text-[0.72rem] text-white/60">Latest value</dt>
+              <dt className="text-xs text-white/60">Latest value</dt>
               <dd className="mt-0.5 font-display text-2xl tabular">
                 {formatGBP(value)}
                 <span className={cn("ml-2 font-sans text-[0.75rem] tabular", trend >= 0 ? "text-success" : "text-danger")}>
@@ -80,7 +80,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
               </dd>
             </div>
             <div className="px-5 py-3">
-              <dt className="text-[0.72rem] text-white/60">Mileage</dt>
+              <dt className="text-xs text-white/60">Mileage</dt>
               <dd className="mt-0.5 font-display text-2xl tabular">{formatMiles(v.mileage)}</dd>
             </div>
           </dl>
@@ -118,7 +118,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
                       key={k}
                       className={cn("glass-inset rounded-xl px-2 py-2 text-center", Math.abs(diff) >= 1 && "border-warning/40 bg-warning-soft")}
                     >
-                      <p className="text-[0.68rem] text-subtle">{tyreLabel[k]}</p>
+                      <p className="text-xs text-subtle">{tyreLabel[k]}</p>
                       <p className="text-sm font-medium tabular">
                         {v.tyres.current[k]}
                         <span className="text-[0.75rem] text-subtle">/{v.tyres.target[k]}</span>

@@ -37,7 +37,7 @@ export default async function PartnersPage() {
                         <h3 className="font-medium">{p.name}</h3>
                         <p className="text-[0.78rem] text-muted">{p.contactName}</p>
                       </div>
-                      <span className="shrink-0 rounded-full border border-white/10 px-2 py-[2px] text-[0.7rem] text-muted">{p.kind}</span>
+                      <span className="shrink-0 rounded-full border border-white/10 px-2 py-[2px] text-xs text-muted">{p.kind}</span>
                     </div>
                     <div className="mt-2 flex items-center gap-2">
                       <Stars rating={p.rating} />

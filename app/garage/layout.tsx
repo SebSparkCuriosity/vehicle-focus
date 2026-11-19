@@ -20,7 +20,7 @@ export default async function GarageLayout({ children }: { children: React.React
   if (!client) redirect("/login?next=/garage");
 
   return (
-    <div className="relative isolate flex min-h-screen flex-col">
+    <div className="relative isolate flex min-h-svh flex-col">
       <div className="app-backdrop" aria-hidden />
 
       <header className="sticky top-0 z-30 px-3 pt-3 sm:px-5">
@@ -33,7 +33,7 @@ export default async function GarageLayout({ children }: { children: React.React
           <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
             <div className="hidden text-right leading-tight lg:block">
               <p className="text-[0.85rem] font-medium">{client.name}</p>
-              <p className="text-[0.7rem] text-white/50">{TIERS[client.tier].label} member</p>
+              <p className="text-xs text-white/50">{TIERS[client.tier].label} member</p>
             </div>
             <ButtonLink href="/garage/requests/new" size="sm" aria-label="New request" className="h-9 max-sm:w-9 max-sm:px-0">
               <Plus aria-hidden />

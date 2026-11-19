@@ -42,7 +42,7 @@ export default async function ClientsPage() {
           <div key={t.tier} className="px-5 py-4">
             <div className="flex items-center justify-between gap-2">
               <TierBadge tier={t.tier} />
-              <span className="text-[0.72rem] text-subtle">{TIERS[t.tier].cadence}</span>
+              <span className="text-xs text-subtle">{TIERS[t.tier].cadence}</span>
             </div>
             <p className="mt-3 font-display text-[1.9rem] leading-none tabular">{t.count}</p>
             <p className="mt-1.5 text-[0.75rem] text-muted">

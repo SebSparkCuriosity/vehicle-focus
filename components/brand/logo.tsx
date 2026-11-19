@@ -22,7 +22,7 @@ export function VFWordmark({ className, color = "currentColor" }: { className?: 
 /** Mark plus wordmark lock-up. The wordmark stays ivory so the yellow is reserved for the mark. */
 export function Logo({ className, href = "/", compact = false }: { className?: string; href?: string; compact?: boolean }) {
   return (
-    <Link href={href} className={cn("group inline-flex items-center gap-3 text-text", className)} aria-label="Vehicle Focus home">
+    <Link href={href} className={cn("group inline-flex min-h-11 items-center gap-3 text-text", className)} aria-label="Vehicle Focus home">
       <VFMark className="h-[22px]" />
       {compact ? null : <VFWordmark className="h-[11px] opacity-90 transition-opacity group-hover:opacity-100" />}
     </Link>

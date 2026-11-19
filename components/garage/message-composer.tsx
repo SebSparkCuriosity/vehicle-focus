@@ -78,7 +78,7 @@ export function MessageComposer({ senders }: { senders: string[] }) {
             {state.error}
           </p>
         ) : (
-          <p className="ml-auto hidden text-[0.72rem] text-white/35 sm:block">Ctrl or Cmd + Enter to send</p>
+          <p className="ml-auto hidden text-xs text-white/35 sm:block">Ctrl or Cmd + Enter to send</p>
         )}
       </div>
     </form>

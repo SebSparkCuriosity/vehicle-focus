@@ -39,7 +39,7 @@ export default async function ConsoleLayout({ children }: { children: React.Reac
   );
 
   return (
-    <div className="relative flex min-h-screen w-full">
+    <div className="relative flex min-h-svh w-full">
       <div className="app-backdrop" aria-hidden />
 
       <aside className="no-print sticky top-0 hidden h-screen w-[17rem] shrink-0 p-3 lg:block">

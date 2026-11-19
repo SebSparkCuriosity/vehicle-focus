@@ -169,7 +169,7 @@ export default async function GarageDashboard() {
                     className={cn("flex items-center gap-4 rounded-[18px] px-3 py-3", i > 0 && "border-t border-white/[0.06]")}
                   >
                     <div className="w-11 shrink-0 text-center">
-                      <p className="text-[0.68rem] tracking-[0.12em] text-white/45 uppercase">
+                      <p className="text-xs tracking-[0.12em] text-white/45 uppercase">
                         {new Date(item.at).toLocaleDateString("en-GB", { month: "short" })}
                       </p>
                       <p className="font-display text-2xl leading-none font-normal tabular">{new Date(item.at).getDate()}</p>

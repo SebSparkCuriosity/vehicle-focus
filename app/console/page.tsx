@@ -186,7 +186,7 @@ export default async function ConsoleToday() {
                           Review
                         </ButtonLink>
                       </div>
-                      <p className="mt-2 text-[0.7rem] text-subtle">
+                      <p className="mt-2 text-xs text-subtle">
                         Raised by {r.createdBy}, {timeAgo(r.createdAt)}
                       </p>
                     </li>
@@ -214,7 +214,7 @@ export default async function ConsoleToday() {
                   <li key={l.id} className="px-5 py-3.5">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm font-medium">{l.name}</p>
-                      <span className="text-[0.7rem] text-subtle">{timeAgo(l.createdAt)}</span>
+                      <span className="text-xs text-subtle">{timeAgo(l.createdAt)}</span>
                     </div>
                     <div className="mt-1 flex flex-wrap items-center gap-2">
                       <SourceBadge source={l.source} />

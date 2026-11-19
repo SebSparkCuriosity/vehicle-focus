@@ -55,7 +55,7 @@ export default async function MessagesPage() {
               <div className="space-y-7">
                 {groups.map((g) => (
                   <div key={g.day} className="space-y-4">
-                    <p className="text-center text-[0.72rem] text-white/40">{g.label}</p>
+                    <p className="text-center text-xs text-white/40">{g.label}</p>
                     {g.items.map((m) => {
                       const mine = m.from === "client";
                       return (
@@ -79,7 +79,7 @@ export default async function MessagesPage() {
                             >
                               {m.body}
                             </div>
-                            <p className="mt-1 px-1 text-[0.7rem] text-white/40">
+                            <p className="mt-1 px-1 text-xs text-white/40">
                               {m.author}, {formatTime(m.at)}
                             </p>
                           </div>
@@ -106,7 +106,7 @@ export default async function MessagesPage() {
             <ul className="mt-4 space-y-3.5">
               {team.map((t) => (
                 <li key={t.id} className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-full border border-white/10 bg-black/40 text-[0.72rem] font-semibold text-white/80">
+                  <span className="grid size-10 place-items-center rounded-full border border-white/10 bg-black/40 text-xs font-semibold text-white/80">
                     {t.initials}
                   </span>
                   <span>

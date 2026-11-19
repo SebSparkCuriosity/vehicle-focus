@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 // Quiet status pills: a coloured dot and text on smoked glass, not a filled
 // coloured lozenge. Colour carries meaning, so keep it to the dot and label.
 export const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/30 px-2.5 py-[3px] text-[0.72rem] font-medium whitespace-nowrap backdrop-blur-md",
+  "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/30 px-2.5 py-[3px] text-xs font-medium whitespace-nowrap",
   {
     variants: {
       tone: {

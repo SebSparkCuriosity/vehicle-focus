@@ -83,7 +83,7 @@ export function Kpi({
     <div className="h-full px-5 py-4 transition-colors group-hover:bg-white/[0.035]">
       <p className="text-[0.78rem] text-muted">{label}</p>
       <p className={cn("mt-1.5 font-display text-[1.9rem] leading-none font-normal tabular", highlight && "text-accent")}>{value}</p>
-      {sub ? <p className="mt-1.5 text-[0.72rem] text-subtle">{sub}</p> : null}
+      {sub ? <p className="mt-1.5 text-xs text-subtle">{sub}</p> : null}
     </div>
   );
   return href ? (
@@ -187,7 +187,7 @@ export function Dot({
 export function TierBadge({ tier }: { tier: Tier }) {
   const tone = tier === "black-label" ? "text-text" : tier === "platinum" ? "text-white/70" : "text-accent";
   return (
-    <span className={cn("inline-flex items-center rounded-full border border-white/10 px-2 py-[2px] text-[0.7rem] font-medium whitespace-nowrap", tone)}>
+    <span className={cn("inline-flex items-center rounded-full border border-white/10 px-2 py-[2px] text-xs font-medium whitespace-nowrap", tone)}>
       {TIERS[tier].label}
     </span>
   );
@@ -219,7 +219,7 @@ export const JOB_BAR: Record<JobKind, string> = {
 
 export function SourceBadge({ source }: { source: LeadSource }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-white/10 px-2 py-[2px] text-[0.7rem] whitespace-nowrap text-muted">{source}</span>
+    <span className="inline-flex items-center rounded-full border border-white/10 px-2 py-[2px] text-xs whitespace-nowrap text-muted">{source}</span>
   );
 }
 
@@ -258,7 +258,7 @@ export function Lane({
           </Dot>
           <span className={cn("ml-auto text-[0.78rem] tabular", tone === "gold" && count > 0 ? "text-accent" : "text-subtle")}>{count}</span>
         </div>
-        {hint ? <p className="mt-1 text-[0.72rem] text-subtle">{hint}</p> : null}
+        {hint ? <p className="mt-1 text-xs text-subtle">{hint}</p> : null}
       </header>
       <div className="flex flex-1 flex-col gap-2.5 px-2.5 pb-2.5">{children}</div>
     </section>

@@ -37,13 +37,13 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
                   >
                     <div className="flex items-center justify-between gap-2">
                       <p className="truncate text-sm font-medium">{c.name}</p>
-                      <span className="shrink-0 text-[0.7rem] text-subtle">{last ? timeAgo(last.at) : ""}</span>
+                      <span className="shrink-0 text-xs text-subtle">{last ? timeAgo(last.at) : ""}</span>
                     </div>
                     <p className="mt-0.5 line-clamp-2 text-[0.78rem] text-muted">
                       {last?.from === "vf" ? "You: " : ""}
                       {last?.body}
                     </p>
-                    <p className="mt-1 text-[0.7rem] text-subtle">{count} messages</p>
+                    <p className="mt-1 text-xs text-subtle">{count} messages</p>
                   </Link>
                 </li>
               ))}
@@ -84,7 +84,7 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
                     return (
                       <li key={m.id}>
                         {showDay ? (
-                          <p className="my-4 text-center text-[0.72rem] text-subtle">
+                          <p className="my-4 text-center text-xs text-subtle">
                             {formatDate(m.at, { weekday: "long", day: "numeric", month: "long" })}
                           </p>
                         ) : null}
@@ -95,7 +95,7 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
                               m.from === "vf" ? "rounded-br-md bg-white/[0.09] ring-1 ring-white/[0.12]" : "rounded-bl-md bg-black/25 ring-1 ring-white/[0.06]",
                             )}
                           >
-                            <p className="text-[0.7rem] text-subtle">
+                            <p className="text-xs text-subtle">
                               {m.author} · {formatTime(m.at)}
                             </p>
                             <p className="mt-0.5 whitespace-pre-line text-sm">{m.body}</p>
