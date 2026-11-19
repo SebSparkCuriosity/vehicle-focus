@@ -23,8 +23,9 @@ None of this needs a developer, and both tracks wait on it.
 
 ### Assets
 
-- [ ] **L** Logo as vector files (SVG or AI), plus confirmation of brand colours
-- [ ] **L** Photography: a headshot, and photos of real work (with each client's permission, no plates or house fronts visible)
+- [ ] **L** Logo as vector files (SVG or AI). The preview uses a trace of the logo on his current site, which is close but not the master.
+- [ ] **L** Confirm we can reuse the photos from his current site (the preview uses them: the F8 on Bond Street, the Cullinan in Mayfair, the Vantage, the Huracán, the 911 interior, the concours shots, the showroom stills and his portrait), and that the owners of those cars are happy for them to appear
+- [ ] **L** More photography of real work, especially at night or in his storage, with each client's permission and no plates or house fronts visible
 - [ ] **L** The current brochure PDF, or an updated one, to host on the new site
 - [ ] **L** Social links he wants shown (LinkedIn is the only one on the current site) and a WhatsApp business number
 - [ ] **L** Two or three short anonymised client stories, with permission. Never invented.
