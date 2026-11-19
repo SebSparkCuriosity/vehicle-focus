@@ -248,7 +248,7 @@ export async function createLead(_prev: ActionResult | null, fd: FormData): Prom
     source: (str(fd, "source") || "Website") as LeadSource,
     role: (str(fd, "role") || undefined) as never,
     cars: str(fd, "cars") || undefined,
-    message: str(fd, "message") || undefined,
+    message: [str(fd, "message"), str(fd, "answers")].filter(Boolean).join("\n\n") || undefined,
     readinessScore: score !== undefined && !Number.isNaN(score) ? score : undefined,
     createdAt: new Date().toISOString(),
     stage: "new",

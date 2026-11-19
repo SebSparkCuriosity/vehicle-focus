@@ -231,7 +231,10 @@ export function ReadinessTool() {
           <LeadForm
             source="Readiness check"
             idPrefix="readiness"
-            hidden={{ readinessScore: result.score }}
+            hidden={{
+              readinessScore: result.score,
+              answers: `Readiness answers: last driven ${inputs.weeksSinceDriven} weeks ago, ${inputs.powertrain}, ${inputs.onConditioner ? "on a conditioner" : "no conditioner"}, ${inputs.storage} storage, serviced ${inputs.monthsSinceService} months ago, records ${inputs.recordsComplete}.`,
+            }}
             carsLabel="Which car is this about?"
             messageLabel="Anything else we should know? (optional)"
             messagePlaceholder="When you next want to use it, where it's kept, any warning lights."
