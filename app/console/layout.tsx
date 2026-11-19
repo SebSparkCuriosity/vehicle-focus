@@ -28,7 +28,7 @@ export default async function ConsoleLayout({ children }: { children: React.Reac
       </div>
       <form action={signOut}>
         <button
-          className="grid size-8 place-items-center rounded-full text-subtle transition-colors hover:bg-white/[0.07] hover:text-text"
+          className="grid size-11 place-items-center rounded-full text-subtle transition-colors hover:bg-white/[0.07] hover:text-text lg:size-8"
           aria-label="Sign out"
           title="Sign out"
         >

@@ -36,7 +36,7 @@ export default async function ReportsPage() {
                   {cars.length} {cars.length === 1 ? "car" : "cars"} · {formatGBPCompact(value)}
                 </p>
                 <div className="mt-auto pt-5">
-                  <ButtonLink href={`/console/reports/${c.id}`} variant="secondary" size="sm">
+                  <ButtonLink href={`/console/reports/${c.id}`} variant="secondary" className="w-full backdrop-blur-none sm:w-auto md:h-8 md:px-3.5 md:text-[0.8rem]">
                     <FileText /> Open {month} report
                   </ButtonLink>
                 </div>

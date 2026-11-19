@@ -108,13 +108,13 @@ export function GarageMock({ className, cars = MOCK_CARS }: { className?: string
       </div>
       <div className="mt-3 grid gap-2 px-1 pt-1 sm:grid-cols-2">
         <p className="flex items-center gap-2 text-xs text-white/55">
-          <CalendarClock className="size-3.5 text-white/40" aria-hidden />
+          <CalendarClock className="size-3.5 text-white/55" aria-hidden />
           <span>
             <span className="text-white">Insurance renewal</span> in 9 days
           </span>
         </p>
         <p className="flex min-w-0 items-center gap-2 text-xs text-white/55">
-          <MessageSquare className="size-3.5 shrink-0 text-white/40" aria-hidden />
+          <MessageSquare className="size-3.5 shrink-0 text-white/55" aria-hidden />
           <span className="truncate">
             <span className="text-white">Lawrence:</span> F8 is back in the left bay
           </span>
@@ -165,14 +165,14 @@ export function PhoneMock({ className, car = MOCK_CARS[0] }: { className?: strin
             <div className="mt-2 grid grid-cols-4 gap-1.5 text-center">
               {tyres.map(([pos, p]) => (
                 <span key={pos}>
-                  <span className="block text-xs text-white/40">{pos}</span>
+                  <span className="block text-xs text-white/55">{pos}</span>
                   <span className="text-sm text-success tabular">{p}</span>
                 </span>
               ))}
             </div>
           </div>
           <span className="mt-1 rounded-full bg-accent py-2.5 text-center text-xs font-medium text-black">Have it ready</span>
-          <p className="pb-1 text-center text-xs text-white/40">{car.lastCheck} by your technician</p>
+          <p className="pb-1 text-center text-xs text-white/55">{car.lastCheck} by your technician</p>
         </div>
       </div>
     </div>
@@ -212,9 +212,9 @@ export function CheckMock({ className }: { className?: string }) {
           <dd className="mt-2.5 grid grid-cols-4 gap-2 text-center">
             {tyres.map(([pos, cur, target]) => (
               <span key={pos}>
-                <span className="block text-xs text-white/40">{pos}</span>
+                <span className="block text-xs text-white/55">{pos}</span>
                 <span className="text-sm font-medium text-success tabular">{cur}</span>
-                <span className="text-xs text-white/35">/{target}</span>
+                <span className="text-xs text-white/55">/{target}</span>
               </span>
             ))}
           </dd>
@@ -239,12 +239,12 @@ export function VaultMock({ className }: { className?: string }) {
       <ul className="mt-3 divide-y divide-white/[0.07]">
         {docs.map(([title, kind, size]) => (
           <li key={title} className="flex items-center gap-3 py-3">
-            <FileText className="size-4 shrink-0 text-white/40" aria-hidden />
+            <FileText className="size-4 shrink-0 text-white/55" aria-hidden />
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm">{title}</span>
               <span className="block text-xs text-white/45">{kind}</span>
             </span>
-            <span className="text-xs text-white/40 tabular">{size}</span>
+            <span className="text-xs text-white/55 tabular">{size}</span>
           </li>
         ))}
       </ul>
@@ -277,7 +277,7 @@ export function RequestMock({ className }: { className?: string }) {
           <p>Jersey Airport, private aviation</p>
         </div>
         <div className="mt-1 rounded-full bg-accent py-2.5 text-center text-xs font-medium text-black">Send request</div>
-        <p className="text-center text-xs text-white/40">Raised by your PA · confirmed by Vehicle Focus</p>
+        <p className="text-center text-xs text-white/55">Raised by your PA · confirmed by Vehicle Focus</p>
       </div>
     </div>
   );

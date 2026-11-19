@@ -37,7 +37,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
 
   const statusButton = (label: string, next: typeof request.status, Icon: typeof Play, variant: "primary" | "secondary" | "danger" = "secondary") => (
     <form action={updateRequestStatus.bind(null, request.id, next)}>
-      <Button size="sm" variant={variant}>
+      <Button variant={variant} className="md:h-8 md:px-3.5 md:text-[0.8rem]">
         <Icon /> {label}
       </Button>
     </form>
@@ -75,7 +75,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
             <dl className="grid gap-4 sm:grid-cols-2">
               <Detail label="Needed">
                 <span className="tabular">{formatDateTime(request.when)}</span>{" "}
-                <span className="text-[0.75rem] text-subtle">({relativeDays(request.when)})</span>
+                <span className="text-[0.82rem] text-subtle md:text-[0.75rem]">({relativeDays(request.when)})</span>
               </Detail>
               <Detail label="Where">
                 <span className="inline-flex items-center gap-1.5">

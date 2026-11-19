@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { JOB_KIND_LABEL, TIERS } from "@/lib/domain";
 import { cn } from "@/lib/utils";
 import type { JobKind, LeadSource, Tier } from "@/lib/types";
@@ -8,6 +8,10 @@ import type { JobKind, LeadSource, Tier } from "@/lib/types";
 // Server-safe presentational pieces shared across console pages.
 // Console look: calm, dense smoked glass over the fixed photo backdrop.
 // Panes use .glass; anything inside a pane uses .glass-inset or hairlines (never blur inside blur).
+
+/** Back link above a page title: 44px tall on phones, compact on desktop. */
+export const backLink =
+  "no-print -ml-1 mb-2 inline-flex min-h-11 items-center gap-1 rounded-full pr-3 pl-1 text-[0.85rem] text-muted transition-colors hover:text-text md:mb-4 md:min-h-0 md:text-[0.8rem]";
 
 export function PageHeader({
   eyebrow,
@@ -27,7 +31,7 @@ export function PageHeader({
     <header className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {back ? (
-          <Link href={back.href} className="no-print mb-4 inline-flex items-center gap-1 text-[0.8rem] text-muted transition-colors hover:text-text">
+          <Link href={back.href} className={backLink}>
             <ChevronLeft className="size-3.5" />
             {back.label}
           </Link>
@@ -102,6 +106,7 @@ export function Panel({
   children,
   className,
   bodyClassName,
+  id,
 }: {
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -109,9 +114,11 @@ export function Panel({
   children: React.ReactNode;
   className?: string;
   bodyClassName?: string;
+  /** Anchor target; scroll margin clears the sticky mobile top bar. */
+  id?: string;
 }) {
   return (
-    <section className={cn("glass rounded-2xl", className)}>
+    <section id={id} className={cn("glass scroll-mt-24 rounded-2xl", className)}>
       <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3">
         <div className="min-w-0">
           <h2 className="text-[0.92rem] font-semibold tracking-tight">{title}</h2>
@@ -128,7 +135,10 @@ export function Panel({
 /** Quiet text link used in panel headers and footers. */
 export function PanelLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="text-[0.78rem] text-muted underline-offset-4 transition-colors hover:text-text hover:underline">
+    <Link
+      href={href}
+      className="-my-3 inline-flex min-h-11 items-center px-1 text-[0.82rem] text-muted underline-offset-4 transition-colors hover:text-text hover:underline md:my-0 md:min-h-0 md:px-0 md:text-[0.78rem]"
+    >
       {children}
     </Link>
   );
@@ -149,7 +159,7 @@ export function Initials({ initials, title, className }: { initials: string; tit
     <span
       title={title}
       className={cn(
-        "grid size-6 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.07] text-[0.62rem] font-semibold text-white/80",
+        "grid size-7 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.07] text-xs font-semibold text-white/80",
         className,
       )}
     >
@@ -242,15 +252,19 @@ export function Lane({
   count,
   tone = "neutral",
   children,
+  className,
+  id,
 }: {
   title: string;
   hint?: string;
   count: number;
   tone?: "neutral" | "gold" | "success" | "warning" | "danger" | "info";
   children: React.ReactNode;
+  className?: string;
+  id?: string;
 }) {
   return (
-    <section className="glass flex flex-col rounded-2xl">
+    <section id={id} className={cn("glass flex flex-col rounded-2xl", className)}>
       <header className="px-4 pt-4 pb-3">
         <div className="flex items-center gap-2">
           <Dot tone={tone} className="text-[0.88rem] font-medium text-text">
@@ -276,9 +290,82 @@ export function Detail({ label, children, className }: { label: string; children
 }
 
 /** Glass pane for wide tables: scrolls horizontally inside itself, never the page. */
-export function TableWrap({ children }: { children: React.ReactNode }) {
-  return <div className="glass overflow-x-auto rounded-2xl">{children}</div>;
+export function TableWrap({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("glass overflow-x-auto rounded-2xl", className)}>{children}</div>;
 }
+
+// ---------- Phone layouts ----------
+
+/** Phone-only list that replaces a wide table below md. Pair with <TableWrap className="hidden md:block">. */
+export function MobileList({ children, label, className }: { children: React.ReactNode; label: string; className?: string }) {
+  return (
+    <ul aria-label={label} className={cn("glass divide-y divide-white/[0.06] overflow-hidden rounded-2xl md:hidden", className)}>
+      {children}
+    </ul>
+  );
+}
+
+/** One tappable row in a MobileList: at least 64px tall, whole row is the link. */
+export function MobileRow({
+  href,
+  media,
+  title,
+  meta,
+  footer,
+  aside,
+}: {
+  href: string;
+  media?: React.ReactNode;
+  title: React.ReactNode;
+  meta?: React.ReactNode;
+  footer?: React.ReactNode;
+  aside?: React.ReactNode;
+}) {
+  return (
+    <li>
+      <Link href={href} className="flex min-h-16 items-center gap-3 px-4 py-3 transition-colors active:bg-white/[0.06]">
+        {media}
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[0.95rem] font-medium">{title}</span>
+          {meta ? <span className="mt-0.5 block truncate text-[0.82rem] text-muted">{meta}</span> : null}
+          {footer ? <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.82rem]">{footer}</span> : null}
+        </span>
+        {aside ? <span className="shrink-0 text-right">{aside}</span> : null}
+        <ChevronRight className="size-4 shrink-0 text-white/25" aria-hidden />
+      </Link>
+    </li>
+  );
+}
+
+/**
+ * Horizontal board (requests, leads). On phones the lanes become a swipeable
+ * scroll-snap row with a peek of the next lane; from md up it is a grid.
+ */
+export function Board({ children, grid, jump }: { children: React.ReactNode; grid: string; jump?: { id: string; label: string; count: number }[] }) {
+  return (
+    <>
+      {jump ? (
+        <nav aria-label="Jump to column" className="-mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6 md:hidden">
+          {jump.map((j) => (
+            <a
+              key={j.id}
+              href={`#${j.id}`}
+              className="glass-inset inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full px-4 text-[0.85rem] text-white/85"
+            >
+              {j.label} <span className="text-subtle tabular">{j.count}</span>
+            </a>
+          ))}
+        </nav>
+      ) : null}
+      <div className="-mx-4 snap-x snap-mandatory scroll-px-4 overflow-x-auto px-4 pb-3 sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:snap-none md:px-0 md:pb-2">
+        <div className={cn("flex items-start gap-3 md:grid md:items-stretch", grid)}>{children}</div>
+      </div>
+    </>
+  );
+}
+
+/** Width and snap classes for a Lane inside a Board. */
+export const boardLane = "w-[85vw] max-w-[22rem] shrink-0 snap-start scroll-mt-24 md:w-auto md:max-w-none";
 
 export const th = "px-4 py-3 text-left text-[0.75rem] font-medium text-subtle whitespace-nowrap";
 export const td = "px-4 py-3 align-middle text-sm whitespace-nowrap";

@@ -65,7 +65,7 @@ function Question({ n, label, children }: { n: number; label: string; children: 
   return (
     <div className="border-t border-white/[0.08] py-6 first:border-t-0 first:pt-0 last:pb-0 sm:py-7">
       <p className="mb-4 flex items-baseline gap-3 text-[0.98rem] font-medium">
-        <span className="text-xs text-white/35 tabular">{String(n).padStart(2, "0")}</span>
+        <span className="text-xs text-white/55 tabular">{String(n).padStart(2, "0")}</span>
         {label}
       </p>
       {children}
@@ -137,7 +137,7 @@ export function ReadinessTool() {
             style={{ "--p": `${(inputs.weeksSinceDriven / 26) * 100}%` } as React.CSSProperties}
             className="h-11 w-full cursor-pointer touch-pan-y appearance-none bg-transparent focus-visible:outline-none [&::-moz-range-progress]:h-1.5 [&::-moz-range-progress]:rounded-full [&::-moz-range-progress]:bg-white [&::-moz-range-thumb]:size-7 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white [&::-moz-range-track]:h-1.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-white/15 [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-[linear-gradient(to_right,white_var(--p),rgba(255,255,255,0.15)_var(--p))] [&::-webkit-slider-thumb]:-mt-[11px] [&::-webkit-slider-thumb]:size-7 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_2px_10px_rgba(0,0,0,0.5)] focus-visible:[&::-webkit-slider-thumb]:ring-4 focus-visible:[&::-webkit-slider-thumb]:ring-white/25"
           />
-          <div className="flex justify-between text-xs text-white/40" aria-hidden>
+          <div className="flex justify-between text-xs text-white/55" aria-hidden>
             <span>This week</span>
             <span>6 months+</span>
           </div>

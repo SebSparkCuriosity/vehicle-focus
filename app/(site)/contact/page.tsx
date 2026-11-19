@@ -58,7 +58,7 @@ export default function ContactPage() {
                 Our brochure covers every service and how onboarding works. Ask for a copy in the form or on WhatsApp.
               </p>
             </div>
-            <p className="mt-8 text-xs leading-relaxed text-white/40">
+            <p className="mt-8 text-xs leading-relaxed text-white/55">
               NDAs are offered as standard and every arrangement is private. Your details are only used to respond to you.
             </p>
           </aside>

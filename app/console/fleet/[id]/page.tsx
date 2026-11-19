@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CalendarDays, ChevronLeft, FileText, History, Inbox, Lock, MapPin, ShieldCheck } from "lucide-react";
+import { CalendarDays, ChevronLeft, ClipboardCheck, FileText, History, Inbox, Lock, MapPin, Send, ShieldCheck } from "lucide-react";
 import { CarMedia } from "@/components/brand/car-art";
 import { ValueChart } from "@/components/charts";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
-import { Detail, Dot, EmptyState, Panel, PanelLink, TierBadge } from "@/components/console/ui";
+import { Detail, Dot, EmptyState, Panel, PanelLink, TierBadge, backLink } from "@/components/console/ui";
 import { HistoryItem, JobRow, RequestCard } from "@/components/console/rows";
 import { LogCheckForm } from "@/components/console/log-check-form";
 import { RaiseRequestForm } from "@/components/console/raise-request-form";
@@ -48,11 +48,11 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
 
   return (
     <>
-      <Link href="/console/fleet" className="no-print mb-4 inline-flex items-center gap-1 text-[0.8rem] text-muted transition-colors hover:text-text">
+      <Link href="/console/fleet" className={backLink}>
         <ChevronLeft className="size-3.5" /> Fleet
       </Link>
 
-      <section className="relative isolate mb-6 h-[300px] overflow-hidden rounded-[24px] ring-1 ring-white/10 sm:h-[340px]">
+      <section className="relative isolate mb-4 h-[300px] overflow-hidden rounded-[24px] ring-1 ring-white/10 sm:h-[340px] md:mb-6">
         <CarMedia vehicle={v} priority sizes="(min-width: 1280px) 1300px, 100vw" className="absolute inset-0 -z-10" />
         <div className="photo-scrim absolute inset-0 -z-10" aria-hidden />
         <div className="flex h-full flex-col justify-end gap-5 p-5 sm:p-8 lg:flex-row lg:items-end lg:justify-between">
@@ -87,13 +87,28 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
         </div>
       </section>
 
+      <div className="no-print mb-5 grid grid-cols-2 gap-2.5 md:hidden">
+        <a
+          href="#log-check"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-accent text-[0.95rem] font-medium text-[#08090a] shadow-[0_8px_30px_-8px_rgba(255,205,9,0.45)]"
+        >
+          <ClipboardCheck className="size-4" /> Log a check
+        </a>
+        <a
+          href="#raise-request"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.07] text-[0.95rem] font-medium text-text"
+        >
+          <Send className="size-4" /> Raise request
+        </a>
+      </div>
+
       <div className="grid gap-6 xl:grid-cols-3 [&>*]:min-w-0">
         <div className="space-y-6 xl:col-span-2">
           <Panel title="Live state" description={v.statusNote ?? "Within spec at the last check."}>
             <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4">
               <Detail label="Battery">
                 <BatteryReading voltage={v.battery.voltage} />
-                <span className="mt-0.5 block text-[0.75rem] text-subtle">
+                <span className="mt-0.5 block text-[0.82rem] text-subtle md:text-[0.75rem]">
                   {v.battery.healthPct}% health{v.battery.onConditioner ? ", on conditioner" : ""}
                 </span>
               </Detail>
@@ -139,7 +154,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
             ) : null}
           </Panel>
 
-          <Panel title="Log a check" description="Updates the car's live state, flags anything out of spec and adds an entry to the history.">
+          <Panel id="log-check" title="Log a check" description="Updates the car's live state, flags anything out of spec and adds an entry to the history.">
             <LogCheckForm vehicleId={v.id} target={v.tyres.target} unit={v.tyres.unit} mileage={v.mileage} onConditioner={v.battery.onConditioner} />
           </Panel>
 
@@ -204,7 +219,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
                       </div>
                       <div className="text-right">
                         <p className="text-sm tabular">{formatDate(d.dueDate)}</p>
-                        <p className={cn("text-[0.75rem]", days < 0 ? "text-danger" : days <= 14 ? "text-warning" : "text-subtle")}>{relativeDays(d.dueDate)}</p>
+                        <p className={cn("text-[0.82rem] md:text-[0.75rem]", days < 0 ? "text-danger" : days <= 14 ? "text-warning" : "text-subtle")}>{relativeDays(d.dueDate)}</p>
                       </div>
                     </li>
                   );
@@ -248,7 +263,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
             )}
           </Panel>
 
-          <Panel title="Raise a request on the client's behalf" description="For requests that come in by phone or WhatsApp, so everything stays on record.">
+          <Panel id="raise-request" title="Raise a request on the client's behalf" description="For requests that come in by phone or WhatsApp, so everything stays on record.">
             <RaiseRequestForm vehicleId={v.id} defaultLocation={v.location.name} defaultDate={toDateInput(startOfDay(1).toISOString())} />
           </Panel>
 
@@ -260,7 +275,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
                     <FileText className="size-4 shrink-0 text-subtle" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm">{d.title}</p>
-                      <p className="text-[0.75rem] text-subtle">
+                      <p className="text-[0.82rem] text-subtle md:text-[0.75rem]">
                         {d.kind} · {formatDate(d.date)} · {sizeLabel(d.sizeKb)}
                       </p>
                     </div>

@@ -100,7 +100,7 @@ export default function HomePage() {
             <ol className="mt-8 grid gap-5 border-t border-white/10 pt-6 sm:mt-12 sm:gap-6 sm:pt-8">
               {PROBLEMS.map((p, i) => (
                 <li key={p.title} className="grid grid-cols-[2rem_1fr] gap-4">
-                  <span className="pt-0.5 text-sm text-white/35 tabular">0{i + 1}</span>
+                  <span className="pt-0.5 text-sm text-white/55 tabular">0{i + 1}</span>
                   <p className="text-[0.98rem] leading-relaxed text-white/60">
                     <span className="text-white">{p.title}</span> {p.body}
                   </p>
@@ -165,7 +165,7 @@ export default function HomePage() {
                     <span className="block font-display text-[1.7rem] leading-tight font-normal">{g.title}</span>
                     <span className="mt-1 block text-sm leading-relaxed text-white/55">{g.summary}</span>
                   </span>
-                  <ChevronDown className="size-5 shrink-0 text-white/40 transition-transform group-open:rotate-180" aria-hidden />
+                  <ChevronDown className="size-5 shrink-0 text-white/55 transition-transform group-open:rotate-180" aria-hidden />
                 </summary>
                 <ul className="pb-5">
                   {g.services.map((s) => (

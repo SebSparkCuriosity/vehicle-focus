@@ -66,7 +66,7 @@ export function ScheduleForm({
         </Field>
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full sm:w-auto">
           <CalendarCheck /> {pending ? "Scheduling" : submitLabel}
         </Button>
         {state ? (

@@ -38,7 +38,7 @@ export function HistoryTimeline({
                 </time>
               </div>
               {e.detail ? <p className="mt-1 text-[0.95rem] leading-relaxed text-white/60 md:text-sm">{e.detail}</p> : null}
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] text-white/40">
+              <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] text-white/55">
                 <span>{HISTORY_LABEL[e.kind]}</span>
                 {car ? (
                   <>

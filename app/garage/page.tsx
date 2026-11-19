@@ -252,7 +252,7 @@ export default async function GarageDashboard() {
         ) : (
           <EmptyState icon={Route} title="No activity yet" body="Every check, service and movement will be recorded here." />
         )}
-        <p className="mt-4 px-1 text-[0.8rem] text-white/40">Every job we do is written down, so the history protects the value.</p>
+        <p className="mt-4 px-1 text-[0.8rem] text-white/55">Every job we do is written down, so the history protects the value.</p>
       </section>
     </div>
   );

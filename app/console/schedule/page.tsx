@@ -45,7 +45,7 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
               <ChevronLeft />
             </Link>
             {week !== 0 ? (
-              <Link href="/console/schedule" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+              <Link href="/console/schedule" className={buttonVariants({ variant: "secondary", size: "md" })}>
                 This week
               </Link>
             ) : null}
@@ -64,7 +64,7 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
             <a
               key={d.toISOString()}
               href={`#day-${d.getDate()}`}
-              className={cn("rounded-xl px-1 py-2.5 text-center transition-colors hover:bg-white/[0.05]", isToday && "glass-inset")}
+              className={cn("min-h-16 rounded-xl px-0.5 py-2.5 text-center transition-colors hover:bg-white/[0.05]", isToday && "glass-inset")}
             >
               <p className={cn("text-xs", isToday ? "text-text" : "text-subtle")}>{formatDate(d.toISOString(), { weekday: "short" })}</p>
               <p className="font-display text-xl tabular">{d.getDate()}</p>
@@ -90,9 +90,9 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
               <li key={v.id}>
                 <Link
                   href={`/console/fleet/${v.id}`}
-                  className="glass-inset inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm transition-colors hover:border-danger/40"
+                  className="glass-inset inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm transition-colors hover:border-danger/40 md:min-h-0 md:px-3.5 md:py-1.5"
                 >
-                  {vehicleName(v)} <span className="text-[0.75rem] text-danger">due {relativeDays(v.nextCheckAt)}</span>
+                  {vehicleName(v)} <span className="text-[0.82rem] text-danger md:text-[0.75rem]">due {relativeDays(v.nextCheckAt)}</span>
                 </Link>
               </li>
             ))}
@@ -107,12 +107,12 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
           const isToday = isSameDay(d, new Date());
           return (
             <section key={d.toISOString()} id={`day-${d.getDate()}`} className="glass scroll-mt-24 rounded-2xl">
-              <header className="flex items-center justify-between gap-3 border-b border-white/[0.07] px-5 py-3">
+              <header className="sticky top-[4.5rem] z-10 flex items-center justify-between gap-3 rounded-t-2xl border-b border-white/[0.07] bg-[#101113]/95 px-5 py-3 lg:static lg:bg-transparent">
                 <h2 className="text-[0.92rem] font-semibold">
                   {formatDate(d.toISOString(), { weekday: "long", day: "numeric", month: "long" })}
                   {isToday ? <span className="ml-2 text-[0.78rem] font-medium text-accent">Today</span> : null}
                 </h2>
-                <span className="text-[0.75rem] text-subtle tabular">
+                <span className="text-[0.82rem] text-subtle tabular md:text-[0.75rem]">
                   {dayJobs.length} {dayJobs.length === 1 ? "job" : "jobs"}
                   {dayChecks.length ? `, ${dayChecks.length} cycle ${dayChecks.length === 1 ? "check" : "checks"}` : ""}
                 </span>
@@ -124,53 +124,61 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
                     const c = v ? lookups.client.get(v.clientId) : undefined;
                     const m = lookups.member.get(j.assigneeId);
                     return (
-                      <li key={j.id} className="flex items-stretch gap-3 px-5 py-3">
-                        <span className={cn("w-1 shrink-0 rounded-full", JOB_BAR[j.kind])} aria-hidden />
-                        <div className="w-24 shrink-0">
-                          <p className="text-sm font-medium tabular">{formatTime(j.start)}</p>
-                          <p className="text-[0.75rem] text-subtle tabular">{durationLabel(j.durationMins)}</p>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Link href={j.requestId ? `/console/requests/${j.requestId}` : `/console/fleet/${j.vehicleId}`} className="text-sm font-medium decoration-white/30 underline-offset-4 hover:underline">
-                              {j.title}
-                            </Link>
-                            <JobKindBadge kind={j.kind} />
-                          </div>
-                          <p className="mt-0.5 truncate text-[0.78rem] text-muted">
-                            {c?.name} · {v ? `${vehicleName(v)}, ${v.registration}` : ""} · {j.location}
-                          </p>
-                        </div>
-                        {m ? (
-                          <span className="hidden items-center gap-2 sm:flex">
-                            <Initials initials={m.initials} />
-                            <span className="text-[0.78rem] text-muted">{m.name.split(" ")[0]}</span>
+                      <li key={j.id}>
+                        <Link
+                          href={j.requestId ? `/console/requests/${j.requestId}` : `/console/fleet/${j.vehicleId}`}
+                          className="group flex min-h-16 items-stretch gap-3 px-4 py-3 transition-colors hover:bg-white/[0.03] active:bg-white/[0.05] sm:px-5"
+                        >
+                          <span className={cn("w-1 shrink-0 rounded-full", JOB_BAR[j.kind])} aria-hidden />
+                          <span className="w-14 shrink-0 sm:w-24">
+                            <span className="block text-sm font-medium tabular">{formatTime(j.start)}</span>
+                            <span className="block text-[0.82rem] text-subtle tabular md:text-[0.75rem]">{durationLabel(j.durationMins)}</span>
                           </span>
-                        ) : null}
+                          <span className="min-w-0 flex-1">
+                            <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                              <span className="text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">{j.title}</span>
+                              <JobKindBadge kind={j.kind} />
+                            </span>
+                            <span className="mt-0.5 block truncate text-[0.82rem] text-muted md:text-[0.78rem]">
+                              {c?.name} · {v ? `${vehicleName(v)}, ${v.registration}` : ""} · {j.location}
+                            </span>
+                          </span>
+                          {m ? (
+                            <span className="flex items-center gap-2 self-center">
+                              <Initials initials={m.initials} title={m.name} />
+                              <span className="hidden text-[0.78rem] text-muted sm:inline">{m.name.split(" ")[0]}</span>
+                            </span>
+                          ) : null}
+                        </Link>
                       </li>
                     );
                   })}
                   {dayChecks.map((v) => {
                     const c = lookups.client.get(v.clientId);
                     return (
-                      <li key={`check-${v.id}`} className="flex items-stretch gap-3 px-5 py-3">
-                        <span className="w-1 shrink-0 rounded-full border border-dashed border-info/70" aria-hidden />
-                        <div className="w-24 shrink-0">
-                          <p className="text-sm text-muted tabular">{formatTime(v.nextCheckAt)}</p>
-                          <p className="text-[0.75rem] text-subtle">Not booked</p>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Link href={`/console/fleet/${v.id}`} className="text-sm font-medium decoration-white/30 underline-offset-4 hover:underline">
-                              {v.checkFrequency[0].toUpperCase() + v.checkFrequency.slice(1)} check, {vehicleName(v)}
-                            </Link>
-                            <Dot tone="info">Care cycle</Dot>
-                          </div>
-                          <p className="mt-0.5 truncate text-[0.78rem] text-muted">
-                            {c?.name} · {v.location.name} · every {FREQUENCY_DAYS[v.checkFrequency]} days
-                          </p>
-                        </div>
-                        <CircleCheck className="hidden size-4 self-center text-subtle sm:block" aria-hidden />
+                      <li key={`check-${v.id}`}>
+                        <Link
+                          href={`/console/fleet/${v.id}`}
+                          className="group flex min-h-16 items-stretch gap-3 px-4 py-3 transition-colors hover:bg-white/[0.03] active:bg-white/[0.05] sm:px-5"
+                        >
+                          <span className="w-1 shrink-0 rounded-full border border-dashed border-info/70" aria-hidden />
+                          <span className="w-14 shrink-0 sm:w-24">
+                            <span className="block text-sm text-muted tabular">{formatTime(v.nextCheckAt)}</span>
+                            <span className="block text-[0.82rem] text-subtle md:text-[0.75rem]">Not booked</span>
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                              <span className="text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">
+                                {v.checkFrequency[0].toUpperCase() + v.checkFrequency.slice(1)} check, {vehicleName(v)}
+                              </span>
+                              <Dot tone="info">Care cycle</Dot>
+                            </span>
+                            <span className="mt-0.5 block truncate text-[0.82rem] text-muted md:text-[0.78rem]">
+                              {c?.name} · {v.location.name} · every {FREQUENCY_DAYS[v.checkFrequency]} days
+                            </span>
+                          </span>
+                          <CircleCheck className="hidden size-4 self-center text-subtle sm:block" aria-hidden />
+                        </Link>
                       </li>
                     );
                   })}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { CircleCheck, ShieldCheck } from "lucide-react";
-import { Dot, EmptyState, KpiStrip, PageHeader, TableWrap, td, th, tr } from "@/components/console/ui";
+import { Dot, EmptyState, KpiStrip, MobileList, MobileRow, PageHeader, TableWrap, td, th, tr } from "@/components/console/ui";
 import { getLookups } from "@/components/console/lookups";
 import { getDueItems } from "@/lib/data/queries";
 import { isCheckOverdue, vehicleName } from "@/lib/domain";
@@ -53,13 +53,18 @@ export default async function CompliancePage() {
           </header>
           <ul className="divide-y divide-white/[0.06] border-t border-white/[0.07]">
             {overdueChecks.map((v) => (
-              <li key={v.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3">
-                <Link href={`/console/fleet/${v.id}`} className="text-sm font-medium decoration-white/30 underline-offset-4 hover:underline">
-                  {vehicleName(v)} <span className="text-subtle">· {v.registration}</span>
+              <li key={v.id}>
+                <Link
+                  href={`/console/fleet/${v.id}`}
+                  className="group flex min-h-14 flex-wrap items-center justify-between gap-x-2 gap-y-0.5 px-5 py-3 transition-colors hover:bg-white/[0.03] active:bg-white/[0.05]"
+                >
+                  <span className="text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">
+                    {vehicleName(v)} <span className="text-subtle">· {v.registration}</span>
+                  </span>
+                  <span className="text-[0.82rem] text-muted md:text-[0.78rem]">
+                    {lookups.client.get(v.clientId)?.name} · {v.checkFrequency} check due {relativeDays(v.nextCheckAt)}
+                  </span>
                 </Link>
-                <span className="text-[0.78rem] text-muted">
-                  {lookups.client.get(v.clientId)?.name} · {v.checkFrequency} check due {relativeDays(v.nextCheckAt)}
-                </span>
               </li>
             ))}
           </ul>
@@ -74,7 +79,37 @@ export default async function CompliancePage() {
               <span className="text-[0.78rem] text-subtle">{g.hint}</span>
             </div>
             {g.items.length ? (
-              <TableWrap>
+              <>
+              <MobileList label={g.title}>
+                {g.items.map((d) => {
+                  const v = lookups.vehicle.get(d.vehicleId);
+                  const c = v ? lookups.client.get(v.clientId) : undefined;
+                  return (
+                    <MobileRow
+                      key={d.id}
+                      href={v ? `/console/fleet/${v.id}` : "/console/compliance"}
+                      title={
+                        <span className="inline-flex items-center gap-2">
+                          <Dot tone={g.tone} className="text-[0.95rem] font-medium text-text">
+                            {d.kind}
+                          </Dot>
+                        </span>
+                      }
+                      meta={`${v ? `${vehicleName(v)} · ${v.registration}` : ""}${c ? ` · ${c.name}` : ""}`}
+                      footer={d.notes ? <span className="truncate text-subtle">{d.notes}</span> : undefined}
+                      aside={
+                        <>
+                          <span className="block text-[0.85rem] tabular">{formatDate(d.dueDate, { day: "numeric", month: "short" })}</span>
+                          <span className={cn("block text-[0.8rem]", g.tone === "danger" ? "text-danger" : g.tone === "warning" ? "text-warning" : "text-subtle")}>
+                            {relativeDays(d.dueDate)}
+                          </span>
+                        </>
+                      }
+                    />
+                  );
+                })}
+              </MobileList>
+              <TableWrap className="hidden md:block">
                 <table className="w-full min-w-[760px]">
                   <thead>
                     <tr>
@@ -125,6 +160,7 @@ export default async function CompliancePage() {
                   </tbody>
                 </table>
               </TableWrap>
+              </>
             ) : (
               <EmptyState icon={g.tone === "danger" ? CircleCheck : ShieldCheck} title={g.tone === "danger" ? "Nothing overdue" : "Nothing in this window"} />
             )}

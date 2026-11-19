@@ -74,7 +74,7 @@ export default function AdvisersPage() {
           <ol className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
             {AUDIENCES.map((a, i) => (
               <li key={a.title} className="grid grid-cols-[2rem_1fr] gap-3 py-6 sm:grid-cols-[2.5rem_1fr] sm:gap-4 sm:py-8">
-                <span className="pt-1 text-sm text-white/35 tabular">0{i + 1}</span>
+                <span className="pt-1 text-sm text-white/55 tabular">0{i + 1}</span>
                 <div>
                   <h3 className="font-display text-[1.7rem] leading-tight font-normal sm:text-3xl">{a.title}</h3>
                   <p className="mt-2 max-w-lg leading-relaxed text-white/62 sm:mt-3">{a.body}</p>

@@ -103,7 +103,7 @@ export function MessageComposer({ senders, className }: { senders: string[]; cla
           {state.error}
         </p>
       ) : (
-        <p className="mt-2 hidden px-1 text-right text-xs text-white/35 md:block">Ctrl or Cmd + Enter to send</p>
+        <p className="mt-2 hidden px-1 text-right text-xs text-white/55 md:block">Ctrl or Cmd + Enter to send</p>
       )}
     </form>
   );

@@ -16,7 +16,7 @@ export function SiteHeader() {
     <div className="sticky top-0 z-50 h-0">
       <Container className="pt-3 sm:pt-4">
         <header className="relative">
-          <div className="glass-dark absolute inset-0 rounded-full" aria-hidden />
+          <div className="glass-dark absolute inset-0 rounded-full bg-[rgba(10,11,13,0.78)] backdrop-blur-xl backdrop-saturate-100 md:bg-[rgba(10,11,13,0.6)]" aria-hidden />
           <div className="relative flex h-14 items-center justify-between gap-4 pr-2 pl-5 sm:pl-6">
             <Logo />
             <nav className="hidden items-center lg:flex" aria-label="Main">

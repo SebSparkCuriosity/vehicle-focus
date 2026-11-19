@@ -24,7 +24,7 @@ export default async function GarageLayout({ children }: { children: React.React
       <div className="app-backdrop" aria-hidden />
 
       <header className="sticky top-0 z-30 px-3 pt-3 sm:px-5">
-        <div className="glass-dark mx-auto flex h-14 w-full max-w-6xl items-center gap-3 rounded-full pr-2 pl-4 sm:pl-5">
+        <div className="glass-dark mx-auto flex h-14 w-full max-w-6xl items-center gap-3 rounded-full bg-[rgba(10,11,13,0.78)] pr-2 pl-4 backdrop-blur-xl backdrop-saturate-100 sm:pl-5">
           <Logo href="/garage" compact className="sm:hidden" />
           <Logo href="/garage" className="hidden sm:inline-flex" />
           <span className="ml-1 font-display text-[0.95rem] italic text-white/60 sm:hidden">The Garage</span>

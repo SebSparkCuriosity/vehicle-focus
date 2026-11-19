@@ -121,7 +121,7 @@ export function EmptyState({
 }) {
   return (
     <div className={cn("glass flex flex-col items-center rounded-[24px] px-6 py-12 text-center", className)}>
-      {Icon ? <Icon className="size-5 text-white/35" aria-hidden /> : null}
+      {Icon ? <Icon className="size-5 text-white/55" aria-hidden /> : null}
       <p className="mt-3 font-display text-xl font-normal">{title}</p>
       {body ? <p className="mt-1.5 max-w-sm text-[0.95rem] leading-relaxed text-white/60 md:text-sm">{body}</p> : null}
       {action ? <div className="mt-5">{action}</div> : null}

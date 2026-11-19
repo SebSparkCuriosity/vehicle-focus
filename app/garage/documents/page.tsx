@@ -39,7 +39,7 @@ export default async function DocumentsPage() {
               <Upload className="size-4" aria-hidden />
               Upload
             </button>
-            <p className="text-[0.75rem] text-white/40">Coming soon, with secure storage.</p>
+            <p className="text-[0.75rem] text-white/55">Coming soon, with secure storage.</p>
           </div>
         }
       />
@@ -67,7 +67,7 @@ export default async function DocumentsPage() {
                 {list.map((d, i) => (
                   <li key={d.id} className={i > 0 ? "border-t border-white/[0.05]" : undefined}>
                     <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5">
-                      <FileText className="size-4 shrink-0 text-white/35" aria-hidden />
+                      <FileText className="size-4 shrink-0 text-white/55" aria-hidden />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[0.95rem] md:text-[0.92rem]">{d.title}</p>
                         <p className="text-[0.78rem] text-white/45">

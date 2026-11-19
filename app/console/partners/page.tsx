@@ -41,16 +41,16 @@ export default async function PartnersPage() {
                     </div>
                     <div className="mt-2 flex items-center gap-2">
                       <Stars rating={p.rating} />
-                      <span className="text-[0.75rem] text-subtle">
+                      <span className="text-[0.82rem] text-subtle md:text-[0.75rem]">
                         {jobsFor(p.id)} {jobsFor(p.id) === 1 ? "request" : "requests"} on record
                       </span>
                     </div>
                     {p.notes ? <p className="mt-3 mb-4 text-sm text-muted">{p.notes}</p> : <div className="mb-4" />}
-                    <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 border-t border-white/[0.06] pt-3.5 text-[0.78rem]">
-                      <a href={`mailto:${p.email}`} className="inline-flex items-center gap-1.5 text-muted hover:text-text">
+                    <div className="mt-auto flex flex-col border-t border-white/[0.06] pt-1.5 text-[0.88rem] md:flex-row md:flex-wrap md:gap-x-4 md:gap-y-1 md:pt-3.5 md:text-[0.78rem]">
+                      <a href={`mailto:${p.email}`} className="inline-flex min-h-11 items-center gap-2 break-all text-muted hover:text-text md:min-h-0 md:gap-1.5">
                         <Mail className="size-3.5" /> {p.email}
                       </a>
-                      <a href={`tel:${p.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 text-muted hover:text-text">
+                      <a href={`tel:${p.phone.replace(/\s/g, "")}`} className="inline-flex min-h-11 items-center gap-2 text-muted hover:text-text md:min-h-0 md:gap-1.5">
                         <Phone className="size-3.5" /> {p.phone}
                       </a>
                     </div>

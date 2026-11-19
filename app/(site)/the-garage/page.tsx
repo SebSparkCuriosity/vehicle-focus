@@ -53,7 +53,7 @@ function FeatureRow({
   return (
     <div className="grid items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
       <div className={cn(flip && "lg:order-2")}>
-        <span className="text-sm text-white/35 tabular">{n}</span>
+        <span className="text-sm text-white/55 tabular">{n}</span>
         <h2 className="mt-3 font-display text-[1.9rem] leading-[1.1] font-normal text-balance sm:mt-4 sm:text-[2.6rem] sm:leading-[1.08]">{title}</h2>
         <p className="mt-4 max-w-md leading-relaxed text-white/62 sm:mt-5">{body}</p>
         {points ? (
@@ -94,7 +94,7 @@ export default function TheGaragePage() {
             Talk to Lawrence
           </ButtonLink>
         </div>
-        <p className="mt-5 text-xs text-white/40">The demo uses example cars and owners. None of it is client data.</p>
+        <p className="mt-5 text-xs text-white/55">The demo uses example cars and owners. None of it is client data.</p>
       </PhotoHero>
 
       <section className="relative isolate overflow-hidden py-14 sm:py-20 md:py-32">
@@ -138,7 +138,7 @@ export default function TheGaragePage() {
                   {HISTORY.map(([t, when]) => (
                     <li key={t} className="flex items-baseline justify-between gap-4 py-2.5 text-sm">
                       <span className="truncate text-white/80">{t}</span>
-                      <span className="shrink-0 text-xs text-white/40">{when}</span>
+                      <span className="shrink-0 text-xs text-white/55">{when}</span>
                     </li>
                   ))}
                 </ul>

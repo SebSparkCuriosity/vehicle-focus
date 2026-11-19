@@ -43,7 +43,7 @@ export function RaiseRequestForm({ vehicleId, defaultLocation, defaultDate }: { 
         <Textarea id="rr-notes" name="notes" rows={2} placeholder="What the client asked for, in their words." />
       </Field>
       <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit" variant="secondary" disabled={pending}>
+        <Button type="submit" variant="secondary" disabled={pending} className="w-full backdrop-blur-none sm:w-auto">
           <Send /> {pending ? "Raising" : "Raise request"}
         </Button>
         {state ? (

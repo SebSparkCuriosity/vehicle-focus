@@ -1,5 +1,5 @@
 import { Inbox } from "lucide-react";
-import { EmptyState, Lane, PageHeader } from "@/components/console/ui";
+import { Board, EmptyState, Lane, PageHeader, boardLane } from "@/components/console/ui";
 import { RequestCard } from "@/components/console/rows";
 import { getLookups } from "@/components/console/lookups";
 import { getRequests } from "@/lib/data/queries";
@@ -45,13 +45,17 @@ export default async function RequestsPage() {
         description="Everything clients and their assistants have asked for. New requests need a time, a person and, where relevant, a quote."
       />
 
-      <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
-        <div className="grid min-w-[880px] grid-cols-4 gap-4">
+      <Board
+        grid="md:min-w-[880px] md:grid-cols-4 md:gap-4"
+        jump={COLUMNS.map((col) => ({ id: `lane-${col.status}`, label: REQUEST_STATUS_META[col.status].label, count: sortFor(col.status).length }))}
+      >
           {COLUMNS.map((col) => {
             const list = sortFor(col.status);
             return (
               <Lane
                 key={col.status}
+                id={`lane-${col.status}`}
+                className={boardLane}
                 title={REQUEST_STATUS_META[col.status].label}
                 hint={col.hint}
                 count={list.length}
@@ -61,11 +65,10 @@ export default async function RequestsPage() {
               </Lane>
             );
           })}
-        </div>
-      </div>
+      </Board>
 
       <details className="glass mt-6 rounded-2xl">
-        <summary className="cursor-pointer px-5 py-3.5 text-sm text-muted transition-colors hover:text-text">
+        <summary className="flex min-h-12 cursor-pointer items-center gap-1.5 px-5 text-sm text-muted transition-colors hover:text-text">
           Cancelled <span className="text-subtle tabular">{cancelled.length}</span>
         </summary>
         <div className="grid gap-2.5 border-t border-white/[0.07] p-3 sm:grid-cols-2 lg:grid-cols-3">

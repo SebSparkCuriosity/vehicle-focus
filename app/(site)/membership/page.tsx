@@ -137,7 +137,7 @@ export default function MembershipPage() {
               <details key={f.q} className="group py-2 sm:py-3">
                 <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-6 py-2 text-[1.02rem] leading-snug font-medium sm:text-[1.05rem] [&::-webkit-details-marker]:hidden">
                   {f.q}
-                  <span className="text-xl leading-none font-light text-white/40 transition-transform group-open:rotate-45" aria-hidden>
+                  <span className="text-xl leading-none font-light text-white/55 transition-transform group-open:rotate-45" aria-hidden>
                     +
                   </span>
                 </summary>

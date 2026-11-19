@@ -47,10 +47,10 @@ export default async function ConsoleToday() {
         }
         actions={
           <>
-            <ButtonLink href="/console/schedule" variant="secondary" size="sm">
+            <ButtonLink href="/console/schedule" variant="secondary" className="flex-1 sm:flex-none">
               <CalendarDays /> Week ahead
             </ButtonLink>
-            <ButtonLink href="/console/requests" size="sm">
+            <ButtonLink href="/console/requests" className="flex-1 sm:flex-none">
               <Inbox /> Requests
             </ButtonLink>
           </>
@@ -171,24 +171,26 @@ export default async function ConsoleToday() {
                   const v = lookups.vehicle.get(r.vehicleId);
                   const c = lookups.client.get(r.clientId);
                   return (
-                    <li key={r.id} className="px-5 py-3.5">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium leading-snug">{r.title}</p>
-                          <p className="mt-0.5 text-[0.78rem] text-muted">
-                            {c?.name} · {v ? vehicleName(v) : ""}
-                          </p>
-                          <p className="mt-1 text-xs text-subtle">
-                            {REQUEST_TYPE_META[r.type].label} · needed {formatDateTime(r.when)}
-                          </p>
-                        </div>
-                        <ButtonLink href={`/console/requests/${r.id}`} size="sm" variant="outline" className="shrink-0">
-                          Review
-                        </ButtonLink>
-                      </div>
-                      <p className="mt-2 text-xs text-subtle">
-                        Raised by {r.createdBy}, {timeAgo(r.createdAt)}
-                      </p>
+                    <li key={r.id}>
+                      <Link href={`/console/requests/${r.id}`} className="group block px-5 py-3.5 transition-colors hover:bg-white/[0.03] active:bg-white/[0.05]">
+                        <span className="flex items-start justify-between gap-3">
+                          <span className="min-w-0">
+                            <span className="block text-sm font-medium leading-snug">{r.title}</span>
+                            <span className="mt-0.5 block text-[0.85rem] text-muted md:text-[0.78rem]">
+                              {c?.name} · {v ? vehicleName(v) : ""}
+                            </span>
+                            <span className="mt-1 block text-[0.82rem] text-subtle md:text-xs">
+                              {REQUEST_TYPE_META[r.type].label} · needed {formatDateTime(r.when)}
+                            </span>
+                          </span>
+                          <span className="inline-flex h-9 shrink-0 items-center rounded-full border border-white/20 px-3.5 text-[0.82rem] text-text transition-colors group-hover:border-white/40">
+                            Review
+                          </span>
+                        </span>
+                        <span className="mt-2 block text-[0.82rem] text-subtle md:text-xs">
+                          Raised by {r.createdBy}, {timeAgo(r.createdAt)}
+                        </span>
+                      </Link>
                     </li>
                   );
                 })}
@@ -211,18 +213,20 @@ export default async function ConsoleToday() {
             {newLeads.length ? (
               <ul className="divide-y divide-white/[0.06]">
                 {newLeads.map((l) => (
-                  <li key={l.id} className="px-5 py-3.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-medium">{l.name}</p>
-                      <span className="text-xs text-subtle">{timeAgo(l.createdAt)}</span>
-                    </div>
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <SourceBadge source={l.source} />
-                      {l.readinessScore !== undefined ? (
-                        <Dot tone={l.readinessScore >= 60 ? "danger" : l.readinessScore >= 30 ? "warning" : "success"}>Risk {l.readinessScore}</Dot>
-                      ) : null}
-                    </div>
-                    {l.cars ? <p className="mt-1.5 text-xs text-muted">{l.cars}</p> : null}
+                  <li key={l.id}>
+                    <Link href="/console/leads" className="block px-5 py-3.5 transition-colors hover:bg-white/[0.03] active:bg-white/[0.05]">
+                      <span className="flex items-center justify-between gap-2">
+                        <span className="text-sm font-medium">{l.name}</span>
+                        <span className="text-xs text-subtle">{timeAgo(l.createdAt)}</span>
+                      </span>
+                      <span className="mt-1 flex flex-wrap items-center gap-2">
+                        <SourceBadge source={l.source} />
+                        {l.readinessScore !== undefined ? (
+                          <Dot tone={l.readinessScore >= 60 ? "danger" : l.readinessScore >= 30 ? "warning" : "success"}>Risk {l.readinessScore}</Dot>
+                        ) : null}
+                      </span>
+                      {l.cars ? <span className="mt-1.5 block text-[0.82rem] text-muted md:text-xs">{l.cars}</span> : null}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -234,22 +238,22 @@ export default async function ConsoleToday() {
           </Panel>
 
           <Panel title="Revenue snapshot" description="Demo fees, per client per month">
-            <ul className="space-y-2.5">
+            <ul className="-my-1">
               {[...lookups.clients]
                 .sort((a, b) => b.monthlyFee - a.monthlyFee)
                 .map((c) => (
-                  <li key={c.id} className="flex items-center gap-3">
-                    <Link href={`/console/clients/${c.id}`} className="min-w-0 flex-1 truncate text-sm underline-offset-4 hover:underline">
-                      {c.name}
+                  <li key={c.id}>
+                    <Link href={`/console/clients/${c.id}`} className="group flex min-h-11 items-center gap-3 md:min-h-9">
+                      <span className="min-w-0 flex-1 truncate text-sm underline-offset-4 group-hover:underline">{c.name}</span>
+                      <span className="relative h-1 w-20 overflow-hidden rounded-full bg-white/[0.08] sm:w-24" aria-hidden>
+                        <span className="absolute inset-y-0 left-0 rounded-full bg-white/70" style={{ width: `${(c.monthlyFee / stats.mrr) * 100}%` }} />
+                      </span>
+                      <span className="w-16 text-right text-sm tabular text-muted">{formatGBP(c.monthlyFee)}</span>
                     </Link>
-                    <span className="relative h-1 w-24 overflow-hidden rounded-full bg-white/[0.08]" aria-hidden>
-                      <span className="absolute inset-y-0 left-0 rounded-full bg-white/70" style={{ width: `${(c.monthlyFee / stats.mrr) * 100}%` }} />
-                    </span>
-                    <span className="w-16 text-right text-sm tabular text-muted">{formatGBP(c.monthlyFee)}</span>
                   </li>
                 ))}
             </ul>
-            <Link href="/console/clients" className="mt-5 inline-flex items-center gap-1 text-[0.78rem] text-muted transition-colors hover:text-text">
+            <Link href="/console/clients" className="mt-3 inline-flex min-h-11 items-center gap-1 text-[0.82rem] text-muted transition-colors hover:text-text md:min-h-0 md:text-[0.78rem]">
               Client book <ArrowRight className="size-3" />
             </Link>
           </Panel>

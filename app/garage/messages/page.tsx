@@ -59,7 +59,7 @@ export default async function MessagesPage() {
               <div className="space-y-7">
                 {groups.map((g) => (
                   <div key={g.day} className="space-y-4">
-                    <p className="text-center text-xs text-white/40">{g.label}</p>
+                    <p className="text-center text-xs text-white/55">{g.label}</p>
                     {g.items.map((m) => {
                       const mine = m.from === "client";
                       return (
@@ -83,7 +83,7 @@ export default async function MessagesPage() {
                             >
                               {m.body}
                             </div>
-                            <p className="mt-1 px-1 text-xs text-white/40">
+                            <p className="mt-1 px-1 text-xs text-white/55">
                               {m.author}, {formatTime(m.at)}
                             </p>
                           </div>
@@ -96,7 +96,7 @@ export default async function MessagesPage() {
               </div>
             ) : (
               <div className="my-auto flex flex-col items-center py-10 text-center">
-                <MessageCircle className="size-5 text-white/35" aria-hidden />
+                <MessageCircle className="size-5 text-white/55" aria-hidden />
                 <p className="mt-3 font-display text-xl font-normal">No messages yet</p>
                 <p className="mt-1.5 text-sm text-white/55">Say hello. A real person reads every message.</p>
               </div>

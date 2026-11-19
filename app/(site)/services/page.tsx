@@ -51,10 +51,10 @@ export default function ServicesPage() {
           <section id={g.id} className="scroll-mt-24 py-12 sm:py-20 md:py-28">
             <Container className="grid gap-6 sm:gap-10 lg:grid-cols-[0.8fr_1.6fr] lg:gap-20 [&>*]:min-w-0">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                <span className="text-sm text-white/35 tabular">Part {i + 1}</span>
+                <span className="text-sm text-white/55 tabular">Part {i + 1}</span>
                 <h2 className="mt-2 font-display text-[2.15rem] leading-[1.06] font-normal sm:mt-3 sm:text-5xl sm:leading-[1.04]">{g.title}</h2>
                 <p className="mt-3 max-w-xs leading-relaxed text-white/60 sm:mt-4">{g.summary}</p>
-                <p className="mt-3 text-xs text-white/40 md:hidden">Tap a service for the detail.</p>
+                <p className="mt-3 text-xs text-white/55 md:hidden">Tap a service for the detail.</p>
               </div>
               <ServiceList group={g} detailed />
             </Container>
@@ -91,7 +91,7 @@ export default function ServicesPage() {
           <ol className="glass-dark divide-y divide-white/[0.08] rounded-[28px] px-5 sm:px-8">
             {BATTERY_POINTS.map(([t, b], i) => (
               <li key={t} className="grid grid-cols-[2rem_1fr] gap-3 py-5 sm:gap-4 sm:py-6">
-                <span className="pt-0.5 text-sm text-white/35 tabular">0{i + 1}</span>
+                <span className="pt-0.5 text-sm text-white/55 tabular">0{i + 1}</span>
                 <div>
                   <h3 className="font-semibold">{t}</h3>
                   <p className="mt-1.5 text-[0.95rem] leading-relaxed text-white/60 sm:text-sm">{b}</p>

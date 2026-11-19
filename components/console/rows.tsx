@@ -10,28 +10,26 @@ import type { Client, HistoryEvent, HistoryKind, Job, Partner, ServiceRequest, T
 // Reusable row/card renderers used on several console pages.
 
 export function JobRow({ job, vehicle, client, member }: { job: Job; vehicle?: Vehicle; client?: Client; member?: TeamMember }) {
+  const href = job.requestId ? `/console/requests/${job.requestId}` : vehicle ? `/console/fleet/${vehicle.id}` : "/console/schedule";
   return (
-    <li className="flex items-center gap-4 py-3">
-      <div className="w-12 shrink-0">
-        <p className="text-sm font-medium tabular">{formatTime(job.start)}</p>
-        <p className="text-xs text-subtle tabular">{durationLabel(job.durationMins)}</p>
-      </div>
-      <div className="min-w-0 flex-1">
-        <Link
-          href={vehicle ? `/console/fleet/${vehicle.id}` : "#"}
-          className="block truncate text-sm font-medium decoration-white/30 underline-offset-4 hover:underline"
-        >
-          {job.title}
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <JobKindBadge kind={job.kind} />
-          {job.status === "in-progress" ? <Dot tone="warning">Under way</Dot> : null}
-        </div>
-        <p className="mt-1 truncate text-[0.75rem] text-subtle">
-          {client?.name ?? "Unknown client"} · {vehicle?.registration} · {job.location}
-        </p>
-      </div>
-      {member ? <Initials initials={member.initials} title={member.name} /> : null}
+    <li>
+      <Link href={href} className="group flex min-h-16 items-center gap-4 py-3 transition-colors active:bg-white/[0.04]">
+        <span className="w-12 shrink-0">
+          <span className="block text-sm font-medium tabular">{formatTime(job.start)}</span>
+          <span className="block text-xs text-subtle tabular">{durationLabel(job.durationMins)}</span>
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">{job.title}</span>
+          <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+            <JobKindBadge kind={job.kind} />
+            {job.status === "in-progress" ? <Dot tone="warning">Under way</Dot> : null}
+          </span>
+          <span className="mt-1 block truncate text-[0.82rem] text-subtle md:text-[0.75rem]">
+            {client?.name ?? "Unknown client"} · {vehicle?.registration} · {job.location}
+          </span>
+        </span>
+        {member ? <Initials initials={member.initials} title={member.name} /> : null}
+      </Link>
     </li>
   );
 }
@@ -55,22 +53,22 @@ export function RequestCard({
   return (
     <Link
       href={`/console/requests/${request.id}`}
-      className="glass-inset block rounded-xl p-3.5 transition-colors hover:border-white/15 hover:bg-white/[0.07]"
+      className="glass-inset block rounded-xl p-4 transition-colors hover:border-white/15 hover:bg-white/[0.07] active:bg-white/[0.08] md:p-3.5"
     >
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-medium leading-snug">{request.title}</p>
         {compact ? <Dot tone={status.tone}>{status.label}</Dot> : null}
       </div>
-      <p className="mt-1 text-[0.78rem] text-muted">
+      <p className="mt-1 text-[0.85rem] text-muted md:text-[0.78rem]">
         {vehicle ? vehicleName(vehicle) : "Unknown car"} · {client?.name}
       </p>
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.75rem] text-subtle">
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.82rem] text-subtle md:text-[0.75rem]">
         <span className="text-white/75">{REQUEST_TYPE_META[request.type].label}</span>
         <span className="tabular">{formatDateTime(request.when)}</span>
       </div>
       {!compact ? (
         <>
-          <p className="mt-1 truncate text-[0.75rem] text-subtle">{request.location}</p>
+          <p className="mt-1 truncate text-[0.82rem] text-subtle md:text-[0.75rem]">{request.location}</p>
           <div className="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5">
             <span className="truncate text-xs text-subtle">
               {request.createdBy} · {timeAgo(request.createdAt)}
@@ -125,7 +123,7 @@ export function HistoryItem({ event, vehicle, showVehicle = false }: { event: Hi
           ) : null}
           {event.cost ? <span className="text-[0.78rem] text-muted tabular">{formatGBP(event.cost)}</span> : null}
         </div>
-        <p className="mt-0.5 text-[0.75rem] text-subtle">
+        <p className="mt-0.5 text-[0.82rem] text-subtle md:text-[0.75rem]">
           {showVehicle && vehicle ? (
             <>
               <Link href={`/console/fleet/${vehicle.id}`} className="text-muted underline-offset-4 hover:text-text hover:underline">
@@ -138,7 +136,7 @@ export function HistoryItem({ event, vehicle, showVehicle = false }: { event: Hi
         </p>
         {event.detail ? <p className="mt-1.5 text-sm text-muted">{event.detail}</p> : null}
         {event.readings ? (
-          <dl className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[0.75rem] text-subtle">
+          <dl className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[0.82rem] text-subtle md:text-[0.75rem]">
             <div>
               <dt className="inline">Battery </dt>
               <dd className="inline tabular text-muted">{event.readings.batteryVoltage.toFixed(1)}V</dd>

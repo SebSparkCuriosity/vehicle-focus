@@ -27,7 +27,7 @@ function Corner({ label, value, target, unit, align }: { label: string; value: n
         {value}
         <span className="ml-1 font-sans text-xs text-white/45">{unit}</span>
       </span>
-      <span className="mt-1 tabular text-xs text-white/40">target {target}</span>
+      <span className="mt-1 tabular text-xs text-white/55">target {target}</span>
     </div>
   );
 }

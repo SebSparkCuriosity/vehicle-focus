@@ -199,7 +199,7 @@ export default async function CarPage({ params }: Props) {
               <div className="mt-6">
                 <ValueChart points={v.valuations} purchasePrice={v.purchasePrice} />
               </div>
-              <p className="mt-4 text-[0.78rem] leading-relaxed text-white/40">
+              <p className="mt-4 text-[0.78rem] leading-relaxed text-white/55">
                 Guidance only, not a formal valuation.
                 {lastValuation ? ` Last reviewed ${formatDate(lastValuation.date)} (${lastValuation.source}).` : ""} Ask us for a formal report for
                 insurance or sale.
@@ -216,7 +216,7 @@ export default async function CarPage({ params }: Props) {
             ) : (
               <EmptyState icon={Route} title="No history recorded yet" body="Every check, service and movement we carry out will be logged here." />
             )}
-            <p className="mt-3 px-1 text-[0.8rem] text-white/40">The complete record is part of the car&apos;s value. It comes with you if you sell.</p>
+            <p className="mt-3 px-1 text-[0.8rem] text-white/55">The complete record is part of the car&apos;s value. It comes with you if you sell.</p>
           </section>
         </div>
 
@@ -298,7 +298,7 @@ export default async function CarPage({ params }: Props) {
               <ul className="mt-3 space-y-3">
                 {docs.map((d) => (
                   <li key={d.id} className="flex items-start gap-2.5 text-[0.95rem] md:text-sm">
-                    <FileText className="mt-0.5 size-4 shrink-0 text-white/35" aria-hidden />
+                    <FileText className="mt-0.5 size-4 shrink-0 text-white/55" aria-hidden />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate">{d.title}</span>
                       <span className="block text-[0.78rem] text-white/45">

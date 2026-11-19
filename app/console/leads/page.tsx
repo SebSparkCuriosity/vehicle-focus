@@ -1,5 +1,5 @@
 import { ChevronDown, Mail, Phone, TrendingUp } from "lucide-react";
-import { Dot, EmptyState, Kpi, KpiStrip, Lane, PageHeader, SourceBadge } from "@/components/console/ui";
+import { Board, Dot, EmptyState, Kpi, KpiStrip, Lane, PageHeader, SourceBadge, boardLane } from "@/components/console/ui";
 import { getLeads } from "@/lib/data/queries";
 import { updateLeadStage } from "@/lib/actions";
 import { LEAD_STAGES } from "@/lib/domain";
@@ -24,6 +24,9 @@ const NEXT_STAGE: Partial<Record<LeadStage, LeadStage>> = {
   proposal: "won",
 };
 
+const contactPill =
+  "inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-full border border-white/12 bg-white/[0.04] text-[0.88rem] text-white/85 transition-colors hover:border-white/25 hover:text-text md:min-h-0 md:flex-none md:border-0 md:bg-transparent md:px-0 md:text-[0.78rem] md:text-muted";
+
 function riskTone(score: number) {
   return score >= 60 ? "danger" : score >= 30 ? "warning" : "success";
 }
@@ -36,7 +39,7 @@ function LeadCard({ lead }: { lead: Lead }) {
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">{lead.name}</p>
-          <p className="text-[0.75rem] text-subtle">
+          <p className="text-[0.82rem] text-subtle md:text-[0.75rem]">
             {lead.role ?? "Unknown role"} · {timeAgo(lead.createdAt)}
           </p>
         </div>
@@ -45,36 +48,36 @@ function LeadCard({ lead }: { lead: Lead }) {
       <div className="mt-2">
         <SourceBadge source={lead.source} />
       </div>
-      {lead.cars ? <p className="mt-2 text-[0.8rem] text-white/85">{lead.cars}</p> : null}
-      {lead.message ? <p className="mt-1.5 line-clamp-4 whitespace-pre-line text-[0.78rem] text-muted">{lead.message}</p> : null}
-      <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-[0.78rem]">
-        <a href={`mailto:${lead.email}`} className="inline-flex items-center gap-1 text-muted hover:text-text">
-          <Mail className="size-3" /> Email
+      {lead.cars ? <p className="mt-2 text-[0.88rem] text-white/85 md:text-[0.8rem]">{lead.cars}</p> : null}
+      {lead.message ? <p className="mt-1.5 line-clamp-4 whitespace-pre-line text-[0.85rem] text-muted md:text-[0.78rem]">{lead.message}</p> : null}
+      <div className="mt-3 flex gap-2">
+        <a href={`mailto:${lead.email}`} className={contactPill}>
+          <Mail className="size-4 md:size-3" /> Email
         </a>
         {lead.phone ? (
-          <a href={`tel:${lead.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 text-muted hover:text-text">
-            <Phone className="size-3" /> Call
+          <a href={`tel:${lead.phone.replace(/\s/g, "")}`} className={contactPill}>
+            <Phone className="size-4 md:size-3" /> Call
           </a>
         ) : null}
       </div>
-      <div className="mt-3 flex items-center gap-2 border-t border-white/[0.06] pt-3">
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3 md:flex-nowrap">
         {next ? (
           <form action={updateLeadStage.bind(null, lead.id, next)} className="flex-1">
-            <button className="w-full rounded-full border border-white/15 px-2.5 py-1 text-[0.75rem] text-text transition-colors hover:border-white/30 hover:bg-white/[0.06]">
+            <button className="min-h-11 w-full rounded-full border border-white/15 px-3 text-[0.85rem] text-text transition-colors hover:border-white/30 hover:bg-white/[0.06] md:min-h-0 md:px-2.5 md:py-1 md:text-[0.75rem]">
               Move to {nextLabel}
             </button>
           </form>
         ) : (
-          <span className="flex-1 text-[0.75rem] text-subtle">{lead.stage === "won" ? "Converted" : "Closed"}</span>
+          <span className="flex-1 text-[0.82rem] text-subtle md:text-[0.75rem]">{lead.stage === "won" ? "Converted" : "Closed"}</span>
         )}
-        <details className="relative">
-          <summary className="flex cursor-pointer list-none items-center gap-0.5 rounded-full px-2.5 py-1 text-[0.75rem] text-muted hover:bg-white/[0.06] hover:text-text [&::-webkit-details-marker]:hidden">
+        <details className="relative max-md:open:w-full">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-0.5 rounded-full px-3 text-[0.85rem] text-muted hover:bg-white/[0.06] hover:text-text md:min-h-0 md:px-2.5 md:py-1 md:text-[0.75rem] [&::-webkit-details-marker]:hidden">
             Stage <ChevronDown className="size-3" />
           </summary>
-          <div className="glass-dark absolute right-0 z-10 mt-1 w-40 rounded-xl p-1">
+          <div className="mt-2 grid grid-cols-2 gap-1 rounded-xl border border-white/10 bg-black/30 p-1 md:absolute md:top-full md:right-0 md:z-20 md:mt-1 md:block md:w-40 md:bg-[#141518]/95 md:shadow-2xl">
             {LEAD_STAGES.filter((s) => s.id !== lead.stage).map((s) => (
               <form key={s.id} action={updateLeadStage.bind(null, lead.id, s.id)}>
-                <button className="w-full rounded-lg px-2.5 py-1.5 text-left text-[0.78rem] text-muted hover:bg-white/[0.07] hover:text-text">{s.label}</button>
+                <button className="min-h-11 w-full rounded-lg px-3 text-left text-[0.9rem] text-muted hover:bg-white/[0.07] hover:text-text md:min-h-0 md:px-2.5 md:py-1.5 md:text-[0.78rem]">{s.label}</button>
               </form>
             ))}
           </div>
@@ -109,7 +112,7 @@ export default async function LeadsPage() {
           <p className="text-[0.78rem] text-muted">By source</p>
           <ul className="mt-2 space-y-1">
             {sources.map(([s, n]) => (
-              <li key={s} className="flex items-center justify-between text-[0.78rem]">
+              <li key={s} className="flex items-center justify-between text-[0.85rem] md:text-[0.78rem]">
                 <span className="text-muted">{s}</span>
                 <span className="tabular">{n}</span>
               </li>
@@ -118,18 +121,19 @@ export default async function LeadsPage() {
         </div>
       </KpiStrip>
 
-      <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
-        <div className="grid min-w-[1200px] grid-cols-6 gap-3">
-          {LEAD_STAGES.map((stage) => {
-            const list = leads.filter((l) => l.stage === stage.id);
-            return (
-              <Lane key={stage.id} title={stage.label} count={list.length} tone={STAGE_TONE[stage.id]}>
-                {list.length ? list.map((l) => <LeadCard key={l.id} lead={l} />) : <EmptyState icon={TrendingUp} title="None" />}
-              </Lane>
-            );
-          })}
-        </div>
-      </div>
+      <Board
+        grid="md:min-w-[1200px] md:grid-cols-6"
+        jump={LEAD_STAGES.map((stage) => ({ id: `lane-${stage.id}`, label: stage.label, count: leads.filter((l) => l.stage === stage.id).length }))}
+      >
+        {LEAD_STAGES.map((stage) => {
+          const list = leads.filter((l) => l.stage === stage.id);
+          return (
+            <Lane key={stage.id} id={`lane-${stage.id}`} className={boardLane} title={stage.label} count={list.length} tone={STAGE_TONE[stage.id]}>
+              {list.length ? list.map((l) => <LeadCard key={l.id} lead={l} />) : <EmptyState icon={TrendingUp} title="None" />}
+            </Lane>
+          );
+        })}
+      </Board>
     </>
   );
 }

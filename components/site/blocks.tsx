@@ -27,7 +27,7 @@ export function TierCards({ detailed = false, className }: { detailed?: boolean;
         const detail = TIER_DETAILS[t];
         const featured = t === "platinum";
         return (
-          <article
+          <div
             key={t}
             role="listitem"
             className={cn(
@@ -45,7 +45,7 @@ export function TierCards({ detailed = false, className }: { detailed?: boolean;
               <ul className="mt-7 grid gap-3 border-t border-white/[0.08] pt-7 text-sm">
                 {detail.includes.map((item) => (
                   <li key={item} className="flex gap-3">
-                    <Check className="mt-0.5 size-4 shrink-0 text-white/40" aria-hidden />
+                    <Check className="mt-0.5 size-4 shrink-0 text-white/55" aria-hidden />
                     <span className="text-white/80">{item}</span>
                   </li>
                 ))}
@@ -56,7 +56,7 @@ export function TierCards({ detailed = false, className }: { detailed?: boolean;
                 Discuss {tier.label}
               </ButtonLink>
             </div>
-          </article>
+          </div>
         );
       })}
       </div>
@@ -85,9 +85,9 @@ function ServiceListCollapsible({ group }: { group: ServiceGroup }) {
         <li key={s.number}>
           <details className="group">
             <summary className="flex min-h-14 cursor-pointer list-none items-center gap-4 py-3 [&::-webkit-details-marker]:hidden">
-              <span className="w-7 shrink-0 text-sm text-white/35 tabular">{s.number}</span>
+              <span className="w-7 shrink-0 text-sm text-white/55 tabular">{s.number}</span>
               <span className="flex-1 text-[1.02rem] font-semibold tracking-tight">{s.title}</span>
-              <ChevronDown className="size-4 shrink-0 text-white/40 transition-transform group-open:rotate-180" aria-hidden />
+              <ChevronDown className="size-4 shrink-0 text-white/55 transition-transform group-open:rotate-180" aria-hidden />
             </summary>
             <ul className="grid gap-2 pb-5 pl-11 text-[0.95rem] leading-relaxed text-white/65">
               {s.points.map((p) => (
@@ -106,7 +106,7 @@ function ServiceListFull({ group, detailed, className }: { group: ServiceGroup; 
     <ol className={cn("divide-y divide-white/[0.08] border-y border-white/[0.08]", className)}>
       {group.services.map((s) => (
         <li key={s.number} className={cn("grid gap-x-8 gap-y-3 py-6", detailed ? "grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr]" : "grid-cols-[2.5rem_1fr]")}>
-          <span className="pt-0.5 text-sm text-white/35 tabular">{s.number}</span>
+          <span className="pt-0.5 text-sm text-white/55 tabular">{s.number}</span>
           <div>
             <h3 className="text-[1.05rem] font-semibold tracking-tight">{s.title}</h3>
             {detailed ? (
@@ -179,7 +179,7 @@ export function CtaBand({
                 {CONTACT.phone}
               </ButtonLink>
             </div>
-            <p className="mt-5 text-xs text-white/40">Answered 24/7. NDAs offered as standard.</p>
+            <p className="mt-5 text-xs text-white/55">Answered 24/7. NDAs offered as standard.</p>
           </div>
           {aside}
         </div>

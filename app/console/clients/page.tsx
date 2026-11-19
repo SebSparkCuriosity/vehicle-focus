@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Lock, Users } from "lucide-react";
-import { EmptyState, KpiStrip, PageHeader, TableWrap, TierBadge, td, th, tr } from "@/components/console/ui";
+import { EmptyState, KpiStrip, MobileList, MobileRow, PageHeader, TableWrap, TierBadge, td, th, tr } from "@/components/console/ui";
 import { getLookups } from "@/components/console/lookups";
 import { getRequests } from "@/lib/data/queries";
 import { TIERS, latestValue } from "@/lib/domain";
@@ -45,7 +45,7 @@ export default async function ClientsPage() {
               <span className="text-xs text-subtle">{TIERS[t.tier].cadence}</span>
             </div>
             <p className="mt-3 font-display text-[1.9rem] leading-none tabular">{t.count}</p>
-            <p className="mt-1.5 text-[0.75rem] text-muted">
+            <p className="mt-1.5 text-[0.82rem] text-muted md:text-[0.75rem]">
               {t.count === 1 ? "client" : "clients"} · {formatGBP(t.fees)} a month
             </p>
           </div>
@@ -53,7 +53,30 @@ export default async function ClientsPage() {
       </KpiStrip>
 
       {rows.length ? (
-        <TableWrap>
+        <>
+        <MobileList label="Clients">
+          {rows.map(({ client: c, cars, value, open }) => (
+            <MobileRow
+              key={c.id}
+              href={`/console/clients/${c.id}`}
+              title={
+                <span className="inline-flex items-center gap-1.5">
+                  {c.name}
+                  {c.preferences.nda ? <Lock className="size-3.5 text-warning" aria-label="NDA in place" /> : null}
+                </span>
+              }
+              meta={`${cars.length} ${cars.length === 1 ? "car" : "cars"} · ${formatGBPCompact(value)} · ${c.homeBase}`}
+              footer={
+                <>
+                  <TierBadge tier={c.tier} />
+                  <span className="text-muted tabular">{formatGBP(c.monthlyFee)} a month</span>
+                  {open ? <span className="text-text">{open} open</span> : null}
+                </>
+              }
+            />
+          ))}
+        </MobileList>
+        <TableWrap className="hidden md:block">
           <table className="w-full min-w-[960px]">
             <thead>
               <tr>
@@ -95,6 +118,7 @@ export default async function ClientsPage() {
             </tbody>
           </table>
         </TableWrap>
+        </>
       ) : (
         <EmptyState icon={Users} title="No clients yet" description="Won leads become clients here." />
       )}

@@ -41,14 +41,14 @@ export function SiteFooter() {
           <a href={CONTACT.phoneHref} className="flex min-h-11 items-center text-base text-white transition-colors hover:text-white/80 md:text-sm">
             {CONTACT.phone}
           </a>
-          <p className="text-xs text-white/40">Answered 24/7</p>
+          <p className="text-xs text-white/55">Answered 24/7</p>
           <a href={CONTACT.emailHref} className="mt-2 flex min-h-11 items-center text-white/70 transition-colors hover:text-white">
             {CONTACT.email}
           </a>
-          <p className="mt-6 text-xs text-white/40">{CONTACT.coverage.join(", ")}</p>
+          <p className="mt-6 text-xs text-white/55">{CONTACT.coverage.join(", ")}</p>
         </div>
       </Container>
-      <Container className="flex flex-col gap-2 border-t border-white/[0.06] py-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+      <Container className="flex flex-col gap-2 border-t border-white/[0.06] py-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
         <p>© {new Date().getFullYear()} Vehicle Focus Automotive Concierge</p>
         <p>NDAs offered as standard. Every arrangement is private.</p>
       </Container>

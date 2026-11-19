@@ -45,7 +45,7 @@ export function GarageTabBar({ className }: { className?: string }) {
       aria-label="The Garage"
       className={cn("fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-30", className)}
     >
-      <ul className="glass-dark grid grid-cols-4 gap-1 rounded-[24px] p-1.5">
+      <ul className="glass-dark grid grid-cols-4 gap-1 rounded-[24px] bg-[rgba(10,11,13,0.8)] p-1.5 backdrop-blur-xl backdrop-saturate-100">
         {ITEMS.map((item) => {
           const active = item.match(pathname);
           const Icon = item.icon;

@@ -43,10 +43,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         description={client.homeBase}
         actions={
           <>
-            <ButtonLink href={`/console/messages?client=${client.id}`} variant="secondary" size="sm">
+            <ButtonLink href={`/console/messages?client=${client.id}`} variant="secondary" className="flex-1 sm:flex-none md:h-8 md:px-3.5 md:text-[0.8rem]">
               <MessagesSquare /> Message
             </ButtonLink>
-            <ButtonLink href={`/console/reports/${client.id}`} size="sm">
+            <ButtonLink href={`/console/reports/${client.id}`} className="flex-1 sm:flex-none md:h-8 md:px-3.5 md:text-[0.8rem]">
               <FileText /> Monthly report
             </ButtonLink>
           </>
@@ -76,7 +76,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <p className="truncate text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">{vehicleName(v)}</p>
-                            <p className="text-[0.75rem] text-subtle">
+                            <p className="text-[0.82rem] text-subtle md:text-[0.75rem]">
                               {v.year} · {v.registration}
                             </p>
                           </div>
@@ -131,18 +131,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <Panel title="Profile">
             <dl className="space-y-3">
               <Detail label="Email">
-                <a href={`mailto:${client.email}`} className="inline-flex items-center gap-1.5 hover:text-text">
+                <a href={`mailto:${client.email}`} className="-my-2.5 inline-flex min-h-11 items-center gap-1.5 break-all hover:text-text md:my-0 md:min-h-0">
                   <Mail className="size-3.5 text-subtle" /> {client.email}
                 </a>
               </Detail>
               <Detail label="Phone">
-                <a href={`tel:${client.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 hover:text-text">
+                <a href={`tel:${client.phone.replace(/\s/g, "")}`} className="-my-2.5 inline-flex min-h-11 items-center gap-1.5 hover:text-text md:my-0 md:min-h-0">
                   <Phone className="size-3.5 text-subtle" /> {client.phone}
                 </a>
               </Detail>
               <Detail label="Prefers">{client.preferences.contactPreference}</Detail>
               <Detail label="Tier">
-                <TierBadge tier={client.tier} /> <span className="ml-1 text-[0.75rem] text-subtle">{TIERS[client.tier].cadence}</span>
+                <TierBadge tier={client.tier} /> <span className="ml-1 text-[0.82rem] text-subtle md:text-[0.75rem]">{TIERS[client.tier].cadence}</span>
               </Detail>
               <Detail label="Discretion">
                 {client.preferences.nda ? (

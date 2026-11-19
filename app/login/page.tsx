@@ -33,7 +33,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <Logo />
         <Link
           href="/"
-          className="glass-dark inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.8rem] text-white/80 transition-colors hover:text-white"
+          className="glass-dark inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 py-2 text-[0.8rem] text-white/80 transition-colors hover:text-white"
         >
           <ArrowUpLeft className="size-3.5" /> <span className="hidden sm:inline">Back to the</span> website
         </Link>

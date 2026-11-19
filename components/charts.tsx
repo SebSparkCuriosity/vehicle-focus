@@ -44,9 +44,9 @@ export function ValueChart({
   const id = useId().replace(/:/g, "");
   if (points.length < 2) return <p className="text-sm text-muted">Not enough valuations yet to draw a trend.</p>;
 
-  const W = 640;
-  const H = 220;
-  const pad = { l: 56, r: 16, t: 16, b: 28 };
+  // Lines and fill are drawn in a stretchable 0-100 SVG space; labels and dots
+  // are real HTML positioned by percentage, so text stays a readable 12px on a
+  // phone instead of shrinking with the graphic.
   const values = points.map((p) => p.value).concat(purchasePrice ? [purchasePrice] : []);
   const rawMin = Math.min(...values);
   const rawMax = Math.max(...values);
@@ -55,50 +55,75 @@ export function ValueChart({
   const max = rawMax + headroom;
   const t0 = new Date(points[0].date).getTime();
   const t1 = new Date(points[points.length - 1].date).getTime();
-  const x = (d: string) => pad.l + ((new Date(d).getTime() - t0) / (t1 - t0 || 1)) * (W - pad.l - pad.r);
-  const y = (v: number) => pad.t + (1 - (v - min) / (max - min)) * (H - pad.t - pad.b);
+  const x = (d: string) => ((new Date(d).getTime() - t0) / (t1 - t0 || 1)) * 100;
+  const y = (v: number) => (1 - (v - min) / (max - min)) * 100;
 
-  const line = points.map((p, i) => `${i === 0 ? "M" : "L"}${x(p.date).toFixed(1)},${y(p.value).toFixed(1)}`).join(" ");
-  const area = `${line} L${x(points[points.length - 1].date).toFixed(1)},${H - pad.b} L${pad.l},${H - pad.b} Z`;
+  const line = points.map((p, i) => `${i === 0 ? "M" : "L"}${x(p.date).toFixed(2)},${y(p.value).toFixed(2)}`).join(" ");
+  const area = `${line} L100,100 L0,100 Z`;
   const ticks = [min + (max - min) * 0.15, min + (max - min) * 0.5, min + (max - min) * 0.85];
   const last = points[points.length - 1];
   const up = last.value >= points[0].value;
+  const colour = up ? "var(--success)" : "var(--accent)";
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className={cn("w-full h-auto", className)} role="img" aria-label="Valuation history chart">
-      <defs>
-        <linearGradient id={`area-${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={up ? "var(--success)" : "var(--gold)"} stopOpacity="0.22" />
-          <stop offset="100%" stopColor={up ? "var(--success)" : "var(--gold)"} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {ticks.map((t) => (
-        <g key={t}>
-          <line x1={pad.l} x2={W - pad.r} y1={y(t)} y2={y(t)} stroke="var(--border)" strokeDasharray="2 4" />
-          <text x={pad.l - 8} y={y(t) + 4} textAnchor="end" fontSize="11" fill="var(--subtle)" className="tabular">
+    <div className={cn("w-full", className)} role="img" aria-label="Valuation history chart">
+      <div className="relative ml-14 h-44 sm:h-56">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
+          <defs>
+            <linearGradient id={`area-${id}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={colour} stopOpacity="0.22" />
+              <stop offset="100%" stopColor={colour} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {ticks.map((t) => (
+            <line key={t} x1="0" x2="100" y1={y(t)} y2={y(t)} stroke="var(--border)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke" />
+          ))}
+          {purchasePrice ? (
+            <line
+              x1="0"
+              x2="100"
+              y1={y(purchasePrice)}
+              y2={y(purchasePrice)}
+              stroke="var(--muted)"
+              strokeOpacity="0.6"
+              strokeDasharray="6 4"
+              vectorEffect="non-scaling-stroke"
+            />
+          ) : null}
+          <path d={area} fill={`url(#area-${id})`} />
+          <path d={line} fill="none" stroke={colour} strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        </svg>
+
+        {ticks.map((t) => (
+          <span
+            key={t}
+            className="tabular absolute right-[calc(100%+8px)] -translate-y-1/2 text-xs whitespace-nowrap text-subtle"
+            style={{ top: `${y(t)}%` }}
+          >
             {formatGBPCompact(t)}
-          </text>
-        </g>
-      ))}
-      {purchasePrice ? (
-        <g>
-          <line x1={pad.l} x2={W - pad.r} y1={y(purchasePrice)} y2={y(purchasePrice)} stroke="var(--muted)" strokeOpacity="0.6" strokeDasharray="6 4" />
-          <text x={W - pad.r} y={y(purchasePrice) - 6} textAnchor="end" fontSize="11" fill="var(--muted)">
+          </span>
+        ))}
+        {purchasePrice ? (
+          <span
+            className="absolute right-0 -translate-y-[calc(100%+4px)] text-xs whitespace-nowrap text-muted"
+            style={{ top: `${y(purchasePrice)}%` }}
+          >
             Purchase {formatGBPCompact(purchasePrice)}
-          </text>
-        </g>
-      ) : null}
-      <path d={area} fill={`url(#area-${id})`} />
-      <path d={line} fill="none" stroke={up ? "var(--success)" : "var(--gold)"} strokeWidth="2" strokeLinejoin="round" />
-      {points.map((p) => (
-        <circle key={p.date} cx={x(p.date)} cy={y(p.value)} r="3.5" fill="var(--bg)" stroke={up ? "var(--success)" : "var(--gold)"} strokeWidth="2" />
-      ))}
-      <text x={pad.l} y={H - 8} fontSize="11" fill="var(--subtle)">
-        {formatDate(points[0].date, { month: "short", year: "numeric" })}
-      </text>
-      <text x={W - pad.r} y={H - 8} fontSize="11" fill="var(--subtle)" textAnchor="end">
-        {formatDate(last.date, { month: "short", year: "numeric" })}
-      </text>
-    </svg>
+          </span>
+        ) : null}
+        {points.map((p) => (
+          <span
+            key={p.date}
+            className="absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-bg"
+            style={{ left: `${x(p.date)}%`, top: `${y(p.value)}%`, borderColor: colour }}
+            aria-hidden
+          />
+        ))}
+      </div>
+      <div className="mt-2 ml-14 flex justify-between text-xs text-subtle">
+        <span>{formatDate(points[0].date, { month: "short", year: "numeric" })}</span>
+        <span>{formatDate(last.date, { month: "short", year: "numeric" })}</span>
+      </div>
+    </div>
   );
 }

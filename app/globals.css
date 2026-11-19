@@ -18,7 +18,7 @@
   --border-strong: rgba(255, 255, 255, 0.18);
   --text: #f2f0eb;
   --muted: #a6a39d;
-  --subtle: #75726c;
+  --subtle: #8c8983;
   --accent: #ffcd09;
   --accent-bright: #ffd83d;
   --accent-soft: rgba(255, 205, 9, 0.12);
@@ -106,7 +106,7 @@ body::after {
 /* Small tracked label. Use at most once per view, not above every heading. */
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
