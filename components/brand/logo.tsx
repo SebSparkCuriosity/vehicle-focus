@@ -1,20 +1,30 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { VF_MARK, VF_WORDMARK } from "@/components/brand/logo-paths";
 
-/** Wordmark. A focus reticle plus tracked caps, after the brochure. Replace with the real logo file when supplied. */
+/** The real Vehicle Focus mark, traced from the logo on vehicle-focus.com. */
+export function VFMark({ className, color = "var(--accent)" }: { className?: string; color?: string }) {
+  return (
+    <svg viewBox={`0 0 ${VF_MARK.w} ${VF_MARK.h}`} className={cn("h-6 w-auto shrink-0", className)} aria-hidden>
+      <path fill={color} fillRule="evenodd" d={VF_MARK.d} />
+    </svg>
+  );
+}
+
+export function VFWordmark({ className, color = "currentColor" }: { className?: string; color?: string }) {
+  return (
+    <svg viewBox={`0 0 ${VF_WORDMARK.w} ${VF_WORDMARK.h}`} className={cn("h-3 w-auto shrink-0", className)} aria-hidden>
+      <path fill={color} fillRule="evenodd" d={VF_WORDMARK.d} />
+    </svg>
+  );
+}
+
+/** Mark plus wordmark lock-up. The wordmark stays ivory so the yellow is reserved for the mark. */
 export function Logo({ className, href = "/", compact = false }: { className?: string; href?: string; compact?: boolean }) {
   return (
-    <Link href={href} className={cn("group inline-flex items-center gap-2.5 text-text", className)} aria-label="Vehicle Focus home">
-      <svg viewBox="0 0 32 32" className="size-7 shrink-0" aria-hidden>
-        <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1.5" />
-        <path d="M16 3v6M16 23v6M3 16h6M23 16h6" stroke="var(--gold)" strokeWidth="1.8" strokeLinecap="round" />
-        <circle cx="16" cy="16" r="3" fill="var(--gold)" />
-      </svg>
-      {compact ? null : (
-        <span className="font-display text-[0.8rem] font-semibold tracking-[0.28em] uppercase leading-none">
-          Vehicle <span className="text-gold">Focus</span>
-        </span>
-      )}
+    <Link href={href} className={cn("group inline-flex items-center gap-3 text-text", className)} aria-label="Vehicle Focus home">
+      <VFMark className="h-[22px]" />
+      {compact ? null : <VFWordmark className="h-[11px] opacity-90 transition-opacity group-hover:opacity-100" />}
     </Link>
   );
 }

@@ -93,7 +93,7 @@ export const clients: Client[] = [
     preferences: {
       nda: true,
       contactPreference: "WhatsApp",
-      notes: "Splits the year between Jersey and Monaco. Revuelto travels by enclosed transporter only.",
+      notes: "Splits the year between Jersey and Monaco. The Huracán travels by enclosed transporter only.",
     },
     monthlyFee: 3400,
   },
@@ -133,18 +133,19 @@ function valuations(points: ValuationSeed, source = "Vehicle Focus market review
 
 export const vehicles: Vehicle[] = [
   {
-    id: "vh-sf90",
+    id: "vh-f8",
     clientId: "cl-whitfield",
     make: "Ferrari",
-    model: "SF90 Stradale",
-    variant: "Assetto Fiorano",
-    year: 2023,
+    model: "F8 Tributo",
+    year: 2022,
     colour: "Rosso Corsa",
     paintHex: "#b3121b",
+    image: "/images/cars/f8-bond-street.jpg",
+    imagePosition: "35% 60%",
     registration: "J 90",
     vinLast6: "281930",
     bodyStyle: "coupe",
-    powertrain: "hybrid",
+    powertrain: "petrol",
     mileage: 4812,
     status: "ready",
     statusNote: "Charged, fuelled and detailed. Facing out in the left bay.",
@@ -154,10 +155,10 @@ export const vehicles: Vehicle[] = [
     checkFrequency: "weekly",
     lastCheckAt: at(-2, 10),
     nextCheckAt: at(5, 10),
-    purchasePrice: 455000,
+    purchasePrice: 248000,
     purchaseDate: monthsAgo(24),
-    valuations: valuations([[24, 455000], [18, 438000], [12, 425000], [6, 418000], [1, 421000]]),
-    specialistNotes: "High-voltage battery state of charge held at 60% between drives.",
+    valuations: valuations([[24, 248000], [18, 236000], [12, 227000], [6, 221000], [1, 223000]]),
+    specialistNotes: "Last of the mid-engined V8s without hybrid assistance. Kept on a conditioner between drives.",
   },
   {
     id: "vh-gt3rs",
@@ -168,6 +169,8 @@ export const vehicles: Vehicle[] = [
     year: 2024,
     colour: "Shark Blue",
     paintHex: "#1f6fb2",
+    image: "/images/cars/porsche-interior.jpg",
+    imagePosition: "50% 55%",
     registration: "J 3911",
     vinLast6: "450218",
     bodyStyle: "coupe",
@@ -186,13 +189,16 @@ export const vehicles: Vehicle[] = [
     valuations: valuations([[11, 289000], [8, 305000], [4, 312000], [1, 309000]]),
   },
   {
-    id: "vh-g63",
+    id: "vh-cullinan",
     clientId: "cl-whitfield",
-    make: "Mercedes-AMG",
-    model: "G 63",
+    make: "Rolls-Royce",
+    model: "Cullinan",
+    variant: "Black Badge",
     year: 2023,
-    colour: "Obsidian Black",
+    colour: "Black Diamond",
     paintHex: "#1b1c20",
+    image: "/images/cars/cullinan-mayfair.jpg",
+    imagePosition: "50% 70%",
     registration: "J 6363",
     vinLast6: "771042",
     bodyStyle: "suv",
@@ -205,9 +211,9 @@ export const vehicles: Vehicle[] = [
     checkFrequency: "monthly",
     lastCheckAt: at(-9, 9),
     nextCheckAt: at(21, 9),
-    purchasePrice: 178000,
+    purchasePrice: 342000,
     purchaseDate: monthsAgo(22),
-    valuations: valuations([[22, 178000], [12, 156000], [6, 149000], [1, 146000]]),
+    valuations: valuations([[22, 342000], [12, 301000], [6, 286000], [1, 279000]]),
   },
   {
     id: "vh-964rs",
@@ -263,14 +269,15 @@ export const vehicles: Vehicle[] = [
     valuations: valuations([[13, 221000], [9, 198000], [5, 186000], [1, 181000]]),
   },
   {
-    id: "vh-db12",
+    id: "vh-vantage",
     clientId: "cl-hart",
     make: "Aston Martin",
-    model: "DB12",
-    variant: "Volante",
+    model: "Vantage",
     year: 2024,
-    colour: "Iridescent Emerald",
+    colour: "Viridian Green",
     paintHex: "#14614a",
+    image: "/images/cars/vantage-rear.jpg",
+    imagePosition: "50% 62%",
     registration: "J 1212",
     vinLast6: "604551",
     bodyStyle: "gt",
@@ -284,22 +291,25 @@ export const vehicles: Vehicle[] = [
     checkFrequency: "monthly",
     lastCheckAt: at(-12, 10),
     nextCheckAt: at(18, 10),
-    purchasePrice: 214000,
+    purchasePrice: 168000,
     purchaseDate: monthsAgo(12),
-    valuations: valuations([[12, 214000], [6, 191000], [1, 184000]]),
+    valuations: valuations([[12, 168000], [6, 151000], [1, 146000]]),
   },
   {
-    id: "vh-revuelto",
+    id: "vh-huracan",
     clientId: "cl-marchand",
     make: "Lamborghini",
-    model: "Revuelto",
-    year: 2025,
-    colour: "Verde Citrea",
-    paintHex: "#9fbf1e",
+    model: "Huracán",
+    variant: "EVO",
+    year: 2021,
+    colour: "Giallo Inti",
+    paintHex: "#e8b40c",
+    image: "/images/cars/huracan.jpg",
+    imagePosition: "50% 62%",
     registration: "J 1001",
     vinLast6: "009871",
     bodyStyle: "coupe",
-    powertrain: "hybrid",
+    powertrain: "petrol",
     mileage: 1204,
     status: "in-storage",
     statusNote: "Winter layup. On conditioner, cover on, tyres at storage pressure.",
@@ -309,9 +319,9 @@ export const vehicles: Vehicle[] = [
     checkFrequency: "weekly",
     lastCheckAt: at(-3, 9),
     nextCheckAt: at(4, 9),
-    purchasePrice: 545000,
+    purchasePrice: 232000,
     purchaseDate: monthsAgo(8),
-    valuations: valuations([[8, 545000], [4, 561000], [1, 552000]]),
+    valuations: valuations([[8, 232000], [4, 238000], [1, 235000]]),
   },
   {
     id: "vh-spectre",
@@ -446,16 +456,16 @@ export const vehicles: Vehicle[] = [
 export const dueItems: DueItem[] = [
   { id: "due-1", vehicleId: "vh-r8", kind: "Insurance", dueDate: on(9), notes: "Broker chased 12 Nov." },
   { id: "due-2", vehicleId: "vh-964rs", kind: "Service", dueDate: on(24), notes: "Annual service plus battery replacement." },
-  { id: "due-3", vehicleId: "vh-g63", kind: "Registration", dueDate: on(38) },
-  { id: "due-4", vehicleId: "vh-sf90", kind: "Service", dueDate: on(62), notes: "Annual service at Ferrari dealer, collect and return." },
+  { id: "due-3", vehicleId: "vh-cullinan", kind: "Registration", dueDate: on(38) },
+  { id: "due-4", vehicleId: "vh-f8", kind: "Service", dueDate: on(62), notes: "Annual service at the Ferrari dealer, collect and return." },
   { id: "due-5", vehicleId: "vh-artura", kind: "Warranty", dueDate: on(45), notes: "Extended warranty decision needed." },
   { id: "due-6", vehicleId: "vh-gt3rs", kind: "MOT", dueDate: on(120), notes: "UK MOT required while registered on the mainland." },
   { id: "due-7", vehicleId: "vh-taycan", kind: "Service", dueDate: on(16) },
   { id: "due-8", vehicleId: "vh-spectre", kind: "Insurance", dueDate: on(71) },
-  { id: "due-9", vehicleId: "vh-revuelto", kind: "Tracker subscription", dueDate: on(28) },
+  { id: "due-9", vehicleId: "vh-huracan", kind: "Tracker subscription", dueDate: on(28) },
   { id: "due-10", vehicleId: "vh-etype", kind: "Insurance", dueDate: on(54), notes: "Agreed-value policy, revalue first." },
   { id: "due-11", vehicleId: "vh-roma", kind: "Service", dueDate: on(-2), notes: "Overdue by two days. Slot requested." },
-  { id: "due-12", vehicleId: "vh-db12", kind: "Insurance", dueDate: on(102) },
+  { id: "due-12", vehicleId: "vh-vantage", kind: "Insurance", dueDate: on(102) },
 ];
 
 function readings(v: number, t: [number, number, number, number], mileage: number, ok = true) {
@@ -470,18 +480,18 @@ function readings(v: number, t: [number, number, number, number], mileage: numbe
 }
 
 export const history: HistoryEvent[] = [
-  // SF90
-  { id: "h-1", vehicleId: "vh-sf90", at: at(-2, 10), kind: "check", title: "Weekly readiness check", detail: "All readings within spec. High-voltage battery at 62%. Detailed and fuelled to full.", by: "Ryan Le Cornu", readings: readings(12.8, [36, 36, 37, 37], 4812), visibleToClient: true },
-  { id: "h-2", vehicleId: "vh-sf90", at: at(-6, 18), kind: "handover", title: "Returned after weekend use", detail: "142 miles driven. Light road film, stone chip check clear.", by: "Lawrence Slatter-Buesnel", visibleToClient: true },
-  { id: "h-3", vehicleId: "vh-sf90", at: at(-9, 10), kind: "detailing", title: "Pre-drive detail", detail: "Wash, decontaminate, interior refresh.", by: "Island Detailing Studio", cost: 180, visibleToClient: true },
-  { id: "h-4", vehicleId: "vh-sf90", at: at(-30, 10), kind: "valuation", title: "Quarterly valuation review", detail: "Market steady. Assetto Fiorano cars holding better than standard spec.", by: "Lawrence Slatter-Buesnel", visibleToClient: true },
-  { id: "h-5", vehicleId: "vh-sf90", at: at(-95, 9), kind: "service", title: "Annual service, Ferrari main dealer", detail: "Collected and returned by enclosed transport. Full service record stamped.", by: "Kate Vibert", cost: 2860, visibleToClient: true },
+  // F8 Tributo
+  { id: "h-1", vehicleId: "vh-f8", at: at(-2, 10), kind: "check", title: "Weekly readiness check", detail: "All readings within spec. Detailed and fuelled to full.", by: "Ryan Le Cornu", readings: readings(12.8, [36, 36, 37, 37], 4812), visibleToClient: true },
+  { id: "h-2", vehicleId: "vh-f8", at: at(-6, 18), kind: "handover", title: "Returned after weekend use", detail: "142 miles driven. Light road film, stone chip check clear.", by: "Lawrence Slatter-Buesnel", visibleToClient: true },
+  { id: "h-3", vehicleId: "vh-f8", at: at(-9, 10), kind: "detailing", title: "Pre-drive detail", detail: "Wash, decontaminate, interior refresh.", by: "Island Detailing Studio", cost: 180, visibleToClient: true },
+  { id: "h-4", vehicleId: "vh-f8", at: at(-30, 10), kind: "valuation", title: "Quarterly valuation review", detail: "Market steady. Assetto Fiorano cars holding better than standard spec.", by: "Lawrence Slatter-Buesnel", visibleToClient: true },
+  { id: "h-5", vehicleId: "vh-f8", at: at(-95, 9), kind: "service", title: "Annual service, Ferrari main dealer", detail: "Collected and returned by enclosed transport. Full service record stamped.", by: "Kate Vibert", cost: 2860, visibleToClient: true },
   // GT3 RS
   { id: "h-6", vehicleId: "vh-gt3rs", at: at(-1, 7), kind: "movement", title: "Departed for Goodwood", detail: "Loaded into enclosed transporter at St Helier, condition photos taken at loading.", by: "Kate Vibert", visibleToClient: true },
   { id: "h-7", vehicleId: "vh-gt3rs", at: at(-2, 15), kind: "check", title: "Track preparation", detail: "Tyre pressures set to cold track baseline, fluids checked, brake pads 70%.", by: "Ryan Le Cornu", readings: readings(12.7, [30, 30, 29, 29], 2140), visibleToClient: true },
   { id: "h-8", vehicleId: "vh-gt3rs", at: at(-40, 12), kind: "document", title: "UK registration documents filed", by: "Kate Vibert", visibleToClient: true },
   // G63
-  { id: "h-9", vehicleId: "vh-g63", at: at(-9, 9), kind: "check", title: "Monthly check", detail: "All good. Washer fluid topped up.", by: "Ryan Le Cornu", readings: readings(12.6, [36, 36, 38, 38], 11873), visibleToClient: true },
+  { id: "h-9", vehicleId: "vh-cullinan", at: at(-9, 9), kind: "check", title: "Monthly check", detail: "All good. Washer fluid topped up.", by: "Ryan Le Cornu", readings: readings(12.6, [36, 36, 38, 38], 11873), visibleToClient: true },
   // 964 RS
   { id: "h-10", vehicleId: "vh-964rs", at: at(-4, 14), kind: "check", title: "Fortnightly storage check", detail: "Battery resting at 12.1V despite conditioner. Load test shows 58% health. Replacement recommended.", by: "Ryan Le Cornu", readings: readings(12.1, [31, 31, 33, 32], 38214), visibleToClient: true },
   { id: "h-11", vehicleId: "vh-964rs", at: at(-18, 14), kind: "check", title: "Fortnightly storage check", detail: "Battery 12.3V. Tyres rotated a quarter turn to avoid flat spots.", by: "Ryan Le Cornu", readings: readings(12.3, [32, 32, 33, 33], 38214), visibleToClient: true },
@@ -490,12 +500,12 @@ export const history: HistoryEvent[] = [
   // Artura
   { id: "h-14", vehicleId: "vh-artura", at: at(-6, 11), kind: "check", title: "Fortnightly check", detail: "Tyres one psi low on all corners, corrected. HV battery put on maintenance charge.", by: "Ryan Le Cornu", readings: readings(12.5, [33, 33, 34, 34], 3390), visibleToClient: true },
   { id: "h-15", vehicleId: "vh-artura", at: at(-60, 10), kind: "service", title: "First-year service", by: "McLaren authorised workshop", cost: 1240, visibleToClient: true },
-  // DB12
-  { id: "h-16", vehicleId: "vh-db12", at: at(-1, 8), kind: "movement", title: "Delivered to workshop", detail: "Annual service and infotainment software update booked.", by: "Kate Vibert", visibleToClient: true },
-  { id: "h-17", vehicleId: "vh-db12", at: at(-12, 10), kind: "check", title: "Monthly check", by: "Ryan Le Cornu", readings: readings(12.6, [35, 35, 36, 36], 6118), visibleToClient: true },
-  // Revuelto
-  { id: "h-18", vehicleId: "vh-revuelto", at: at(-3, 9), kind: "check", title: "Weekly storage check", detail: "On conditioner. Humidity in bay 48%. Cover clean.", by: "Ryan Le Cornu", readings: readings(12.9, [39, 39, 40, 40], 1204), visibleToClient: true },
-  { id: "h-19", vehicleId: "vh-revuelto", at: at(-25, 15), kind: "movement", title: "Arrived from Monaco", detail: "Enclosed transport via St Malo. Condition report on arrival, no issues.", by: "Kate Vibert", visibleToClient: true },
+  // Vantage
+  { id: "h-16", vehicleId: "vh-vantage", at: at(-1, 8), kind: "movement", title: "Delivered to workshop", detail: "Annual service and infotainment software update booked.", by: "Kate Vibert", visibleToClient: true },
+  { id: "h-17", vehicleId: "vh-vantage", at: at(-12, 10), kind: "check", title: "Monthly check", by: "Ryan Le Cornu", readings: readings(12.6, [35, 35, 36, 36], 6118), visibleToClient: true },
+  // Huracán
+  { id: "h-18", vehicleId: "vh-huracan", at: at(-3, 9), kind: "check", title: "Weekly storage check", detail: "On conditioner. Humidity in bay 48%. Cover clean.", by: "Ryan Le Cornu", readings: readings(12.9, [39, 39, 40, 40], 1204), visibleToClient: true },
+  { id: "h-19", vehicleId: "vh-huracan", at: at(-25, 15), kind: "movement", title: "Arrived from Monaco", detail: "Enclosed transport via St Malo. Condition report on arrival, no issues.", by: "Kate Vibert", visibleToClient: true },
   // Spectre
   { id: "h-20", vehicleId: "vh-spectre", at: at(-1, 16), kind: "movement", title: "Positioned at Jersey Airport", detail: "Charged to 90%, cabin pre-conditioned schedule set for Thursday 14:00.", by: "Kate Vibert", visibleToClient: true },
   // Taycan
@@ -511,10 +521,10 @@ export const history: HistoryEvent[] = [
 ];
 
 export const documents: VehicleDocument[] = [
-  { id: "doc-1", vehicleId: "vh-sf90", title: "Ferrari service book, digitised", kind: "Service record", date: on(-95), sizeKb: 4210 },
-  { id: "doc-2", vehicleId: "vh-sf90", title: "Insurance schedule 2026", kind: "Insurance", date: on(-140), sizeKb: 380 },
-  { id: "doc-3", vehicleId: "vh-sf90", title: "Jersey registration certificate", kind: "Registration", date: on(-700), sizeKb: 210 },
-  { id: "doc-4", vehicleId: "vh-sf90", title: "Purchase invoice and spec sheet", kind: "Purchase", date: on(-730), sizeKb: 1890 },
+  { id: "doc-1", vehicleId: "vh-f8", title: "Ferrari service book, digitised", kind: "Service record", date: on(-95), sizeKb: 4210 },
+  { id: "doc-2", vehicleId: "vh-f8", title: "Insurance schedule 2026", kind: "Insurance", date: on(-140), sizeKb: 380 },
+  { id: "doc-3", vehicleId: "vh-f8", title: "Jersey registration certificate", kind: "Registration", date: on(-700), sizeKb: 210 },
+  { id: "doc-4", vehicleId: "vh-f8", title: "Purchase invoice and spec sheet", kind: "Purchase", date: on(-730), sizeKb: 1890 },
   { id: "doc-5", vehicleId: "vh-gt3rs", title: "UK V5C registration", kind: "Registration", date: on(-40), sizeKb: 290 },
   { id: "doc-6", vehicleId: "vh-gt3rs", title: "Goodwood transport booking", kind: "Shipping", date: on(-5), sizeKb: 120 },
   { id: "doc-7", vehicleId: "vh-964rs", title: "Porsche Certificate of Authenticity", kind: "Purchase", date: on(-200), sizeKb: 2400 },
@@ -522,12 +532,12 @@ export const documents: VehicleDocument[] = [
   { id: "doc-9", vehicleId: "vh-964rs", title: "Service history 1992 to 2025", kind: "Service record", date: on(-300), sizeKb: 15800 },
   { id: "doc-10", vehicleId: "vh-artura", title: "First-year service invoice", kind: "Invoice", date: on(-60), sizeKb: 240 },
   { id: "doc-11", vehicleId: "vh-artura", title: "McLaren warranty terms", kind: "Warranty", date: on(-390), sizeKb: 860 },
-  { id: "doc-12", vehicleId: "vh-revuelto", title: "Arrival condition report", kind: "Condition report", date: on(-25), sizeKb: 9200 },
-  { id: "doc-13", vehicleId: "vh-revuelto", title: "Monaco to Jersey shipping documents", kind: "Shipping", date: on(-26), sizeKb: 640 },
+  { id: "doc-12", vehicleId: "vh-huracan", title: "Arrival condition report", kind: "Condition report", date: on(-25), sizeKb: 9200 },
+  { id: "doc-13", vehicleId: "vh-huracan", title: "Monaco to Jersey shipping documents", kind: "Shipping", date: on(-26), sizeKb: 640 },
   { id: "doc-14", vehicleId: "vh-etype", title: "Heritage certificate", kind: "Purchase", date: on(-2500), sizeKb: 1800 },
   { id: "doc-15", vehicleId: "vh-etype", title: "2014 restoration photo record", kind: "Condition report", date: on(-2400), sizeKb: 48200 },
   { id: "doc-16", vehicleId: "vh-r8", title: "Insurance schedule 2025", kind: "Insurance", date: on(-356), sizeKb: 410 },
-  { id: "doc-17", vehicleId: "vh-db12", title: "Workshop booking confirmation", kind: "Service record", date: on(-3), sizeKb: 90 },
+  { id: "doc-17", vehicleId: "vh-vantage", title: "Workshop booking confirmation", kind: "Service record", date: on(-3), sizeKb: 90 },
 ];
 
 export const requests: ServiceRequest[] = [
@@ -537,9 +547,9 @@ export const requests: ServiceRequest[] = [
   { id: "rq-4", clientId: "cl-delaney", vehicleId: "vh-roma", type: "storage", title: "Move Roma into winter storage", when: at(6, 10), location: "Home, St Martin, to Vehicle Focus storage", notes: "Wants a quote for December to March.", status: "new", createdAt: at(-0.5), createdBy: "Marcus Delaney" },
   { id: "rq-5", clientId: "cl-whitfield", vehicleId: "vh-gt3rs", type: "relocation", title: "Goodwood track day transport", when: at(2, 8), location: "Goodwood Motor Circuit", status: "in-progress", createdAt: at(-12), createdBy: "James Whitfield", assigneeId: "tm-kate", partnerId: "pt-solent" },
   { id: "rq-6", clientId: "cl-lebrocq", vehicleId: "vh-taycan", type: "detailing", title: "Ceramic coating top-up", when: at(12, 9), location: "Home, Trinity", status: "new", createdAt: at(-1, 8), createdBy: "Tom Le Brocq" },
-  { id: "rq-7", clientId: "cl-hart", vehicleId: "vh-db12", type: "service", title: "Annual service and software update", when: at(-1, 8), location: "Main dealer, St Helier", status: "in-progress", createdAt: at(-20), createdBy: "Dr Amelia Hart", assigneeId: "tm-kate" },
-  { id: "rq-8", clientId: "cl-whitfield", vehicleId: "vh-sf90", type: "ready", title: "Ready for client dinner, Friday 19:00", when: at(-6, 19), location: "Home, St Brelade", status: "done", createdAt: at(-8), createdBy: "Charlotte Ross (PA)", assigneeId: "tm-lawrence" },
-  { id: "rq-9", clientId: "cl-marchand", vehicleId: "vh-revuelto", type: "valuation", title: "Valuation for insurance renewal", when: at(20, 10), location: "Vehicle Focus storage", status: "scheduled", createdAt: at(-3), createdBy: "Gregory Price (Wealth manager)", assigneeId: "tm-lawrence" },
+  { id: "rq-7", clientId: "cl-hart", vehicleId: "vh-vantage", type: "service", title: "Annual service and software update", when: at(-1, 8), location: "Main dealer, St Helier", status: "in-progress", createdAt: at(-20), createdBy: "Dr Amelia Hart", assigneeId: "tm-kate" },
+  { id: "rq-8", clientId: "cl-whitfield", vehicleId: "vh-f8", type: "ready", title: "Ready for client dinner, Friday 19:00", when: at(-6, 19), location: "Home, St Brelade", status: "done", createdAt: at(-8), createdBy: "Charlotte Ross (PA)", assigneeId: "tm-lawrence" },
+  { id: "rq-9", clientId: "cl-marchand", vehicleId: "vh-huracan", type: "valuation", title: "Valuation for insurance renewal", when: at(20, 10), location: "Vehicle Focus storage", status: "scheduled", createdAt: at(-3), createdBy: "Gregory Price (Wealth manager)", assigneeId: "tm-lawrence" },
 ];
 
 export const jobs: Job[] = [
@@ -547,15 +557,15 @@ export const jobs: Job[] = [
   { id: "jb-2", vehicleId: "vh-artura", kind: "check", title: "Fortnightly check, Artura", start: at(1, 11), durationMins: 45, assigneeId: "tm-ryan", status: "planned", location: "St Lawrence" },
   { id: "jb-3", vehicleId: "vh-gt3rs", requestId: "rq-5", kind: "relocation", title: "Goodwood arrival and unload", start: at(2, 7), durationMins: 120, assigneeId: "tm-kate", status: "planned", location: "Goodwood" },
   { id: "jb-4", vehicleId: "vh-artura", requestId: "rq-1", kind: "handover", title: "Prepare for Saturday drive, Artura", start: at(3, 7, 30), durationMins: 60, assigneeId: "tm-ryan", status: "planned", location: "St Lawrence" },
-  { id: "jb-5", vehicleId: "vh-revuelto", kind: "check", title: "Weekly storage check, Revuelto", start: at(4, 9), durationMins: 30, assigneeId: "tm-ryan", status: "planned", location: "VF storage, St Peter" },
-  { id: "jb-6", vehicleId: "vh-sf90", kind: "check", title: "Weekly readiness check, SF90", start: at(5, 10), durationMins: 45, assigneeId: "tm-ryan", status: "planned", location: "St Brelade" },
+  { id: "jb-5", vehicleId: "vh-huracan", kind: "check", title: "Weekly storage check, Huracán", start: at(4, 9), durationMins: 30, assigneeId: "tm-ryan", status: "planned", location: "VF storage, St Peter" },
+  { id: "jb-6", vehicleId: "vh-f8", kind: "check", title: "Weekly readiness check, F8", start: at(5, 10), durationMins: 45, assigneeId: "tm-ryan", status: "planned", location: "St Brelade" },
   { id: "jb-7", vehicleId: "vh-r8", kind: "check", title: "Quarterly check, R8 (overdue)", start: at(0, 15), durationMins: 45, assigneeId: "tm-ryan", status: "planned", location: "Trinity" },
-  { id: "jb-8", vehicleId: "vh-db12", requestId: "rq-7", kind: "collection", title: "Collect DB12 from workshop", start: at(2, 16), durationMins: 60, assigneeId: "tm-kate", status: "planned", location: "St Helier" },
-  { id: "jb-9", vehicleId: "vh-g63", kind: "photography", title: "Photography for insurance file, G 63", start: at(0, 11), durationMins: 90, assigneeId: "tm-lawrence", status: "in-progress", location: "St Brelade" },
+  { id: "jb-8", vehicleId: "vh-vantage", requestId: "rq-7", kind: "collection", title: "Collect Vantage from workshop", start: at(2, 16), durationMins: 60, assigneeId: "tm-kate", status: "planned", location: "St Helier" },
+  { id: "jb-9", vehicleId: "vh-cullinan", kind: "photography", title: "Photography for insurance file, Cullinan", start: at(0, 11), durationMins: 90, assigneeId: "tm-lawrence", status: "in-progress", location: "St Brelade" },
 ];
 
 export const messages: Message[] = [
-  { id: "m-1", clientId: "cl-whitfield", from: "vf", author: "Lawrence Slatter-Buesnel", body: "Morning James. The SF90 is back in the left bay, charged and detailed after the weekend. 142 miles, no marks.", at: at(-6, 9, 12) },
+  { id: "m-1", clientId: "cl-whitfield", from: "vf", author: "Lawrence Slatter-Buesnel", body: "Morning James. The F8 is back in the left bay, charged and detailed after the weekend. 142 miles, no marks.", at: at(-6, 9, 12) },
   { id: "m-2", clientId: "cl-whitfield", from: "client", author: "James Whitfield", body: "Perfect, thank you. Is the GT3 RS on track for Goodwood?", at: at(-5, 20, 41) },
   { id: "m-3", clientId: "cl-whitfield", from: "vf", author: "Kate Vibert", body: "Yes. Transporter leaves St Helier on the early sailing, unloads at Goodwood the day before. I'll send loading photos.", at: at(-5, 21, 3) },
   { id: "m-4", clientId: "cl-whitfield", from: "vf", author: "Ryan Le Cornu", body: "Heads up on the 964: the battery is resting at 12.1V even on the conditioner. It's tired. I'd replace it before spring rather than risk the electrics.", at: at(-4, 15, 2) },

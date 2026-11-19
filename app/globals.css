@@ -1,31 +1,35 @@
 @import "tailwindcss";
 
 /*
-  Vehicle Focus design tokens.
-  Black, ivory and the brand gold (#CEAA00) from the existing site.
-  Dark-first: the brand lives at night, in garages, under good lighting.
+  Vehicle Focus design system: smoked glass over photography.
+
+  - Brand yellow (#FFCD09) is taken from the real logo. Use it sparingly:
+    primary actions, the logo, one highlight per view. Never for body text.
+  - Surfaces are translucent. They only look right with something behind them:
+    a photo, the fixed .app-backdrop, or a paint finish.
+  - Type: Newsreader (editorial serif) for headlines, Hanken Grotesk for everything else.
 */
 :root {
-  --bg: #0b0b0c;
-  --surface: #131315;
-  --surface-2: #1a1a1d;
-  --surface-3: #222226;
-  --border: #2a2a2f;
-  --border-strong: #3a3a40;
-  --text: #f3f1ec;
-  --muted: #a7a39b;
-  --subtle: #75716b;
-  --gold: #ceaa00;
-  --gold-bright: #e3bf1f;
-  --gold-soft: rgba(206, 170, 0, 0.12);
-  --success: #3fb97f;
-  --success-soft: rgba(63, 185, 127, 0.12);
-  --warning: #e3a33a;
-  --warning-soft: rgba(227, 163, 58, 0.12);
-  --danger: #e8604f;
-  --danger-soft: rgba(232, 96, 79, 0.12);
-  --info: #74a9dd;
-  --info-soft: rgba(116, 169, 221, 0.12);
+  --bg: #08090a;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --surface-3: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --text: #f2f0eb;
+  --muted: #a6a39d;
+  --subtle: #75726c;
+  --accent: #ffcd09;
+  --accent-bright: #ffd83d;
+  --accent-soft: rgba(255, 205, 9, 0.12);
+  --success: #5fd39a;
+  --success-soft: rgba(95, 211, 154, 0.13);
+  --warning: #f3b450;
+  --warning-soft: rgba(243, 180, 80, 0.13);
+  --danger: #ff7a68;
+  --danger-soft: rgba(255, 122, 104, 0.13);
+  --info: #8fc1f0;
+  --info-soft: rgba(143, 193, 240, 0.13);
   color-scheme: dark;
 }
 
@@ -39,9 +43,12 @@
   --color-text: var(--text);
   --color-muted: var(--muted);
   --color-subtle: var(--subtle);
-  --color-gold: var(--gold);
-  --color-gold-bright: var(--gold-bright);
-  --color-gold-soft: var(--gold-soft);
+  /* "gold" kept as an alias so existing classes pick up the brand yellow */
+  --color-gold: var(--accent);
+  --color-gold-bright: var(--accent-bright);
+  --color-gold-soft: var(--accent-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
@@ -50,8 +57,8 @@
   --color-danger-soft: var(--danger-soft);
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, sans-serif;
+  --font-sans: "Hanken Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader Variable", ui-serif, Georgia, serif;
 }
 
 html {
@@ -62,45 +69,114 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-::selection {
-  background: var(--gold);
-  color: #0b0b0c;
+/* Film grain over everything: stops large dark areas looking flat and digital */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-/* Tracked uppercase label, borrowed from the brochure's typography */
-.eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
+::selection {
+  background: var(--accent);
+  color: #08090a;
 }
+
+/* ---------- Typography ---------- */
 
 .font-display {
   font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+/* Small tracked label. Use at most once per view, not above every heading. */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .tabular {
   font-variant-numeric: tabular-nums;
 }
 
-/* Subtle grain-free spotlight used behind hero art */
-.spotlight {
-  background:
-    radial-gradient(60% 60% at 50% 40%, rgba(206, 170, 0, 0.1) 0%, rgba(206, 170, 0, 0) 70%),
-    radial-gradient(80% 50% at 50% 100%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+/* ---------- Glass ---------- */
+
+/* Standard pane: frosted, lit from above */
+.glass {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 55%, rgba(255, 255, 255, 0.025) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+    0 24px 60px -28px rgba(0, 0, 0, 0.75);
 }
 
-.hairline-grid {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
+/* Smoked: darker, for panes over busy photography and for navigation */
+.glass-dark {
+  background: linear-gradient(165deg, rgba(20, 21, 24, 0.62) 0%, rgba(10, 11, 13, 0.5) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  backdrop-filter: blur(28px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 30px 80px -30px rgba(0, 0, 0, 0.85);
+}
+
+/* Inset: for content inside a pane (no extra blur, avoids stacked backdrop filters) */
+.glass-inset {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Fixed photographic backdrop for the portal, console and sign-in */
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(80% 60% at 70% 0%, rgba(255, 205, 9, 0.06) 0%, rgba(0, 0, 0, 0) 60%),
+    linear-gradient(180deg, rgba(8, 9, 10, 0.25) 0%, rgba(8, 9, 10, 0.7) 55%, rgba(8, 9, 10, 0.92) 100%),
+    url("/images/backdrop.jpg") center / cover no-repeat,
+    var(--bg);
+}
+
+/* Darkens photography under text: bottom-weighted, with a soft vignette */
+.photo-scrim {
+  background:
+    linear-gradient(180deg, rgba(8, 9, 10, 0.15) 0%, rgba(8, 9, 10, 0.35) 45%, rgba(8, 9, 10, 0.92) 100%),
+    radial-gradient(120% 90% at 50% 40%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Hairline rule with a lit centre, for separating sections without boxes */
+.rule-lit {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0) 100%);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-dark {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: #15161a;
+  }
 }
 
 @media print {
@@ -114,7 +190,19 @@ body {
     --text: #111111;
     --muted: #555049;
     --subtle: #7a756d;
+    --accent: #8a6d00;
     color-scheme: light;
+  }
+  body::after,
+  .app-backdrop {
+    display: none;
+  }
+  .glass,
+  .glass-dark {
+    background: #fff;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
   .no-print {
     display: none !important;

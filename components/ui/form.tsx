@@ -2,10 +2,10 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const field =
-  "w-full rounded-md border border-border bg-surface-2 px-3 text-sm text-text placeholder:text-subtle transition-colors focus:border-gold/70 focus:outline-none focus:ring-2 focus:ring-gold/20 disabled:opacity-50";
+  "w-full rounded-xl border border-white/10 bg-black/25 px-3.5 text-sm text-text shadow-[inset_0_1px_2px_rgba(0,0,0,0.35)] placeholder:text-subtle transition-colors focus:border-white/30 focus:bg-black/35 focus:outline-none focus:ring-4 focus:ring-white/[0.06] disabled:opacity-50 [color-scheme:dark]";
 
 export function Input({ className, ...props }: React.ComponentProps<"input">) {
-  return <input className={cn(field, "h-10", className)} {...props} />;
+  return <input className={cn(field, "h-11", className)} {...props} />;
 }
 
 export function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
@@ -14,14 +14,14 @@ export function Textarea({ className, ...props }: React.ComponentProps<"textarea
 
 export function Select({ className, children, ...props }: React.ComponentProps<"select">) {
   return (
-    <select className={cn(field, "h-10 appearance-none bg-[length:16px] pr-8", className)} {...props}>
+    <select className={cn(field, "h-11 appearance-none pr-9", className)} {...props}>
       {children}
     </select>
   );
 }
 
 export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn("mb-1.5 block text-xs font-medium tracking-wide text-muted", className)} {...props} />;
+  return <label className={cn("mb-1.5 block text-[0.78rem] font-medium text-muted", className)} {...props} />;
 }
 
 export function Field({

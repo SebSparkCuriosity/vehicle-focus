@@ -60,7 +60,9 @@ export interface Vehicle {
   variant?: string;
   year: number;
   colour: string;
-  paintHex: string; // used to tint the illustration
+  paintHex: string; // tints the paint-finish fallback when there's no photo
+  image?: string; // path under /public, e.g. /images/cars/f8-bond-street.jpg
+  imagePosition?: string; // CSS object-position for the crop, e.g. "50% 60%"
   registration: string;
   vinLast6: string;
   bodyStyle: BodyStyle;
