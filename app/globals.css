@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/*
+  Vehicle Focus design tokens.
+  Black, ivory and the brand gold (#CEAA00) from the existing site.
+  Dark-first: the brand lives at night, in garages, under good lighting.
+*/
+:root {
+  --bg: #0b0b0c;
+  --surface: #131315;
+  --surface-2: #1a1a1d;
+  --surface-3: #222226;
+  --border: #2a2a2f;
+  --border-strong: #3a3a40;
+  --text: #f3f1ec;
+  --muted: #a7a39b;
+  --subtle: #75716b;
+  --gold: #ceaa00;
+  --gold-bright: #e3bf1f;
+  --gold-soft: rgba(206, 170, 0, 0.12);
+  --success: #3fb97f;
+  --success-soft: rgba(63, 185, 127, 0.12);
+  --warning: #e3a33a;
+  --warning-soft: rgba(227, 163, 58, 0.12);
+  --danger: #e8604f;
+  --danger-soft: rgba(232, 96, 79, 0.12);
+  --info: #74a9dd;
+  --info-soft: rgba(116, 169, 221, 0.12);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-gold-soft: var(--gold-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, sans-serif;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--gold);
+  color: #0b0b0c;
+}
+
+/* Tracked uppercase label, borrowed from the brochure's typography */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle grain-free spotlight used behind hero art */
+.spotlight {
+  background:
+    radial-gradient(60% 60% at 50% 40%, rgba(206, 170, 0, 0.1) 0%, rgba(206, 170, 0, 0) 70%),
+    radial-gradient(80% 50% at 50% 100%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.hairline-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@media print {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f6f5f2;
+    --surface-3: #efede8;
+    --border: #e2dfd8;
+    --border-strong: #cfcbc2;
+    --text: #111111;
+    --muted: #555049;
+    --subtle: #7a756d;
+    color-scheme: light;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
