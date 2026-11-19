@@ -48,7 +48,7 @@ function LeadCard({ lead }: { lead: Lead }) {
         <SourceBadge source={lead.source} />
       </div>
       {lead.cars ? <p className="mt-2 text-xs text-text/85">{lead.cars}</p> : null}
-      {lead.message ? <p className="mt-1.5 line-clamp-3 text-xs text-muted">{lead.message}</p> : null}
+      {lead.message ? <p className="mt-1.5 line-clamp-4 whitespace-pre-line text-xs text-muted">{lead.message}</p> : null}
       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
         <a href={`mailto:${lead.email}`} className="inline-flex items-center gap-1 text-muted hover:text-gold">
           <Mail className="size-3" /> Email

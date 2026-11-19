@@ -61,7 +61,7 @@ export const MOCK_CARS: MockCar[] = [
 
 function MockCarRow({ car }: { car: MockCar }) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-border bg-surface-2 p-3 sm:gap-4">
+    <div className="flex min-w-0 items-center gap-3 rounded-lg border border-border bg-surface-2 p-3 sm:gap-4">
       <div className="w-24 shrink-0 sm:w-32">
         <CarArt bodyStyle={car.bodyStyle} paint={car.paint} title={car.name} />
       </div>
@@ -126,7 +126,7 @@ export function GarageMock({ className, cars = MOCK_CARS }: { className?: string
             </div>
           ))}
         </div>
-        <div className="mt-4 grid gap-2.5">
+        <div className="mt-4 grid gap-2.5 [&>*]:min-w-0">
           {cars.map((c) => (
             <MockCarRow key={c.name} car={c} />
           ))}

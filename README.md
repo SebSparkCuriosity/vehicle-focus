@@ -15,6 +15,14 @@ The thinking behind it is in `docs/`:
 - [`docs/01-website-review-and-ideas.md`](docs/01-website-review-and-ideas.md): review of the current site and what the new one should do
 - [`docs/02-platform-spec.md`](docs/02-platform-spec.md): VehicleVault teardown, what we borrowed and what we flipped, architecture, security and roadmap
 
+## Screenshots
+
+| Website | The Garage (client) | Console (Lawrence) |
+| --- | --- | --- |
+| ![Home](docs/screenshots/01-website-home-hero.png) | ![Dashboard](docs/screenshots/07-garage-dashboard.png) | ![Today](docs/screenshots/12-console-today.png) |
+
+The full set is in [`docs/screenshots`](docs/screenshots).
+
 ## Run it
 
 ```bash

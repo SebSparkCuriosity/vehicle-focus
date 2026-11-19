@@ -166,7 +166,7 @@ export default async function GarageDashboard() {
         )}
       </section>
 
-      <div className="grid gap-10 lg:grid-cols-5">
+      <div className="grid gap-10 lg:grid-cols-5 [&>*]:min-w-0">
         {/* Coming up */}
         <section className="lg:col-span-3">
           <SectionHeader eyebrow="Diary" title="Coming up" />

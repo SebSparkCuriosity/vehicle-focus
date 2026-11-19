@@ -59,7 +59,7 @@ function FeatureRow({
   flip?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
       <div className={cn(flip && "lg:order-2")}>
         <p className="eyebrow">{eyebrow}</p>
         <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{title}</h3>
@@ -85,7 +85,7 @@ export default function TheGaragePage() {
     <>
       <section className="relative overflow-hidden border-b border-border hairline-grid">
         <div className="pointer-events-none absolute inset-0 spotlight" aria-hidden />
-        <Container className="relative grid gap-14 py-16 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:items-center">
+        <Container className="relative grid gap-14 py-16 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:items-center [&>*]:min-w-0">
           <div>
             <p className="eyebrow">The Garage, client portal</p>
             <h1 className="mt-5 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">

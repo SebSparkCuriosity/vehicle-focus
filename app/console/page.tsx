@@ -67,7 +67,7 @@ export default async function ConsoleToday() {
         <Kpi label="Monthly recurring" value={formatGBPCompact(stats.mrr)} sub={`${formatGBPCompact(stats.arr)} a year · demo fees`} icon={PoundSterling} />
       </section>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-3">
+      <div className="mt-6 grid gap-6 xl:grid-cols-3 [&>*]:min-w-0">
         <div className="space-y-6 xl:col-span-2">
           <Panel
             title="Jobs"
