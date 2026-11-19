@@ -14,6 +14,7 @@ The thinking behind it is in `docs/`:
 
 - [`docs/01-website-review-and-ideas.md`](docs/01-website-review-and-ideas.md): review of the current site and what the new one should do
 - [`docs/02-platform-spec.md`](docs/02-platform-spec.md): VehicleVault teardown, what we borrowed and what we flipped, architecture, security and roadmap
+- [`docs/03-go-live-checklist.md`](docs/03-go-live-checklist.md): everything that has to happen before the website and the platform go live
 
 ## Screenshots
 
@@ -22,6 +23,10 @@ The thinking behind it is in `docs/`:
 | ![Home](docs/screenshots/01-website-home-hero.png) | ![Dashboard](docs/screenshots/07-garage-dashboard.png) | ![Today](docs/screenshots/12-console-today.png) |
 
 The full set is in [`docs/screenshots`](docs/screenshots).
+
+## Preview
+
+A private preview runs on Vercel (Spark Curiosity team, project `vehicle-focus`) at https://vehicle-focus-spark-curiosity.vercel.app. Every deployment needs a Vercel login with access to the team, and every push to this branch redeploys it. Until `SITE_LIVE=true` is set, all pages are hidden from search engines and carry a preview banner.
 
 ## Run it
 
