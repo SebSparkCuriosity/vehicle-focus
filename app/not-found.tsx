@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/ui/button";
 export default function NotFound() {
   return (
     <main className="relative isolate flex min-h-svh flex-col overflow-hidden">
-      <Image src="/images/showroom-blue.jpg" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[25%_50%]" />
+      <Image src="/images/showroom-blue.jpg" alt="" fill preload sizes="100vw" className="-z-20 object-cover object-[25%_50%]" />
       <div className="photo-scrim absolute inset-0 -z-10" aria-hidden />
       <div className="absolute inset-0 -z-10 bg-gradient-to-l from-black/80 via-black/40 to-transparent" aria-hidden />
 
@@ -15,9 +15,9 @@ export default function NotFound() {
       </header>
 
       <div className="mx-auto flex w-full max-w-6xl flex-1 items-center justify-end px-5 pb-16 sm:px-10">
-        <div className="glass-dark w-full max-w-md rounded-[28px] p-8 sm:p-10">
+        <div className="glass-dark w-full max-w-md rounded-[28px] p-6 sm:p-10">
           <p className="text-sm text-white/45">Error 404</p>
-          <h1 className="mt-3 font-display text-5xl leading-[1.02] font-normal">This bay is empty.</h1>
+          <h1 className="mt-3 font-display text-[2.6rem] leading-[1.02] font-normal sm:text-5xl">This bay is empty.</h1>
           <p className="mt-5 leading-relaxed text-white/65">The page you wanted has moved or never existed. Your cars, we promise, are exactly where we left them.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/" size="lg">
@@ -27,7 +27,7 @@ export default function NotFound() {
               Request a call
             </ButtonLink>
           </div>
-          <Link href="/login" className="mt-6 inline-block text-sm text-white/50 underline decoration-white/20 underline-offset-4 hover:text-white">
+          <Link href="/login" className="mt-4 inline-flex min-h-11 items-center text-sm text-white/50 underline decoration-white/20 underline-offset-4 hover:text-white">
             Client sign in
           </Link>
         </div>

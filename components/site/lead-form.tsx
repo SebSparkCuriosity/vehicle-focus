@@ -65,15 +65,26 @@ export function LeadForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Name" htmlFor={id("name")}>
-          <Input id={id("name")} name="name" autoComplete="name" required />
+          <Input id={id("name")} name="name" autoComplete="name" autoCapitalize="words" enterKeyHint="next" required />
         </Field>
         <Field label="Email" htmlFor={id("email")}>
-          <Input id={id("email")} name="email" type="email" autoComplete="email" required />
+          <Input
+            id={id("email")}
+            name="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="next"
+            required
+          />
         </Field>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Phone (optional)" htmlFor={id("phone")}>
-          <Input id={id("phone")} name="phone" type="tel" autoComplete="tel" />
+          <Input id={id("phone")} name="phone" type="tel" inputMode="tel" autoComplete="tel" enterKeyHint="next" />
         </Field>
         <Field label="I am" htmlFor={id("role")}>
           <Select id={id("role")} name="role" defaultValue={defaultRole ?? roles[0]}>
@@ -86,10 +97,10 @@ export function LeadForm({
         </Field>
       </div>
       <Field label={carsLabel} htmlFor={id("cars")}>
-        <Input id={id("cars")} name="cars" placeholder={carsPlaceholder} />
+        <Input id={id("cars")} name="cars" placeholder={carsPlaceholder} autoCapitalize="words" enterKeyHint="next" />
       </Field>
       <Field label={messageLabel} htmlFor={id("message")}>
-        <Textarea id={id("message")} name="message" placeholder={messagePlaceholder} rows={4} />
+        <Textarea id={id("message")} name="message" placeholder={messagePlaceholder} rows={4} enterKeyHint="send" />
       </Field>
 
       {state && !state.ok ? (
@@ -98,9 +109,9 @@ export function LeadForm({
         </p>
       ) : null}
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs leading-relaxed text-white/40">Private and confidential. Happy to sign an NDA before you share details.</p>
-        <Button type="submit" size="lg" disabled={pending} className="sm:min-w-44">
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs leading-relaxed text-white/45">Private and confidential. Happy to sign an NDA before you share details.</p>
+        <Button type="submit" size="lg" disabled={pending} className="w-full sm:w-auto sm:min-w-44">
           {pending ? <Loader2 className="animate-spin" aria-hidden /> : null}
           {pending ? "Sending" : submitLabel}
         </Button>

@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
+import { MobileActionBar } from "@/components/site/mobile-action-bar";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         {children}
       </main>
       <SiteFooter />
+      <MobileActionBar />
     </>
   );
 }

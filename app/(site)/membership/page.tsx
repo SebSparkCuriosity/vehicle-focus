@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 function Cell({ value }: { value: string | boolean }) {
   if (value === true) return <Check className="mx-auto size-4 text-white/80" aria-label="Included" />;
   if (value === false) return <Minus className="mx-auto size-4 text-white/20" aria-label="Not included" />;
-  return <span className="text-sm text-white/85">{value}</span>;
+  return <span className="block text-xs leading-tight text-white/85 sm:text-sm">{value}</span>;
 }
 
 const FAQ = [
@@ -55,32 +55,45 @@ export default function MembershipPage() {
         }
         lead="From quarterly health checks to weekly readiness. Every member gets The Garage, and every package is tailored to the collection."
       >
-        <ButtonLink href="/contact" size="lg">
+        <ButtonLink href="/contact" size="lg" className="w-full sm:w-auto">
           Book a free vehicle audit
         </ButtonLink>
       </PhotoHero>
 
-      <section className="relative isolate overflow-hidden py-24 sm:py-32">
+      <section className="relative isolate overflow-hidden py-12 sm:py-20 md:py-32">
         <BackdropLayer />
         <Container>
           <TierCards detailed className="lg:mt-4" />
-          <p className="mx-auto mt-10 max-w-xl text-center text-sm leading-relaxed text-white/50">
+          <p className="mx-auto mt-6 max-w-xl text-center text-sm leading-relaxed text-white/50 sm:mt-10">
             Priced per collection after a free vehicle audit. One monthly figure, and nothing outside it happens without a quote.
           </p>
 
-          <div className="mt-28">
+          <div className="mt-16 sm:mt-28">
             <SectionHeading title="Side by side" />
-            <div className="glass-dark mt-10 overflow-x-auto rounded-[28px]">
-              <table className="w-full min-w-[640px] border-collapse text-left">
+            <div className="glass-dark mt-6 overflow-x-auto rounded-[24px] sm:mt-10 sm:rounded-[28px]">
+              {/* Fits a 375px phone without sideways scrolling: short tier names, tight cells */}
+              <table className="w-full border-collapse text-left md:min-w-[640px]">
                 <caption className="sr-only">Membership comparison</caption>
                 <thead>
                   <tr className="border-b border-white/[0.08]">
-                    <th scope="col" className="px-6 py-5 text-[0.8rem] font-medium text-white/45">
-                      What&apos;s included
+                    <th scope="col" className="px-4 py-4 text-[0.8rem] font-medium text-white/45 sm:px-6 sm:py-5">
+                      <span className="sm:hidden">Included</span>
+                      <span className="hidden sm:inline">What&apos;s included</span>
                     </th>
-                    {["Gold", "Platinum", "Black Label"].map((t) => (
-                      <th key={t} scope="col" className={cn("px-6 py-5 text-center font-display text-xl font-normal", t === "Platinum" && "bg-white/[0.04]")}>
-                        {t}
+                    {[
+                      ["Gold", "Gold"],
+                      ["Platinum", "Plat."],
+                      ["Black Label", "Black"],
+                    ].map(([t, short]) => (
+                      <th
+                        key={t}
+                        scope="col"
+                        className={cn("w-[17%] px-1.5 py-4 text-center font-display text-base font-normal sm:w-auto sm:px-6 sm:py-5 sm:text-xl", t === "Platinum" && "bg-white/[0.04]")}
+                      >
+                        <abbr title={t} className="no-underline sm:hidden">
+                          {short}
+                        </abbr>
+                        <span className="hidden sm:inline">{t}</span>
                       </th>
                     ))}
                   </tr>
@@ -88,16 +101,16 @@ export default function MembershipPage() {
                 <tbody>
                   {COMPARISON.map((row) => (
                     <tr key={row.feature} className="border-b border-white/[0.06] last:border-b-0">
-                      <th scope="row" className="px-6 py-4 text-sm font-normal text-white/65">
+                      <th scope="row" className="px-4 py-3.5 text-[0.85rem] leading-snug font-normal text-white/70 sm:px-6 sm:py-4 sm:text-sm">
                         {row.feature}
                       </th>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-1.5 py-3.5 text-center sm:px-6 sm:py-4">
                         <Cell value={row.gold} />
                       </td>
-                      <td className="bg-white/[0.04] px-6 py-4 text-center">
+                      <td className="bg-white/[0.04] px-1.5 py-3.5 text-center sm:px-6 sm:py-4">
                         <Cell value={row.platinum} />
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-1.5 py-3.5 text-center sm:px-6 sm:py-4">
                         <Cell value={row.blackLabel} />
                       </td>
                     </tr>
@@ -109,26 +122,26 @@ export default function MembershipPage() {
         </Container>
       </section>
 
-      <section className="py-24 sm:py-32">
+      <section className="py-14 sm:py-20 md:py-32">
         <Container>
           <SectionHeading title="From first call to first report" lead="The audit is where membership starts. It tells us what the cars need, and tells you what we'd do about it." />
-          <Timeline steps={STEPS} className="mt-16" />
+          <Timeline steps={STEPS} className="mt-10 sm:mt-16" />
         </Container>
       </section>
 
-      <section className="pb-24 sm:pb-32">
-        <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 [&>*]:min-w-0">
+      <section className="pb-14 sm:pb-20 md:pb-32">
+        <Container className="grid gap-6 sm:gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 [&>*]:min-w-0">
           <SectionHeading title="Questions people ask" />
           <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
             {FAQ.map((f) => (
-              <details key={f.q} className="group py-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[1.05rem] font-medium [&::-webkit-details-marker]:hidden">
+              <details key={f.q} className="group py-2 sm:py-3">
+                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-6 py-2 text-[1.02rem] leading-snug font-medium sm:text-[1.05rem] [&::-webkit-details-marker]:hidden">
                   {f.q}
                   <span className="text-xl leading-none font-light text-white/40 transition-transform group-open:rotate-45" aria-hidden>
                     +
                   </span>
                 </summary>
-                <p className="mt-3 max-w-xl leading-relaxed text-white/60">{f.a}</p>
+                <p className="mt-1 max-w-xl pb-3 leading-relaxed text-white/60">{f.a}</p>
               </details>
             ))}
           </div>

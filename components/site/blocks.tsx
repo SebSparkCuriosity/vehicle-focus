@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Check, Phone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronDown, Phone } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, PhotoBand } from "@/components/site/section";
 import { CONTACT, TIER_DETAILS, type ServiceGroup } from "@/components/site/content";
@@ -9,16 +9,32 @@ import type { Tier } from "@/lib/types";
 
 const TIER_ORDER: Tier[] = ["gold", "platinum", "black-label"];
 
-/** Three membership panes. Sits over a photograph or a BackdropLayer. */
+/**
+ * Three membership panes. Sits over a photograph or a BackdropLayer.
+ * Below lg it's a swipeable row (each pane ~85% wide, the next one peeking), so
+ * phones don't scroll past three tall cards; from lg it's three columns.
+ */
 export function TierCards({ detailed = false, className }: { detailed?: boolean; className?: string }) {
   return (
-    <div className={cn("grid gap-4 lg:grid-cols-3 [&>*]:min-w-0", className)}>
+    <div className={className}>
+      <div
+        className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-3 [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+        aria-label="Membership tiers"
+        role="list"
+      >
       {TIER_ORDER.map((t) => {
         const tier = TIERS[t];
         const detail = TIER_DETAILS[t];
         const featured = t === "platinum";
         return (
-          <article key={t} className={cn("glass-dark flex flex-col rounded-[28px] p-7 sm:p-8", featured && "lg:-translate-y-4")}>
+          <article
+            key={t}
+            role="listitem"
+            className={cn(
+              "glass-dark flex w-[85%] shrink-0 snap-start flex-col rounded-[28px] p-6 sm:w-[60%] sm:p-8 md:w-[46%] lg:w-auto lg:min-w-0",
+              featured && "lg:-translate-y-4",
+            )}
+          >
             <div className="flex items-baseline justify-between gap-3">
               <h3 className="font-display text-[2rem] leading-none font-normal">{tier.label}</h3>
               {featured ? <span className="text-xs text-white/50">Full concierge</span> : null}
@@ -43,6 +59,10 @@ export function TierCards({ detailed = false, className }: { detailed?: boolean;
           </article>
         );
       })}
+      </div>
+      <p className="mt-3 text-center text-xs text-white/45 lg:hidden" aria-hidden>
+        Swipe to compare all three
+      </p>
     </div>
   );
 }
@@ -50,7 +70,40 @@ export function TierCards({ detailed = false, className }: { detailed?: boolean;
 /** Editorial list of a service group: number, title and the detail. No icon tiles. */
 export function ServiceList({ group, detailed = false }: { group: ServiceGroup; detailed?: boolean }) {
   return (
-    <ol className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+    <>
+      {detailed ? <ServiceListCollapsible group={group} /> : null}
+      <ServiceListFull group={group} detailed={detailed} className={detailed ? "hidden md:block" : undefined} />
+    </>
+  );
+}
+
+/** Phones: each service is a tap-to-open row, so the services page isn't a wall of bullets. */
+function ServiceListCollapsible({ group }: { group: ServiceGroup }) {
+  return (
+    <ul className="divide-y divide-white/[0.08] border-y border-white/[0.08] md:hidden">
+      {group.services.map((s) => (
+        <li key={s.number}>
+          <details className="group">
+            <summary className="flex min-h-14 cursor-pointer list-none items-center gap-4 py-3 [&::-webkit-details-marker]:hidden">
+              <span className="w-7 shrink-0 text-sm text-white/35 tabular">{s.number}</span>
+              <span className="flex-1 text-[1.02rem] font-semibold tracking-tight">{s.title}</span>
+              <ChevronDown className="size-4 shrink-0 text-white/40 transition-transform group-open:rotate-180" aria-hidden />
+            </summary>
+            <ul className="grid gap-2 pb-5 pl-11 text-[0.95rem] leading-relaxed text-white/65">
+              {s.points.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          </details>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ServiceListFull({ group, detailed, className }: { group: ServiceGroup; detailed: boolean; className?: string }) {
+  return (
+    <ol className={cn("divide-y divide-white/[0.08] border-y border-white/[0.08]", className)}>
       {group.services.map((s) => (
         <li key={s.number} className={cn("grid gap-x-8 gap-y-3 py-6", detailed ? "grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr]" : "grid-cols-[2.5rem_1fr]")}>
           <span className="pt-0.5 text-sm text-white/35 tabular">{s.number}</span>
@@ -75,7 +128,7 @@ export function ServiceList({ group, detailed = false }: { group: ServiceGroup; 
 /** Horizontal numbered timeline on desktop, vertical on mobile. */
 export function Timeline({ steps, className }: { steps: readonly { title: string; body: string }[]; className?: string }) {
   return (
-    <ol className={cn("relative grid gap-10 md:grid-cols-4 md:gap-6", className)}>
+    <ol className={cn("relative grid gap-8 md:grid-cols-4 md:gap-6", className)}>
       <span className="absolute top-[1.15rem] right-0 left-0 hidden h-px bg-gradient-to-r from-white/5 via-white/20 to-white/5 md:block" aria-hidden />
       <span className="absolute top-0 bottom-0 left-[1.15rem] w-px bg-gradient-to-b from-white/20 to-white/5 md:hidden" aria-hidden />
       {steps.map((s, i) => (
@@ -111,12 +164,12 @@ export function CtaBand({
 }) {
   return (
     <PhotoBand image={image} position={position} scrim="full">
-      <Container className="py-24 sm:py-36">
+      <Container className="py-14 sm:py-24 md:py-36">
         <div className={cn("grid gap-4", aside && "lg:grid-cols-[1.5fr_1fr] [&>*]:min-w-0")}>
-          <div className="glass-dark rounded-[28px] p-8 sm:p-12">
-            <h2 className="max-w-xl font-display text-[2.4rem] leading-[1.04] font-normal text-balance sm:text-5xl">{title}</h2>
-            <p className="mt-5 max-w-lg leading-relaxed text-white/65">{lead}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="glass-dark rounded-[28px] p-6 sm:p-12">
+            <h2 className="max-w-xl font-display text-[2.15rem] leading-[1.06] font-normal text-balance sm:text-5xl sm:leading-[1.04]">{title}</h2>
+            <p className="mt-4 max-w-lg leading-relaxed text-white/65 sm:mt-5">{lead}</p>
+            <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:items-center">
               <ButtonLink href={primaryHref} size="lg">
                 {primaryLabel}
                 <ArrowRight aria-hidden />
@@ -142,7 +195,7 @@ export function TextLink({ href, children, className }: { href: string; children
     <Link
       href={href}
       className={cn(
-        "group inline-flex items-center gap-1.5 text-sm font-medium text-white underline decoration-white/25 underline-offset-[6px] transition-colors hover:decoration-white/70",
+        "group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-white underline decoration-white/25 underline-offset-[6px] transition-colors hover:decoration-white/70",
         className,
       )}
     >

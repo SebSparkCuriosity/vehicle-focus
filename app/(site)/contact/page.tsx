@@ -25,12 +25,12 @@ export default function ContactPage() {
         title="Request a call"
         lead="Whether you own the cars, look after someone who does, or manage their wealth, it starts with a private conversation. Lawrence will call you, usually the same day."
       />
-      <section className="relative isolate overflow-hidden py-16 sm:py-24">
+      <section className="relative isolate overflow-hidden py-10 sm:py-16 md:py-24">
         <BackdropLayer />
         <Container className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8 [&>*]:min-w-0">
           <div className="glass-dark rounded-[28px] p-6 sm:p-10">
-            <h2 className="font-display text-3xl font-normal">Tell us about the cars</h2>
-            <p className="mt-2 mb-8 text-sm text-white/50">Only your name and email are required.</p>
+            <h2 className="font-display text-[1.9rem] leading-tight font-normal sm:text-3xl">Tell us about the cars</h2>
+            <p className="mt-2 mb-6 text-sm text-white/50 sm:mb-8">Only your name and email are required.</p>
             <LeadForm source="Website" idPrefix="contact" />
           </div>
 
@@ -39,7 +39,7 @@ export default function ContactPage() {
             <ul className="mt-4 divide-y divide-white/[0.08]">
               {CHANNELS.map((c) => (
                 <li key={c.label}>
-                  <a href={c.href} className="group block py-4">
+                  <a href={c.href} className="group block min-h-14 py-3.5">
                     <span className="block text-xs text-white/45">{c.label}</span>
                     <span className="mt-1 block truncate text-lg text-white group-hover:text-white/80">{c.value}</span>
                   </a>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -18,19 +18,34 @@ export function MobileMenu({ links }: { links: readonly { href: string; label: s
     setOpen(false);
   }
 
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  // Lock page scroll, move focus into the sheet, close on Escape
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    sheetRef.current?.querySelector<HTMLElement>("a")?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
   return (
     <div className="lg:hidden">
       <button
+        ref={toggleRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="relative z-[51] grid size-10 place-items-center rounded-full text-white hover:bg-white/10"
+        className="relative z-[51] grid size-11 place-items-center rounded-full text-white hover:bg-white/10"
         aria-expanded={open}
         aria-controls="mobile-menu"
         aria-label={open ? "Close menu" : "Open menu"}
@@ -39,6 +54,8 @@ export function MobileMenu({ links }: { links: readonly { href: string; label: s
       </button>
       <div
         id="mobile-menu"
+        ref={sheetRef}
+        inert={!open}
         className={cn(
           "glass-dark fixed inset-x-3 top-[4.75rem] z-40 max-h-[calc(100svh-6rem)] overflow-y-auto rounded-[28px] transition-all duration-200",
           open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
@@ -49,8 +66,9 @@ export function MobileMenu({ links }: { links: readonly { href: string; label: s
             <Link
               key={l.href}
               href={l.href}
+              onClick={() => setOpen(false)}
               className={cn(
-                "rounded-2xl px-4 py-3.5 font-display text-2xl",
+                "flex min-h-12 items-center rounded-2xl px-4 py-2.5 font-display text-2xl",
                 pathname === l.href ? "bg-white/[0.07] text-white" : "text-white/80 hover:bg-white/[0.05]",
               )}
             >
@@ -58,10 +76,10 @@ export function MobileMenu({ links }: { links: readonly { href: string; label: s
             </Link>
           ))}
           <div className="mt-3 grid gap-2.5 border-t border-white/[0.08] p-2 pt-5">
-            <ButtonLink href="/contact" size="lg">
+            <ButtonLink href="/contact" size="lg" onClick={() => setOpen(false)}>
               Request a call
             </ButtonLink>
-            <ButtonLink href="/login" variant="secondary" size="lg">
+            <ButtonLink href="/login" variant="secondary" size="lg" onClick={() => setOpen(false)}>
               Client sign in
             </ButtonLink>
           </div>

@@ -51,13 +51,13 @@ function FeatureRow({
   flip?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
+    <div className="grid items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
       <div className={cn(flip && "lg:order-2")}>
         <span className="text-sm text-white/35 tabular">{n}</span>
-        <h2 className="mt-4 font-display text-[2rem] leading-[1.08] font-normal text-balance sm:text-[2.6rem]">{title}</h2>
-        <p className="mt-5 max-w-md leading-relaxed text-white/62">{body}</p>
+        <h2 className="mt-3 font-display text-[1.9rem] leading-[1.1] font-normal text-balance sm:mt-4 sm:text-[2.6rem] sm:leading-[1.08]">{title}</h2>
+        <p className="mt-4 max-w-md leading-relaxed text-white/62 sm:mt-5">{body}</p>
         {points ? (
-          <ul className="mt-7 max-w-md divide-y divide-white/[0.08] border-y border-white/[0.08] text-[0.95rem] text-white/75">
+          <ul className="mt-6 max-w-md divide-y divide-white/[0.08] border-y border-white/[0.08] text-[0.95rem] text-white/75 sm:mt-7">
             {points.map((p) => (
               <li key={p} className="py-3">
                 {p}
@@ -97,9 +97,9 @@ export default function TheGaragePage() {
         <p className="mt-5 text-xs text-white/40">The demo uses example cars and owners. None of it is client data.</p>
       </PhotoHero>
 
-      <section className="relative isolate overflow-hidden py-24 sm:py-32">
+      <section className="relative isolate overflow-hidden py-14 sm:py-20 md:py-32">
         <BackdropLayer />
-        <Container className="grid gap-28">
+        <Container className="grid gap-16 sm:gap-20 md:gap-28">
           <FeatureRow
             n="01"
             title="Know which car is ready before you pick up the keys"
@@ -171,17 +171,17 @@ export default function TheGaragePage() {
       </section>
 
       <PhotoBand image="/images/cars/cullinan-mayfair.jpg" position="50% 65%" scrim="full">
-        <Container className="py-24 sm:py-32">
-          <h2 className="max-w-2xl font-display text-[2.4rem] leading-[1.04] font-normal text-balance sm:text-5xl">
+        <Container className="py-14 sm:py-24 md:py-32">
+          <h2 className="max-w-2xl font-display text-[2.15rem] leading-[1.06] font-normal text-balance sm:text-5xl sm:leading-[1.04]">
             Built for owners who don&apos;t want to be found.
           </h2>
-          <div className="glass-dark mt-12 grid divide-y divide-white/[0.08] rounded-[28px] md:grid-cols-3 md:divide-x md:divide-y-0">
+          <div className="glass-dark mt-8 grid divide-y divide-white/[0.08] rounded-[28px] sm:mt-12 md:grid-cols-3 md:divide-x md:divide-y-0">
             {[
               ["Two-factor sign-in", "Every account has a second factor. Delegates sign in as themselves, never with your details."],
               ["Access you control", "Choose what each delegate can see and do, and remove it in one click."],
               ["Locations, not addresses", "The portal says where a car is in words. Street addresses and garage codes stay with the team."],
             ].map(([t, b]) => (
-              <div key={t} className="p-7 sm:p-8">
+              <div key={t} className="p-6 sm:p-8">
                 <h3 className="font-semibold">{t}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/60">{b}</p>
               </div>

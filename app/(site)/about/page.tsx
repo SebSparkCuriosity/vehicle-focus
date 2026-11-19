@@ -34,23 +34,23 @@ export default function AboutPage() {
         lead="For owners who want their cars looked after properly, by people who understand them, without it taking up their time."
       />
 
-      <section className="py-24 sm:py-32">
-        <Container className="grid items-start gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 [&>*]:min-w-0">
+      <section className="py-14 sm:py-20 md:py-32">
+        <Container className="grid items-start gap-8 sm:gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 [&>*]:min-w-0">
           <div className="lg:sticky lg:top-28">
-            <div className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-[28px] lg:mx-0">
+            <div className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-[28px] lg:mx-0 lg:aspect-[3/4] lg:max-w-sm">
               <Image
                 src="/images/lawrence.jpg"
                 alt="Lawrence Slatter-Buesnel, founder of Vehicle Focus"
                 fill
                 sizes="(min-width: 1024px) 35vw, 90vw"
-                className="object-cover object-top"
+                className="object-cover object-[50%_18%] lg:object-top"
               />
             </div>
             <p className="mt-4 text-sm text-white/50">Lawrence Slatter-Buesnel, founder</p>
           </div>
           <div>
-            <h2 className="font-display text-[2.4rem] leading-[1.04] font-normal text-balance sm:text-5xl">From the paddock to your garage</h2>
-            <div className="mt-8 grid max-w-xl gap-5 text-[1.05rem] leading-relaxed text-white/65">
+            <h2 className="font-display text-[2.15rem] leading-[1.06] font-normal text-balance sm:text-5xl sm:leading-[1.04]">From the paddock to your garage</h2>
+            <div className="mt-6 grid max-w-xl gap-4 text-[1.05rem] leading-relaxed text-white/65 sm:mt-8 sm:gap-5">
               <p>
                 Lawrence grew up in motorsport, racing locally across several disciplines and learning what it takes to keep performance cars at their best.
               </p>
@@ -61,27 +61,27 @@ export default function AboutPage() {
                 Vehicle Focus is the result: proactive maintenance and readiness, international logistics and track preparation, with every collection cared for in absolute confidence.
               </p>
             </div>
-            <p className="mt-10 font-display text-3xl text-white">You deal with Lawrence directly.</p>
+            <p className="mt-8 font-display text-[1.7rem] leading-tight text-white sm:mt-10 sm:text-3xl">You deal with Lawrence directly.</p>
           </div>
         </Container>
       </section>
 
-      <section className="pb-24 sm:pb-32">
+      <section className="pb-14 sm:pb-20 md:pb-32">
         <Container>
           <Timeline steps={JOURNEY} />
         </Container>
       </section>
 
-      <section className="relative isolate overflow-hidden py-24 sm:py-32">
+      <section className="relative isolate overflow-hidden py-14 sm:py-20 md:py-32">
         <BackdropLayer />
-        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
+        <Container className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
           <SectionHeading
             title="Specialists here, associates wherever the car goes"
             lead="Our own team covers the Channel Islands. Trusted associates across the UK, Europe and beyond keep response times short wherever the car happens to be. If we can't do something properly, we'll say so and find who can."
           />
-          <ul className="glass-dark divide-y divide-white/[0.08] rounded-[28px] px-7 sm:px-9">
+          <ul className="glass-dark divide-y divide-white/[0.08] rounded-[28px] px-5 sm:px-9">
             {COVERAGE.map(([t, b]) => (
-              <li key={t} className="py-6">
+              <li key={t} className="py-5 sm:py-6">
                 <p className="font-semibold">{t}</p>
                 <p className="mt-1.5 text-sm leading-relaxed text-white/60">{b}</p>
               </li>

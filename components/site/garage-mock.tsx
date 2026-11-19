@@ -165,14 +165,14 @@ export function PhoneMock({ className, car = MOCK_CARS[0] }: { className?: strin
             <div className="mt-2 grid grid-cols-4 gap-1.5 text-center">
               {tyres.map(([pos, p]) => (
                 <span key={pos}>
-                  <span className="block text-[0.6rem] text-white/40">{pos}</span>
+                  <span className="block text-xs text-white/40">{pos}</span>
                   <span className="text-sm text-success tabular">{p}</span>
                 </span>
               ))}
             </div>
           </div>
           <span className="mt-1 rounded-full bg-accent py-2.5 text-center text-xs font-medium text-black">Have it ready</span>
-          <p className="pb-1 text-center text-[0.65rem] text-white/40">{car.lastCheck} by your technician</p>
+          <p className="pb-1 text-center text-xs text-white/40">{car.lastCheck} by your technician</p>
         </div>
       </div>
     </div>
@@ -212,9 +212,9 @@ export function CheckMock({ className }: { className?: string }) {
           <dd className="mt-2.5 grid grid-cols-4 gap-2 text-center">
             {tyres.map(([pos, cur, target]) => (
               <span key={pos}>
-                <span className="block text-[0.65rem] text-white/40">{pos}</span>
+                <span className="block text-xs text-white/40">{pos}</span>
                 <span className="text-sm font-medium text-success tabular">{cur}</span>
-                <span className="text-[0.65rem] text-white/35">/{target}</span>
+                <span className="text-xs text-white/35">/{target}</span>
               </span>
             ))}
           </dd>
@@ -264,16 +264,16 @@ export function RequestMock({ className }: { className?: string }) {
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div className="glass-inset rounded-2xl px-3.5 py-2.5">
-            <p className="text-[0.65rem] text-white/45">Car</p>
+            <p className="text-xs text-white/45">Car</p>
             <p className="truncate">Rolls-Royce Cullinan</p>
           </div>
           <div className="glass-inset rounded-2xl px-3.5 py-2.5">
-            <p className="text-[0.65rem] text-white/45">When</p>
+            <p className="text-xs text-white/45">When</p>
             <p>Sat, 09:00</p>
           </div>
         </div>
         <div className="glass-inset rounded-2xl px-3.5 py-2.5">
-          <p className="text-[0.65rem] text-white/45">Where</p>
+          <p className="text-xs text-white/45">Where</p>
           <p>Jersey Airport, private aviation</p>
         </div>
         <div className="mt-1 rounded-full bg-accent py-2.5 text-center text-xs font-medium text-black">Send request</div>

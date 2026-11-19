@@ -8,7 +8,7 @@ export function Container({ className, ...props }: React.HTMLAttributes<HTMLDivE
 
 export function Section({ className, children, id, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <section id={id} className={cn("py-24 sm:py-32", className)} {...props}>
+    <section id={id} className={cn("py-14 sm:py-20 md:py-32", className)} {...props}>
       <Container>{children}</Container>
     </section>
   );
@@ -30,8 +30,8 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
-      <Tag className="font-display text-[2.4rem] leading-[1.04] font-normal text-balance sm:text-5xl">{title}</Tag>
-      {lead ? <p className="mt-5 text-[1.05rem] leading-relaxed text-white/65 sm:text-lg">{lead}</p> : null}
+      <Tag className="font-display text-[2.15rem] leading-[1.06] font-normal text-balance sm:text-5xl sm:leading-[1.04]">{title}</Tag>
+      {lead ? <p className="mt-4 text-[1.02rem] leading-relaxed text-white/65 sm:mt-5 sm:text-lg">{lead}</p> : null}
     </div>
   );
 }
@@ -53,14 +53,15 @@ export function BackdropLayer({ className }: { className?: string }) {
 export function PhotoBand({
   image,
   position = "50% 50%",
-  priority = false,
+  preload = false,
   className,
   scrim = "bottom",
   children,
 }: {
   image: string;
   position?: string;
-  priority?: boolean;
+  /** Preload the image: only for the first image on a page (the hero). */
+  preload?: boolean;
   className?: string;
   /** bottom: darkest at the foot; left: darkest on the left for text; full: evenly dark */
   scrim?: "bottom" | "left" | "right" | "full";
@@ -68,7 +69,7 @@ export function PhotoBand({
 }) {
   return (
     <section className={cn("relative isolate overflow-hidden", className)}>
-      <Image src={image} alt="" fill priority={priority} sizes="100vw" className="-z-20 object-cover" style={{ objectPosition: position }} />
+      <Image src={image} alt="" fill preload={preload} sizes="100vw" className="-z-20 object-cover" style={{ objectPosition: position }} />
       <div className="photo-scrim absolute inset-0 -z-10" aria-hidden />
       {scrim === "left" ? <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/5" aria-hidden /> : null}
       {scrim === "right" ? <div className="absolute inset-0 -z-10 bg-gradient-to-l from-black/80 via-black/45 to-black/5" aria-hidden /> : null}
@@ -95,13 +96,13 @@ export function PhotoHero({
   aside?: React.ReactNode;
 }) {
   return (
-    <PhotoBand image={image} position={position} priority scrim="left" className="min-h-[34rem] sm:min-h-[38rem]">
-      <Container className="flex min-h-[34rem] flex-col justify-end pt-36 pb-14 sm:min-h-[38rem] sm:pb-20">
+    <PhotoBand image={image} position={position} preload scrim="left" className="min-h-[28rem] sm:min-h-[38rem]">
+      <Container className="flex min-h-[28rem] flex-col justify-end pt-28 pb-10 sm:min-h-[38rem] sm:pt-36 sm:pb-20">
         <div className={cn(aside && "grid items-end gap-12 lg:grid-cols-[1.2fr_1fr] [&>*]:min-w-0")}>
           <div className="max-w-3xl">
-            <h1 className="font-display text-[2.75rem] leading-[1.02] font-normal text-balance sm:text-6xl lg:text-7xl">{title}</h1>
-            {lead ? <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/72">{lead}</p> : null}
-            {children ? <div className="mt-9">{children}</div> : null}
+            <h1 className="font-display text-[2.45rem] leading-[1.03] font-normal text-balance sm:text-6xl lg:text-7xl">{title}</h1>
+            {lead ? <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-white/72 sm:mt-6 sm:text-lg">{lead}</p> : null}
+            {children ? <div className="mt-7 sm:mt-9">{children}</div> : null}
           </div>
           {aside ? <div>{aside}</div> : null}
         </div>

@@ -22,11 +22,11 @@ export default function ReadinessPage() {
         }
         lead="Cars that sit lose condition quietly. Answer six questions and see where yours stands. About two minutes, and you don't need to give us any details to see the result."
       />
-      <section className="relative isolate overflow-hidden py-16 sm:py-24">
+      <section className="relative isolate overflow-hidden py-10 sm:py-16 md:py-24">
         <BackdropLayer />
         <Container>
           <ReadinessTool />
-          <p className="mt-12 max-w-2xl text-xs leading-relaxed text-white/40">
+          <p className="mt-8 max-w-2xl text-xs leading-relaxed text-white/45 sm:mt-12">
             General guidance based on how modern performance, hybrid, electric and classic cars typically behave. It isn&apos;t a substitute for an inspection, and manufacturer storage advice for your car always takes priority.
           </p>
         </Container>
