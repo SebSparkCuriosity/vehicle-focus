@@ -45,8 +45,10 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
+  const { clientId } = await requireClient();
   const v = await getVehicle(id);
-  return { title: v ? `${v.make} ${v.model}` : "Car" };
+  // Never reveal another client's car, even in the tab title
+  return { title: v && v.clientId === clientId ? `${v.make} ${v.model}` : "Car" };
 }
 
 const ACTIONS: { type: RequestType; label: string }[] = [

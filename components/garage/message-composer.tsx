@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Select, Textarea } from "@/components/ui/form";
+import { Select } from "@/components/ui/form";
 import { sendMessage, type ActionResult } from "@/lib/actions";
 
 export function MessageComposer({ senders }: { senders: string[] }) {
@@ -35,7 +35,7 @@ export function MessageComposer({ senders }: { senders: string[] }) {
       <label htmlFor="body" className="sr-only">
         Message
       </label>
-      <Textarea
+      <textarea
         ref={textRef}
         id="body"
         name="body"
@@ -43,7 +43,7 @@ export function MessageComposer({ senders }: { senders: string[] }) {
         required
         maxLength={2000}
         placeholder="Write to the team..."
-        className="min-h-20 resize-none"
+        className="min-h-20 w-full resize-none rounded-md border border-border bg-surface-2 px-3 py-2.5 text-sm text-text placeholder:text-subtle transition-colors focus:border-gold/70 focus:ring-2 focus:ring-gold/20 focus:outline-none"
       />
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         {senders.length > 1 ? (

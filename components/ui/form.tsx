@@ -4,15 +4,15 @@ import { cn } from "@/lib/utils";
 const field =
   "w-full rounded-md border border-border bg-surface-2 px-3 text-sm text-text placeholder:text-subtle transition-colors focus:border-gold/70 focus:outline-none focus:ring-2 focus:ring-gold/20 disabled:opacity-50";
 
-export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
+export function Input({ className, ...props }: React.ComponentProps<"input">) {
   return <input className={cn(field, "h-10", className)} {...props} />;
 }
 
-export function Textarea({ className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return <textarea className={cn(field, "min-h-24 py-2.5", className)} {...props} />;
 }
 
-export function Select({ className, children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({ className, children, ...props }: React.ComponentProps<"select">) {
   return (
     <select className={cn(field, "h-10 appearance-none bg-[length:16px] pr-8", className)} {...props}>
       {children}

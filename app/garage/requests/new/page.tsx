@@ -31,8 +31,9 @@ export default async function NewRequestPage({ searchParams }: { searchParams: P
     ...(client?.contacts.filter((c) => c.canBook).map((c) => `${c.name} (${ROLE_SHORT[c.role] ?? c.role})`) ?? []),
   ];
 
-  const tomorrow = new Date(Date.now() + 86_400_000);
   const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
   const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
   return (
