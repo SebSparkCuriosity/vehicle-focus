@@ -41,14 +41,14 @@ export default async function NewRequestPage({ searchParams }: { searchParams: P
     <div className="mx-auto max-w-3xl">
       <Link
         href="/garage/requests"
-        className="glass-dark inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[0.85rem] text-white/75 transition-colors hover:text-white"
+        className="glass-dark inline-flex h-11 items-center gap-1.5 rounded-full px-4 text-[0.9rem] text-white/75 transition-colors hover:text-white md:h-10 md:text-[0.85rem]"
       >
         <ArrowLeft className="size-4" aria-hidden />
         Requests
       </Link>
-      <PageTitle className="mt-8" title="What do you need?" intro="What, which car, when and where. We confirm personally." />
+      <PageTitle className="mt-6 md:mt-8" title="What do you need?" intro="What, which car, when and where. We confirm personally." />
 
-      <div className="mt-8">
+      <div className="mt-6 md:mt-8">
         <RequestForm
           vehicles={vehicles.map((v) => ({
             id: v.id,

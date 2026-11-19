@@ -79,14 +79,14 @@ export default async function GarageDashboard() {
   const allReady = summary.count > 0 && summary.ready === summary.count;
 
   return (
-    <div className="space-y-14">
+    <div className="space-y-12 md:space-y-14">
       {/* Greeting */}
       <section>
         {client ? <p className="eyebrow">{TIERS[client.tier].label} member</p> : null}
-        <h1 className="mt-3 font-display text-[2.75rem] leading-[1.02] font-normal text-balance sm:text-6xl">
+        <h1 className="mt-3 font-display text-[2.6rem] leading-[1.02] font-normal text-balance sm:text-6xl">
           {greeting()}, {client?.firstName}.
         </h1>
-        <p className="mt-3 text-lg text-white/65">
+        <p className="mt-3 text-[1.05rem] text-white/65 sm:text-lg">
           {summary.count === 0
             ? "Your collection will appear here after the vehicle audit."
             : allReady
@@ -124,9 +124,9 @@ export default async function GarageDashboard() {
           </div>
         </Card>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
           {QUICK_ACTIONS.map(({ href, label }) => (
-            <ButtonLink key={label} href={href} variant="secondary" className="h-11">
+            <ButtonLink key={label} href={href} variant="secondary" className="h-12 w-full backdrop-blur-none sm:h-11 sm:w-auto">
               {label}
             </ButtonLink>
           ))}
@@ -138,8 +138,8 @@ export default async function GarageDashboard() {
         <SectionHeader title="Your collection" />
         {vehicles.length ? (
           <div className="grid gap-4 md:grid-cols-2 [&>*]:min-w-0">
-            {vehicles.map((v, i) => (
-              <CarCard key={v.id} vehicle={v} priority={i < 2} />
+            {vehicles.map((v) => (
+              <CarCard key={v.id} vehicle={v} />
             ))}
           </div>
         ) : (
@@ -175,7 +175,7 @@ export default async function GarageDashboard() {
                       <p className="font-display text-2xl leading-none font-normal tabular">{new Date(item.at).getDate()}</p>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[0.92rem] font-medium">{item.title}</p>
+                      <p className="truncate text-[0.95rem] font-medium md:text-[0.92rem]">{item.title}</p>
                       <p className="mt-0.5 truncate text-[0.78rem] text-white/50">{item.detail}</p>
                     </div>
                     <p
@@ -210,7 +210,7 @@ export default async function GarageDashboard() {
                         className="flex items-start gap-3 rounded-[18px] px-3 py-3 transition-colors hover:bg-white/[0.04]"
                       >
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-[0.92rem] font-medium">{r.title}</span>
+                          <span className="block truncate text-[0.95rem] font-medium md:text-[0.92rem]">{r.title}</span>
                           <span className="mt-0.5 block truncate text-[0.78rem] text-white/50">
                             {REQUEST_TYPE_META[r.type].label} · {formatDateTime(r.when)}
                           </span>

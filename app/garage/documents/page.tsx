@@ -17,7 +17,7 @@ export default async function DocumentsPage() {
   const groups = vehicles.map((v) => ({ vehicle: v, docs: docs.filter((d) => d.vehicleId === v.id) })).filter((g) => g.docs.length);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 md:space-y-10">
       <PageTitle
         title="Documents"
         intro={
@@ -69,7 +69,7 @@ export default async function DocumentsPage() {
                     <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5">
                       <FileText className="size-4 shrink-0 text-white/35" aria-hidden />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-[0.92rem]">{d.title}</p>
+                        <p className="truncate text-[0.95rem] md:text-[0.92rem]">{d.title}</p>
                         <p className="text-[0.78rem] text-white/45">
                           {d.kind} · <span className="tabular">{formatDate(d.date)}</span> · {sizeLabel(d.sizeKb)}
                         </p>

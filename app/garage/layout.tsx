@@ -35,14 +35,19 @@ export default async function GarageLayout({ children }: { children: React.React
               <p className="text-[0.85rem] font-medium">{client.name}</p>
               <p className="text-xs text-white/50">{TIERS[client.tier].label} member</p>
             </div>
-            <ButtonLink href="/garage/requests/new" size="sm" aria-label="New request" className="h-9 max-sm:w-9 max-sm:px-0">
+            <ButtonLink
+              href="/garage/requests/new"
+              size="sm"
+              aria-label="New request"
+              className="h-11 max-sm:w-11 max-sm:px-0 md:h-9 [&_svg]:size-5 sm:[&_svg]:size-4"
+            >
               <Plus aria-hidden />
               <span className="hidden sm:inline">New request</span>
             </ButtonLink>
             <form action={signOut}>
               <button
                 type="submit"
-                className="grid size-10 place-items-center rounded-full text-white/55 transition-colors hover:bg-white/[0.08] hover:text-white"
+                className="grid size-11 place-items-center rounded-full text-white/55 transition-colors hover:bg-white/[0.08] hover:text-white md:size-10"
                 aria-label="Sign out"
                 title="Sign out"
               >
@@ -53,7 +58,9 @@ export default async function GarageLayout({ children }: { children: React.React
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-8 pb-36 sm:px-6 md:pt-14 md:pb-20">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-7 pb-[calc(7.5rem+env(safe-area-inset-bottom))] sm:px-6 md:pt-14 md:pb-20">
+        {children}
+      </main>
 
       <GarageTabBar className="md:hidden" />
     </div>

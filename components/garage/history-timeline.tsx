@@ -32,12 +32,12 @@ export function HistoryTimeline({
             </span>
             <div className="min-w-0 flex-1 pt-1">
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-                <p className="text-[0.92rem] font-medium">{e.title}</p>
+                <p className="text-[0.95rem] font-medium md:text-[0.92rem]">{e.title}</p>
                 <time dateTime={e.at} className="tabular text-[0.75rem] text-white/45">
                   {formatDate(e.at)}, {formatTime(e.at)}
                 </time>
               </div>
-              {e.detail ? <p className="mt-1 text-sm leading-relaxed text-white/60">{e.detail}</p> : null}
+              {e.detail ? <p className="mt-1 text-[0.95rem] leading-relaxed text-white/60 md:text-sm">{e.detail}</p> : null}
               <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] text-white/40">
                 <span>{HISTORY_LABEL[e.kind]}</span>
                 {car ? (

@@ -25,7 +25,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
 
   return (
     <main className="relative isolate flex min-h-svh flex-col overflow-hidden">
-      <Image src="/images/showroom-green.jpg" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[60%_50%]" />
+      <Image src="/images/showroom-green.jpg" alt="" fill preload sizes="100vw" className="-z-20 object-cover object-[60%_50%]" />
       <div className="photo-scrim absolute inset-0 -z-10" aria-hidden />
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/70 via-black/30 to-transparent" aria-hidden />
 

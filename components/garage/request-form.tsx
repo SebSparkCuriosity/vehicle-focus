@@ -23,6 +23,19 @@ const LOCATION_HINT: Record<RequestType, string> = {
 
 type VehicleOption = { id: string; name: string; registration: string; location: string };
 
+/**
+ * On a phone, "Go" in a single-line field would submit the whole request early.
+ * Move to the next field instead; only the button sends.
+ */
+function enterMovesToNextField(e: React.KeyboardEvent<HTMLFormElement>) {
+  const target = e.target as HTMLElement;
+  if (e.key !== "Enter" || !(target instanceof HTMLInputElement) || target.type === "submit") return;
+  e.preventDefault();
+  const fields = Array.from(e.currentTarget.querySelectorAll<HTMLElement>("input:not([type=hidden]):not(.sr-only), select, textarea"));
+  const next = fields[fields.indexOf(target) + 1];
+  next?.focus();
+}
+
 export function RequestForm({
   vehicles,
   raisedBy,
@@ -75,10 +88,10 @@ export function RequestForm({
 
   return (
     <Card className="rounded-[28px] p-5 sm:p-8">
-    <form action={formAction} className="space-y-9">
+    <form action={formAction} onKeyDown={enterMovesToNextField} className="space-y-8 md:space-y-9">
       <fieldset>
         <legend className="mb-3 text-[0.82rem] font-semibold text-white/85">Type of request</legend>
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2">
           {(Object.keys(REQUEST_TYPE_META) as RequestType[]).map((t) => {
             const meta = REQUEST_TYPE_META[t];
             const active = type === t;
@@ -86,7 +99,7 @@ export function RequestForm({
               <label
                 key={t}
                 className={cn(
-                  "relative flex min-h-[68px] cursor-pointer flex-col justify-center rounded-2xl border px-4 py-3.5 transition-all",
+                  "relative flex min-h-[84px] cursor-pointer flex-col justify-start rounded-2xl border px-3.5 py-3 transition-all sm:min-h-[68px] sm:justify-center sm:px-4 sm:py-3.5",
                   active
                     ? "border-accent/60 bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-accent/40"
                     : "border-white/10 bg-white/[0.035] hover:border-white/20 hover:bg-white/[0.06]",
@@ -101,9 +114,9 @@ export function RequestForm({
                   onChange={() => setType(t)}
                   className="sr-only"
                 />
-                <span className={cn("block pr-6 text-[0.95rem] font-medium", active ? "text-white" : "text-white/85")}>{meta.label}</span>
-                <span className="mt-0.5 block text-[0.78rem] leading-snug text-white/50">{meta.description}</span>
-                {active ? <Check className="absolute top-3.5 right-3.5 size-4 text-accent" aria-hidden /> : null}
+                <span className={cn("block pr-5 text-[0.95rem] leading-snug font-medium", active ? "text-white" : "text-white/85")}>{meta.label}</span>
+                <span className="mt-1 block text-xs leading-snug text-white/50 sm:text-[0.78rem]">{meta.description}</span>
+                {active ? <Check className="absolute top-3 right-3 size-4 text-accent sm:top-3.5 sm:right-3.5" aria-hidden /> : null}
               </label>
             );
           })}
@@ -129,15 +142,36 @@ export function RequestForm({
         </Field>
 
         <Field label="Location" htmlFor="location" hint={LOCATION_HINT[type]} className="sm:col-span-2">
-          <Input key={vehicleId} id="location" name="location" defaultValue={selected?.location} placeholder="e.g. Jersey Airport, private aviation" />
+          <Input
+            key={vehicleId}
+            id="location"
+            name="location"
+            defaultValue={selected?.location}
+            placeholder="e.g. Jersey Airport, private aviation"
+            autoComplete="off"
+            enterKeyHint="next"
+          />
         </Field>
 
         <Field label="Short description (optional)" htmlFor="title" className="sm:col-span-2">
-          <Input id="title" name="title" placeholder={`e.g. ${REQUEST_TYPE_META[type].label} for Saturday morning`} maxLength={120} />
+          <Input
+            id="title"
+            name="title"
+            placeholder={`e.g. ${REQUEST_TYPE_META[type].label} for Saturday morning`}
+            maxLength={120}
+            autoComplete="off"
+            enterKeyHint="next"
+          />
         </Field>
 
         <Field label="Notes for the team (optional)" htmlFor="notes" className="sm:col-span-2">
-          <Textarea id="notes" name="notes" placeholder="Anything we should know: fuel, roof, who's collecting, flight number." maxLength={1000} />
+          <Textarea
+            id="notes"
+            name="notes"
+            placeholder="Anything we should know: fuel, roof, who's collecting, flight number."
+            maxLength={1000}
+            autoComplete="off"
+          />
         </Field>
 
         <Field label="Raised by" htmlFor="raisedBy" hint="Anyone you've authorised can book on your behalf." className="sm:col-span-2">
@@ -157,9 +191,16 @@ export function RequestForm({
         </p>
       ) : null}
 
-      <div className="flex flex-col-reverse gap-4 border-t border-white/[0.08] pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-t border-white/[0.08] pt-6 sm:flex sm:items-center sm:justify-between sm:gap-4">
         <p className="text-[0.78rem] text-white/45">Only the Vehicle Focus team sees your requests.</p>
-        <Button type="submit" size="lg" disabled={pending}>
+        <Button type="submit" size="lg" disabled={pending} className="hidden sm:inline-flex">
+          {pending ? "Sending..." : "Send request"}
+        </Button>
+      </div>
+
+      {/* Phones: a direct child of the form so it can stay pinned above the tab bar while the form is on screen */}
+      <div className="sticky bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-20 !mt-4 sm:hidden">
+        <Button type="submit" size="lg" disabled={pending} className="h-14 w-full shadow-[0_14px_40px_-10px_rgba(0,0,0,0.8)]">
           {pending ? "Sending..." : "Send request"}
         </Button>
       </div>

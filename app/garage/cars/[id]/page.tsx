@@ -60,7 +60,7 @@ export default async function CarPage({ params }: Props) {
     <div className="space-y-10">
       <Link
         href="/garage"
-        className="glass-dark inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[0.85rem] text-white/75 transition-colors hover:text-white"
+        className="glass-dark inline-flex h-11 items-center gap-1.5 rounded-full px-4 text-[0.9rem] text-white/75 transition-colors hover:text-white md:h-10 md:text-[0.85rem]"
       >
         <ArrowLeft className="size-4" aria-hidden />
         Collection
@@ -68,7 +68,7 @@ export default async function CarPage({ params }: Props) {
 
       {/* Hero: the car, full width, with the facts in a glass strip overlapping its lower edge */}
       <section>
-        <div className="relative h-[68vh] max-h-[640px] min-h-[440px] overflow-hidden rounded-[28px] border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
+        <div className="relative h-[58svh] max-h-[640px] min-h-[380px] overflow-hidden rounded-[28px] border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] md:h-[68vh] md:min-h-[440px]">
           <CarMedia vehicle={v} priority sizes="(min-width: 1152px) 1152px, 100vw" className="absolute inset-0" />
           <div className="photo-scrim absolute inset-0" aria-hidden />
           <PaintLabel vehicle={v} className="top-[22%] text-3xl sm:text-4xl" />
@@ -82,7 +82,7 @@ export default async function CarPage({ params }: Props) {
             <p className="text-[0.9rem] text-white/65">
               {v.year} {v.make}
             </p>
-            <h1 className="mt-1 font-display text-5xl leading-[0.98] font-normal text-balance sm:text-7xl">{v.model}</h1>
+            <h1 className="mt-1 font-display text-[2.75rem] leading-[0.98] font-normal text-balance drop-shadow-[0_2px_16px_rgba(0,0,0,0.5)] sm:text-7xl">{v.model}</h1>
             <p className="mt-2 text-white/65">
               {v.variant ? `${v.variant} · ` : ""}
               {v.colour}
@@ -91,10 +91,10 @@ export default async function CarPage({ params }: Props) {
         </div>
 
         <Card tone="dark" className="relative z-10 mx-3 -mt-16 rounded-[24px] p-5 sm:mx-6 sm:p-6">
-          {v.statusNote ? <p className="text-[0.95rem] leading-relaxed text-white/85">{v.statusNote}</p> : null}
+          {v.statusNote ? <p className="text-base leading-relaxed text-white/85 md:text-[0.95rem]">{v.statusNote}</p> : null}
           <dl
             className={cn(
-              "grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:grid-cols-4 [&>*]:min-w-0",
+              "grid grid-cols-2 gap-x-6 gap-y-4 text-[0.95rem] sm:grid-cols-4 md:text-sm [&>*]:min-w-0",
               v.statusNote && "mt-4 border-t border-white/[0.08] pt-4",
             )}
           >
@@ -121,9 +121,14 @@ export default async function CarPage({ params }: Props) {
           </dl>
         </Card>
 
-        <div className="mt-5 flex flex-wrap gap-2 px-3 sm:px-6" aria-label="Ask for something for this car">
+        <div className="mt-5 grid grid-cols-2 gap-2 px-3 sm:flex sm:flex-wrap sm:px-6" aria-label="Ask for something for this car">
           {ACTIONS.map((a) => (
-            <ButtonLink key={a.type} href={`/garage/requests/new?type=${a.type}&vehicle=${v.id}`} variant="secondary" className="h-11">
+            <ButtonLink
+              key={a.type}
+              href={`/garage/requests/new?type=${a.type}&vehicle=${v.id}`}
+              variant="secondary"
+              className="h-12 w-full backdrop-blur-none sm:h-11 sm:w-auto"
+            >
               {a.label}
             </ButtonLink>
           ))}
@@ -143,7 +148,7 @@ export default async function CarPage({ params }: Props) {
                   </p>
                   <div className="mt-6 grid gap-8 md:grid-cols-[1fr_auto] [&>*]:min-w-0">
                     <TyreDiagram current={latestCheck.readings.tyres} target={v.tyres.target} unit={v.tyres.unit} />
-                    <ul className="space-y-3.5 text-sm md:min-w-48 md:border-l md:border-white/[0.08] md:pl-7">
+                    <ul className="space-y-3.5 text-[0.95rem] md:min-w-48 md:border-l md:border-white/[0.08] md:pl-7 md:text-sm">
                       <li className="flex items-center justify-between gap-4">
                         <span className="text-white/55">Battery</span>
                         <BatteryReading voltage={latestCheck.readings.batteryVoltage} />
@@ -174,7 +179,7 @@ export default async function CarPage({ params }: Props) {
                     </ul>
                   </div>
                   {latestCheck.detail ? (
-                    <p className="glass-inset mt-7 rounded-2xl px-4 py-3 text-sm leading-relaxed text-white/70">{latestCheck.detail}</p>
+                    <p className="glass-inset mt-7 rounded-2xl px-4 py-3 text-[0.95rem] leading-relaxed text-white/70 md:text-sm">{latestCheck.detail}</p>
                   ) : null}
                 </>
               ) : (
@@ -285,14 +290,14 @@ export default async function CarPage({ params }: Props) {
           <Card className="rounded-[22px] p-5">
             <div className="flex items-center justify-between gap-3">
               <PaneTitle>Documents</PaneTitle>
-              <SectionLink href="/garage/documents" className="text-[0.78rem]">
-                Vault
+              <SectionLink href="/garage/documents" className="text-[0.82rem]">
+                All documents
               </SectionLink>
             </div>
             {docs.length ? (
               <ul className="mt-3 space-y-3">
                 {docs.map((d) => (
-                  <li key={d.id} className="flex items-start gap-2.5 text-sm">
+                  <li key={d.id} className="flex items-start gap-2.5 text-[0.95rem] md:text-sm">
                     <FileText className="mt-0.5 size-4 shrink-0 text-white/35" aria-hidden />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate">{d.title}</span>

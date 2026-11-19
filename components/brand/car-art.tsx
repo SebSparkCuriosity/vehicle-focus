@@ -75,7 +75,7 @@ export function CarMedia({
           alt={label}
           fill
           sizes={sizes}
-          priority={priority}
+          preload={priority}
           className="object-cover"
           style={{ objectPosition: vehicle.imagePosition ?? "50% 50%" }}
         />

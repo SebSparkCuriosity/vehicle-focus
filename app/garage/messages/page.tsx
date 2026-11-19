@@ -3,6 +3,7 @@ import { Lock, MessageCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { PageTitle, PaneTitle } from "@/components/garage/bits";
 import { MessageComposer } from "@/components/garage/message-composer";
+import { ScrollToLatest } from "@/components/garage/scroll-to-latest";
 import { getClient, getMessages, getTeam } from "@/lib/data/queries";
 import { formatDayDate, formatTime } from "@/lib/format";
 import { requireClient } from "@/lib/session";
@@ -34,8 +35,10 @@ export default async function MessagesPage() {
   const senders = [client?.name ?? "Me", ...(client?.contacts.map((c) => `${c.name} (${c.role === "Personal assistant" ? "PA" : c.role})`) ?? [])];
   const teamInitials = (author: string) => team.find((t) => t.name === author)?.initials ?? initialsOf(author);
 
-  // Group by day for date separators. Rendered newest-last inside a column-reverse
-  // scroller so the thread opens at the latest message without client JS.
+  // Group by day for date separators. On larger screens the thread sits in a
+  // column-reverse scroller so it opens at the latest message without client JS.
+  // On phones the page itself scrolls (like a chat app) and ScrollToLatest jumps
+  // to the end, with the composer pinned above the tab bar.
   const groups: { day: string; label: string; items: Message[] }[] = [];
   for (const m of messages) {
     const key = dayKey(m.at);
@@ -45,12 +48,13 @@ export default async function MessagesPage() {
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 md:space-y-10">
       <PageTitle title="Messages" intro="One thread with the people who look after your cars. Everything here stays on record." />
+      <ScrollToLatest targetId="thread-end" />
 
       <div className="grid gap-6 lg:grid-cols-3 [&>*]:min-w-0">
-        <Card className="flex flex-col overflow-hidden rounded-[28px] lg:col-span-2">
-          <div className="flex max-h-[min(64vh,660px)] min-h-80 flex-col-reverse overflow-y-auto p-4 sm:p-6">
+        <Card className="flex flex-col rounded-[28px] md:overflow-hidden lg:col-span-2">
+          <div className="flex min-h-64 flex-col-reverse p-4 sm:p-6 md:max-h-[min(64vh,660px)] md:min-h-80 md:overflow-y-auto">
             {messages.length ? (
               <div className="space-y-7">
                 {groups.map((g) => (
@@ -62,16 +66,16 @@ export default async function MessagesPage() {
                         <div key={m.id} className={cn("flex items-end gap-2.5", mine ? "justify-end" : "justify-start")}>
                           {!mine ? (
                             <span
-                              className="mb-5 grid size-8 shrink-0 place-items-center rounded-full border border-white/10 bg-black/40 text-[0.65rem] font-semibold text-white/75"
+                              className="mb-5 grid size-8 shrink-0 place-items-center rounded-full border border-white/10 bg-black/40 text-xs font-semibold text-white/75"
                               title={m.author}
                             >
                               {teamInitials(m.author)}
                             </span>
                           ) : null}
-                          <div className={cn("flex max-w-[82%] flex-col sm:max-w-[72%]", mine ? "items-end" : "items-start")}>
+                          <div className={cn("flex max-w-[84%] min-w-0 flex-col sm:max-w-[72%]", mine ? "items-end" : "items-start")}>
                             <div
                               className={cn(
-                                "rounded-[20px] px-4 py-2.5 text-left text-[0.92rem] leading-relaxed",
+                                "rounded-[20px] px-4 py-2.5 text-left text-[0.95rem] leading-relaxed [overflow-wrap:anywhere] whitespace-pre-line md:text-[0.92rem]",
                                 mine
                                   ? "rounded-br-md border border-white/15 bg-white/[0.12] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]"
                                   : "rounded-bl-md border border-white/[0.07] bg-black/40 text-white/90",
@@ -88,6 +92,7 @@ export default async function MessagesPage() {
                     })}
                   </div>
                 ))}
+                <div id="thread-end" className="scroll-mb-[calc(15rem+env(safe-area-inset-bottom))] md:scroll-mb-0" aria-hidden />
               </div>
             ) : (
               <div className="my-auto flex flex-col items-center py-10 text-center">
@@ -110,7 +115,7 @@ export default async function MessagesPage() {
                     {t.initials}
                   </span>
                   <span>
-                    <span className="block text-sm font-medium">{t.name}</span>
+                    <span className="block text-[0.95rem] font-medium md:text-sm">{t.name}</span>
                     <span className="block text-[0.78rem] text-white/50">{t.role}</span>
                   </span>
                 </li>
@@ -122,7 +127,7 @@ export default async function MessagesPage() {
             <PaneTitle>Urgent?</PaneTitle>
             <a
               href="tel:+447797738888"
-              className="mt-3 inline-flex min-h-10 items-center font-display text-2xl font-normal tabular underline decoration-white/20 underline-offset-[6px] hover:decoration-white/60"
+              className="mt-3 inline-flex min-h-11 items-center font-display text-2xl font-normal tabular underline decoration-white/20 underline-offset-[6px] hover:decoration-white/60"
             >
               +44 7797 738888
             </a>

@@ -32,8 +32,8 @@ export function PageTitle({
   return (
     <div className={cn("flex flex-wrap items-end justify-between gap-x-6 gap-y-4", className)}>
       <div className="min-w-0 max-w-2xl">
-        <h1 className="font-display text-[2.6rem] leading-[1.04] font-normal text-balance sm:text-5xl">{title}</h1>
-        {intro ? <p className="mt-3 text-[1.02rem] leading-relaxed text-white/65">{intro}</p> : null}
+        <h1 className="font-display text-[2.4rem] leading-[1.04] font-normal text-balance sm:text-5xl">{title}</h1>
+        {intro ? <p className="mt-3 text-base leading-relaxed text-white/65 md:text-[1.02rem]">{intro}</p> : null}
       </div>
       {action}
     </div>
@@ -43,7 +43,7 @@ export function PageTitle({
 /** Section heading in the serif, with an optional quiet link on the right. */
 export function SectionHeader({ title, action, className }: { title: string; action?: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("mb-4 flex items-end justify-between gap-4 px-1", className)}>
+    <div className={cn("mb-3 flex min-h-11 items-end justify-between gap-4 px-1 md:mb-4", className)}>
       <h2 className="font-display text-2xl leading-tight font-normal">{title}</h2>
       {action}
     </div>
@@ -61,7 +61,8 @@ export function SectionLink({ href, children, className }: { href: string; child
     <Link
       href={href}
       className={cn(
-        "shrink-0 text-sm text-white/70 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60",
+        // min-h-11 / min-w-11: a 44px tap area without changing how the link looks
+        "inline-flex min-h-11 min-w-11 shrink-0 items-center justify-end text-sm text-white/70 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60",
         className,
       )}
     >
@@ -122,7 +123,7 @@ export function EmptyState({
     <div className={cn("glass flex flex-col items-center rounded-[24px] px-6 py-12 text-center", className)}>
       {Icon ? <Icon className="size-5 text-white/35" aria-hidden /> : null}
       <p className="mt-3 font-display text-xl font-normal">{title}</p>
-      {body ? <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-white/60">{body}</p> : null}
+      {body ? <p className="mt-1.5 max-w-sm text-[0.95rem] leading-relaxed text-white/60 md:text-sm">{body}</p> : null}
       {action ? <div className="mt-5">{action}</div> : null}
     </div>
   );

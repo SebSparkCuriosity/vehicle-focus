@@ -33,16 +33,16 @@ function RequestRow({ r, vehicle }: { r: ServiceRequest; vehicle?: Vehicle }) {
             <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
               <div className="min-w-0">
                 <p className="text-[0.75rem] text-white/45">{REQUEST_TYPE_META[r.type].label}</p>
-                <h3 className="mt-0.5 text-[1rem] font-medium">{r.title}</h3>
+                <h3 className="mt-0.5 text-[1.02rem] leading-snug font-medium">{r.title}</h3>
               </div>
               <StatusText tone={status.tone} className="mt-1">
                 {status.label}
               </StatusText>
             </div>
 
-            <div className="mt-3 grid gap-x-6 gap-y-1.5 text-[0.85rem] text-white/60 sm:grid-cols-2 [&>*]:min-w-0">
+            <div className="mt-2 grid gap-x-6 gap-y-1.5 text-[0.9rem] text-white/60 sm:mt-3 sm:grid-cols-2 sm:text-[0.85rem] [&>*]:min-w-0">
               {vehicle ? (
-                <Link href={`/garage/cars/${vehicle.id}`} className="flex items-center gap-2 hover:text-white">
+                <Link href={`/garage/cars/${vehicle.id}`} className="flex min-h-11 items-center gap-2 hover:text-white sm:min-h-0">
                   <Plate reg={vehicle.registration} />
                   <span className="truncate">{vehicleName(vehicle)}</span>
                 </Link>
@@ -54,7 +54,7 @@ function RequestRow({ r, vehicle }: { r: ServiceRequest; vehicle?: Vehicle }) {
               </p>
             </div>
 
-            {r.notes ? <p className="glass-inset mt-3 rounded-2xl px-3.5 py-2.5 text-sm text-white/70">{r.notes}</p> : null}
+            {r.notes ? <p className="glass-inset mt-3 rounded-2xl px-3.5 py-2.5 text-[0.95rem] text-white/70 md:text-sm">{r.notes}</p> : null}
 
             {r.quote || r.status === "new" ? (
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] pt-3">
@@ -70,7 +70,7 @@ function RequestRow({ r, vehicle }: { r: ServiceRequest; vehicle?: Vehicle }) {
                   <form action={updateRequestStatus.bind(null, r.id, "cancelled")}>
                     <button
                       type="submit"
-                      className="min-h-10 text-sm text-white/60 underline decoration-white/25 underline-offset-4 transition-colors hover:text-danger hover:decoration-danger/60"
+                      className="-mr-2 min-h-11 px-2 text-sm text-white/60 underline decoration-white/25 underline-offset-4 transition-colors hover:text-danger hover:decoration-danger/60"
                     >
                       Cancel request
                     </button>
@@ -93,7 +93,7 @@ export default async function RequestsPage() {
   const findVehicle = (id: string) => vehicles.find((v) => v.id === id);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-10 md:space-y-12">
       <PageTitle
         title="Requests"
         intro="You, or anyone you've authorised, can ask. We confirm each one personally."
