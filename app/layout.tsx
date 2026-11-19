@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   },
   description:
     "Specialist care, movement and record-keeping for supercars, hypercars and private collections across the Channel Islands, UK and Europe.",
+  // Not indexable until launch: flip SITE_LIVE=true in production only.
+  robots: process.env.SITE_LIVE === "true" ? undefined : { index: false, follow: false },
   openGraph: {
     title: "Vehicle Focus | Automotive Concierge",
     description:
@@ -28,7 +30,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-bg text-text">{children}</body>
+      <body className="min-h-full flex flex-col bg-bg text-text">
+        {process.env.SITE_LIVE === "true" ? null : (
+          <div className="no-print border-b border-gold/20 bg-gold-soft px-4 py-1.5 text-center text-xs text-gold">
+            Preview build with demo data. Not the live Vehicle Focus website.
+          </div>
+        )}
+        {children}
+      </body>
     </html>
   );
 }
