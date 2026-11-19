@@ -14,9 +14,8 @@ export default async function ReportsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Reports"
-        title="Monthly collection reports"
-        description={`One report per client for ${month}: condition of every car, work completed, costs and what's coming up. Print or save as PDF and send, or let clients read it in The Garage.`}
+        title="Reports"
+        description={`One report per client for ${month}: the condition of every car, work done, costs and what's next. Print or save as PDF.`}
       />
 
       {lookups.clients.length ? (
@@ -25,19 +24,19 @@ export default async function ReportsPage() {
             const cars = lookups.vehicles.filter((v) => v.clientId === c.id);
             const value = cars.reduce((s, v) => s + latestValue(v), 0);
             return (
-              <article key={c.id} className="flex flex-col rounded-xl border border-border bg-surface p-4">
+              <article key={c.id} className="glass flex flex-col rounded-2xl p-5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <h2 className="font-medium">{c.name}</h2>
-                    <p className="text-xs text-muted">{c.homeBase}</p>
+                    <p className="text-[0.78rem] text-muted">{c.homeBase}</p>
                   </div>
                   <TierBadge tier={c.tier} />
                 </div>
                 <p className="mt-3 text-sm text-muted">
                   {cars.length} {cars.length === 1 ? "car" : "cars"} · {formatGBPCompact(value)}
                 </p>
-                <div className="mt-4">
-                  <ButtonLink href={`/console/reports/${c.id}`} variant="outline" size="sm">
+                <div className="mt-auto pt-5">
+                  <ButtonLink href={`/console/reports/${c.id}`} variant="secondary" size="sm">
                     <FileText /> Open {month} report
                   </ButtonLink>
                 </div>

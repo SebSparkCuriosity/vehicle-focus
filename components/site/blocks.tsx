@@ -52,7 +52,7 @@ export function ServiceList({ group, detailed = false }: { group: ServiceGroup; 
   return (
     <ol className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
       {group.services.map((s) => (
-        <li key={s.number} className={cn("grid gap-x-8 gap-y-3 py-6", detailed ? "sm:grid-cols-[3rem_1fr]" : "grid-cols-[2.5rem_1fr]")}>
+        <li key={s.number} className={cn("grid gap-x-8 gap-y-3 py-6", detailed ? "grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr]" : "grid-cols-[2.5rem_1fr]")}>
           <span className="pt-0.5 text-sm text-white/35 tabular">{s.number}</span>
           <div>
             <h3 className="text-[1.05rem] font-semibold tracking-tight">{s.title}</h3>

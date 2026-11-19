@@ -73,22 +73,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     >
                       <CarMedia vehicle={v} sizes="(min-width: 1280px) 420px, (min-width: 640px) 50vw, 100vw" className="aspect-[16/9] w-full" />
                       <div className="p-3.5">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">{vehicleName(v)}</p>
-                          <p className="text-[0.75rem] text-subtle">
-                            {v.year} · {v.registration}
-                          </p>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-medium decoration-white/30 underline-offset-4 group-hover:underline">{vehicleName(v)}</p>
+                            <p className="text-[0.75rem] text-subtle">
+                              {v.year} · {v.registration}
+                            </p>
+                          </div>
+                          <VehicleStatusBadge status={v.status} />
                         </div>
-                        <VehicleStatusBadge status={v.status} />
-                      </div>
-                      <div className="mt-2.5 flex items-center justify-between text-[0.78rem] text-muted">
-                        <BatteryReading voltage={v.battery.voltage} />
-                        <span className="tabular">{formatGBPCompact(latestValue(v))}</span>
-                      </div>
-                      <p className="mt-1.5 truncate text-[0.75rem] text-subtle">
-                        {v.location.name} · next check {relativeDays(v.nextCheckAt)}
-                      </p>
+                        <div className="mt-2.5 flex items-center justify-between text-[0.78rem] text-muted">
+                          <BatteryReading voltage={v.battery.voltage} />
+                          <span className="tabular">{formatGBPCompact(latestValue(v))}</span>
+                        </div>
+                        <p className="mt-1.5 truncate text-[0.75rem] text-subtle">
+                          {v.location.name} · next check {relativeDays(v.nextCheckAt)}
+                        </p>
                       </div>
                     </Link>
                   </li>

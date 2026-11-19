@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { CarArt } from "@/components/brand/car-art";
+import { CarMedia } from "@/components/brand/car-art";
 import { Logo } from "@/components/brand/logo";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
 import { PageHeader, TierBadge } from "@/components/console/ui";
@@ -51,31 +51,30 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
       <div className="no-print">
         <PageHeader
           back={{ href: "/console/reports", label: "Reports" }}
-          eyebrow="Monthly report"
-          title={client.name}
-          description="This is what the client receives. Internal notes are excluded."
+          title={`${client.name}, ${formatDate(new Date().toISOString(), { month: "long" })}`}
+          description="Exactly what the client receives. Internal notes are left out."
           actions={<PrintButton />}
         />
       </div>
 
-      <article className="mx-auto max-w-4xl space-y-8 rounded-xl border border-border bg-surface p-6 sm:p-10 print:max-w-none print:rounded-none print:border-0 print:p-0">
+      <article className="glass mx-auto max-w-4xl space-y-10 rounded-[24px] p-6 sm:p-12 print:max-w-none print:rounded-none print:border-0 print:p-0">
         <header className="border-b border-border pb-8">
           <div className="flex items-start justify-between gap-4">
             <Logo href="/console" />
-            <p className="text-right text-xs text-subtle">
+            <p className="text-right text-[0.75rem] text-subtle">
               Private and confidential
               {client.preferences.nda ? <span className="block">Covered by NDA</span> : null}
             </p>
           </div>
           <p className="eyebrow mt-10">Collection report · {month}</p>
-          <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">{client.name}</h2>
+          <h2 className="mt-3 font-display text-4xl font-normal sm:text-5xl">{client.name}</h2>
           <p className="mt-2 text-sm text-muted">
             {formatDate(periodStart)} to {formatDate(now.toISOString())} · <TierBadge tier={client.tier} /> {TIERS[client.tier].cadence.toLowerCase()}
           </p>
         </header>
 
         <section>
-          <h3 className="font-display text-lg font-semibold">Summary</h3>
+          <h3 className="font-display text-[1.45rem] font-normal">Summary</h3>
           <p className="mt-2 text-sm text-muted">
             {vehicles.length === 0
               ? "No cars are currently on the account."
@@ -90,30 +89,28 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
               { label: "Checks this period", value: String(totalChecks) },
               { label: "Recorded spend", value: formatGBP(totalCost) },
             ].map((k) => (
-              <div key={k.label} className="rounded-lg border border-border bg-surface-2 p-3">
-                <dt className="text-xs text-subtle">{k.label}</dt>
-                <dd className="mt-1 font-display text-xl font-semibold tabular">{k.value}</dd>
+              <div key={k.label} className="rounded-xl border border-border bg-surface-2 p-4">
+                <dt className="text-[0.75rem] text-subtle">{k.label}</dt>
+                <dd className="mt-1.5 font-display text-2xl tabular">{k.value}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <section>
-          <h3 className="font-display text-lg font-semibold">Car by car</h3>
+          <h3 className="font-display text-[1.45rem] font-normal">Car by car</h3>
           <div className="mt-4 space-y-4">
             {cars.map(({ v, checks, work, cost, lastCheck }) => {
               const trend = valueTrend(v);
               return (
-                <div key={v.id} className="break-inside-avoid rounded-lg border border-border p-4">
+                <div key={v.id} className="break-inside-avoid rounded-xl border border-border p-4">
                   <div className="flex flex-col gap-4 sm:flex-row">
-                    <div className="w-full shrink-0 sm:w-40">
-                      <CarArt bodyStyle={v.bodyStyle} paint={v.paintHex} title={vehicleName(v)} />
-                    </div>
+                    <CarMedia vehicle={v} sizes="(min-width: 640px) 176px, 100vw" className="aspect-[16/10] w-full shrink-0 rounded-lg sm:w-44" />
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div>
                           <p className="font-medium">{vehicleFullName(v)}</p>
-                          <p className="text-xs text-subtle">
+                          <p className="text-[0.75rem] text-subtle">
                             {v.registration} · {v.colour} · {formatMiles(v.mileage)}
                           </p>
                         </div>
@@ -122,24 +119,24 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
                       {v.statusNote ? <p className="mt-2 text-sm text-muted">{v.statusNote}</p> : null}
                       <dl className="mt-3 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
                         <div>
-                          <dt className="text-xs text-subtle">Battery</dt>
+                          <dt className="text-[0.75rem] text-subtle">Battery</dt>
                           <dd>
                             <BatteryReading voltage={v.battery.voltage} />
                           </dd>
                         </div>
                         <div>
-                          <dt className="text-xs text-subtle">Tyres</dt>
-                          <dd className={tyreDeviation(v) >= 1 ? "text-warning" : "text-success"}>{tyreDeviation(v) >= 1 ? "Adjust" : "On target"}</dd>
+                          <dt className="text-[0.75rem] text-subtle">Tyres</dt>
+                          <dd className={tyreDeviation(v) >= 1 ? "text-warning" : undefined}>{tyreDeviation(v) >= 1 ? "Adjust" : "On target"}</dd>
                         </div>
                         <div>
-                          <dt className="text-xs text-subtle">Checks</dt>
+                          <dt className="text-[0.75rem] text-subtle">Checks</dt>
                           <dd className="tabular">
                             {checks.length} this period
-                            {lastCheck ? <span className="block text-xs text-subtle">last {relativeDays(lastCheck.at)}</span> : null}
+                            {lastCheck ? <span className="block text-[0.75rem] text-subtle">last {relativeDays(lastCheck.at)}</span> : null}
                           </dd>
                         </div>
                         <div>
-                          <dt className="text-xs text-subtle">Value</dt>
+                          <dt className="text-[0.75rem] text-subtle">Value</dt>
                           <dd className="tabular">
                             {formatGBPCompact(latestValue(v))}
                             <span className={cn("ml-1 text-xs", trend >= 0 ? "text-success" : "text-danger")}>
@@ -150,7 +147,7 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
                         </div>
                       </dl>
                       <div className="mt-3 border-t border-border pt-3">
-                        <p className="text-xs text-subtle">Work completed{cost ? `, ${formatGBP(cost)}` : ""}</p>
+                        <p className="text-[0.75rem] text-subtle">Work completed{cost ? `, ${formatGBP(cost)}` : ""}</p>
                         {work.length ? (
                           <ul className="mt-1 space-y-1">
                             {work.map((w) => (
@@ -175,8 +172,8 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
 
         <section className="grid gap-8 sm:grid-cols-2">
           <div className="break-inside-avoid">
-            <h3 className="font-display text-lg font-semibold">Coming up</h3>
-            <p className="text-xs text-subtle">Next 90 days. We handle these, nothing for you to do unless we ask.</p>
+            <h3 className="font-display text-[1.45rem] font-normal">Coming up</h3>
+            <p className="text-[0.75rem] text-subtle">Next 90 days. We handle these, nothing for you to do unless we ask.</p>
             {due.length ? (
               <ul className="mt-3 divide-y divide-border">
                 {due.map((d) => {
@@ -187,7 +184,7 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
                         <p className="text-sm">
                           {d.kind}, {v ? vehicleName(v) : ""}
                         </p>
-                        {d.notes ? <p className="text-xs text-subtle">{d.notes}</p> : null}
+                        {d.notes ? <p className="text-[0.75rem] text-subtle">{d.notes}</p> : null}
                       </div>
                       <p className="shrink-0 text-sm tabular text-muted">{formatDate(d.dueDate, { day: "numeric", month: "short" })}</p>
                     </li>
@@ -199,8 +196,8 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
             )}
           </div>
           <div className="break-inside-avoid">
-            <h3 className="font-display text-lg font-semibold">Requests handled</h3>
-            <p className="text-xs text-subtle">Raised by you or your team this period.</p>
+            <h3 className="font-display text-[1.45rem] font-normal">Requests handled</h3>
+            <p className="text-[0.75rem] text-subtle">Raised by you or your team this period.</p>
             {handled.length ? (
               <ul className="mt-3 divide-y divide-border">
                 {handled.map((r) => {
@@ -209,7 +206,7 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
                     <li key={r.id} className="flex items-start justify-between gap-3 py-2">
                       <div>
                         <p className="text-sm">{r.title}</p>
-                        <p className="text-xs text-subtle">
+                        <p className="text-[0.75rem] text-subtle">
                           {REQUEST_TYPE_META[r.type].label} · {v ? vehicleName(v) : ""} · {r.createdBy}
                         </p>
                       </div>
@@ -224,7 +221,7 @@ export default async function ClientReportPage({ params }: { params: Promise<{ c
           </div>
         </section>
 
-        <footer className="border-t border-border pt-6 text-xs text-subtle">
+        <footer className="border-t border-border pt-6 text-[0.75rem] text-subtle">
           Prepared by Vehicle Focus Automotive Concierge. Questions about anything in this report: reply in The Garage or call +44 7797 738888.
         </footer>
       </article>
