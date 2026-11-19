@@ -1,42 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  CalendarClock,
-  CircleCheck,
-  CircleX,
-  ClipboardCheck,
-  FileText,
-  Gauge,
-  KeyRound,
-  MapPin,
-  Route,
-  Sparkles,
-  Truck,
-  Wrench,
-  Zap,
-} from "lucide-react";
-import { CarArt } from "@/components/brand/car-art";
+import { ArrowLeft, CircleCheck, CircleX, FileText, Route } from "lucide-react";
+import { CarMedia } from "@/components/brand/car-art";
 import { ValueChart } from "@/components/charts";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ButtonLink } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
-import { DOC_TONE, EmptyState, Plate, REQUEST_ICON, SectionHeader, ValueDelta } from "@/components/garage/bits";
+import { EmptyState, PaintLabel, PaneTitle, Plate, SectionHeader, SectionLink, StatusText, ValueDelta } from "@/components/garage/bits";
 import { HistoryTimeline } from "@/components/garage/history-timeline";
 import { TyreDiagram } from "@/components/garage/tyre-diagram";
 import { getDocuments, getDueItems, getHistory, getJobs, getRequests, getVehicle } from "@/lib/data/queries";
 import { REQUEST_STATUS_META, latestValue } from "@/lib/domain";
-import {
-  daysUntil,
-  formatDate,
-  formatDateTime,
-  formatDayDate,
-  formatGBP,
-  formatMiles,
-  relativeDays,
-  sizeLabel,
-} from "@/lib/format";
+import { daysUntil, formatDate, formatDateTime, formatDayDate, formatGBP, formatMiles, relativeDays, sizeLabel } from "@/lib/format";
 import { requireClient } from "@/lib/session";
 import { cn } from "@/lib/utils";
 import type { RequestType } from "@/lib/types";
@@ -57,8 +33,6 @@ const ACTIONS: { type: RequestType; label: string }[] = [
   { type: "service", label: "Book a service" },
   { type: "detailing", label: "Detailing" },
 ];
-
-const POWERTRAIN_LABEL = { petrol: "Petrol", hybrid: "Hybrid", electric: "Electric" } as const;
 
 export default async function CarPage({ params }: Props) {
   const { id } = await params;
@@ -84,238 +58,223 @@ export default async function CarPage({ params }: Props) {
 
   return (
     <div className="space-y-10">
-      <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text">
+      <Link
+        href="/garage"
+        className="glass-dark inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[0.85rem] text-white/75 transition-colors hover:text-white"
+      >
         <ArrowLeft className="size-4" aria-hidden />
         Collection
       </Link>
 
-      {/* Hero */}
-      <section className="grid items-center gap-8 lg:grid-cols-5">
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-b from-surface-2 to-bg px-6 pt-12 pb-6 lg:col-span-3">
-          <div className="absolute inset-0 spotlight" aria-hidden />
-          <div className="absolute inset-0 hairline-grid opacity-60" aria-hidden />
-          <CarArt
-            bodyStyle={v.bodyStyle}
-            paint={v.paintHex}
-            title={`${v.make} ${v.model} in ${v.colour}`}
-            className="relative mx-auto max-w-[560px]"
-          />
+      {/* Hero: the car, full width, with the facts in a glass strip overlapping its lower edge */}
+      <section>
+        <div className="relative h-[68vh] max-h-[640px] min-h-[440px] overflow-hidden rounded-[28px] border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
+          <CarMedia vehicle={v} priority sizes="(min-width: 1152px) 1152px, 100vw" className="absolute inset-0" />
+          <div className="photo-scrim absolute inset-0" aria-hidden />
+          <PaintLabel vehicle={v} className="top-[22%] text-3xl sm:text-4xl" />
+
+          <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-2 sm:inset-x-6 sm:top-6">
+            <VehicleStatusBadge status={v.status} />
+            <Plate reg={v.registration} className="text-[0.75rem]" />
+          </div>
+
+          <div className="absolute inset-x-0 bottom-0 px-5 pb-24 sm:px-8 sm:pb-24">
+            <p className="text-[0.9rem] text-white/65">
+              {v.year} {v.make}
+            </p>
+            <h1 className="mt-1 font-display text-5xl leading-[0.98] font-normal text-balance sm:text-7xl">{v.model}</h1>
+            <p className="mt-2 text-white/65">
+              {v.variant ? `${v.variant} · ` : ""}
+              {v.colour}
+            </p>
+          </div>
         </div>
 
-        <div className="lg:col-span-2">
-          <p className="eyebrow">
-            {v.year} {v.make}
-          </p>
-          <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">{v.model}</h1>
-          <p className="mt-1 text-muted">
-            {v.variant ? `${v.variant} · ` : ""}
-            {v.colour}
-          </p>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <VehicleStatusBadge status={v.status} />
-            <Plate reg={v.registration} />
-          </div>
-          {v.statusNote ? <p className="mt-4 text-sm leading-relaxed text-text/90">{v.statusNote}</p> : null}
-
-          <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-border pt-5 text-sm">
-            <div className="col-span-2">
-              <dt className="flex items-center gap-1.5 text-xs text-subtle">
-                <MapPin className="size-3.5" aria-hidden /> Location
-              </dt>
-              <dd className="mt-0.5">{v.location.name}</dd>
+        <Card tone="dark" className="relative z-10 mx-3 -mt-16 rounded-[24px] p-5 sm:mx-6 sm:p-6">
+          {v.statusNote ? <p className="text-[0.95rem] leading-relaxed text-white/85">{v.statusNote}</p> : null}
+          <dl
+            className={cn(
+              "grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:grid-cols-4 [&>*]:min-w-0",
+              v.statusNote && "mt-4 border-t border-white/[0.08] pt-4",
+            )}
+          >
+            <div className="col-span-2 sm:col-span-1">
+              <dt className="text-[0.75rem] text-white/45">Location</dt>
+              <dd className="mt-0.5 truncate">{v.location.name}</dd>
             </div>
             <div>
-              <dt className="flex items-center gap-1.5 text-xs text-subtle">
-                <Gauge className="size-3.5" aria-hidden /> Mileage
-              </dt>
+              <dt className="text-[0.75rem] text-white/45">Mileage</dt>
               <dd className="mt-0.5 tabular">{formatMiles(v.mileage)}</dd>
             </div>
             <div>
-              <dt className="flex items-center gap-1.5 text-xs text-subtle">
-                <Zap className="size-3.5" aria-hidden /> Powertrain
-              </dt>
-              <dd className="mt-0.5">{POWERTRAIN_LABEL[v.powertrain]}</dd>
+              <dt className="text-[0.75rem] text-white/45">Battery</dt>
+              <dd className="mt-0.5">
+                <BatteryReading voltage={v.battery.voltage} />
+              </dd>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <dt className="text-[0.75rem] text-white/45">Next check</dt>
+              <dd className={cn("mt-0.5", checkDays < 0 && "text-warning")}>
+                {checkDays < 0 ? `Overdue, being arranged` : `${formatDayDate(v.nextCheckAt)}, ${relativeDays(v.nextCheckAt)}`}
+              </dd>
             </div>
           </dl>
+        </Card>
+
+        <div className="mt-5 flex flex-wrap gap-2 px-3 sm:px-6" aria-label="Ask for something for this car">
+          {ACTIONS.map((a) => (
+            <ButtonLink key={a.type} href={`/garage/requests/new?type=${a.type}&vehicle=${v.id}`} variant="secondary" className="h-11">
+              {a.label}
+            </ButtonLink>
+          ))}
         </div>
       </section>
 
-      {/* Request actions */}
-      <section aria-label="Request something for this car" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {ACTIONS.map((a) => {
-          const Icon = a.type === "ready" ? KeyRound : a.type === "relocation" ? Truck : a.type === "service" ? Wrench : Sparkles;
-          return (
-            <Link
-              key={a.type}
-              href={`/garage/requests/new?type=${a.type}&vehicle=${v.id}`}
-              className="flex items-center gap-3 rounded-lg border border-border bg-surface-2 px-3 py-3 text-sm font-medium transition-colors hover:border-gold/50"
-            >
-              <span className="grid size-8 shrink-0 place-items-center rounded-md bg-gold-soft text-gold">
-                <Icon className="size-4" aria-hidden />
-              </span>
-              {a.label}
-            </Link>
-          );
-        })}
-      </section>
-
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-8 lg:grid-cols-3 [&>*]:min-w-0">
         {/* Main column */}
         <div className="space-y-8 lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <div>
-                <p className="eyebrow mb-1.5">Latest readiness check</p>
-                <CardTitle className="text-lg">
-                  {latestCheck ? latestCheck.title : "Awaiting first check"}
-                </CardTitle>
-                {latestCheck ? (
-                  <p className="mt-1 text-xs text-muted">
-                    {formatDateTime(latestCheck.at)} · {latestCheck.by}
-                  </p>
-                ) : null}
-              </div>
-              <ClipboardCheck className="size-5 text-gold" aria-hidden />
-            </CardHeader>
-            <CardContent>
+          <section>
+            <SectionHeader title="Latest check" />
+            <Card className="rounded-[24px] p-5 sm:p-7">
               {latestCheck?.readings ? (
-                <div className="grid gap-8 md:grid-cols-[1fr_auto]">
-                  <TyreDiagram current={latestCheck.readings.tyres} target={v.tyres.target} unit={v.tyres.unit} />
-                  <ul className="space-y-3 text-sm md:min-w-44 md:border-l md:border-border md:pl-6">
-                    <li className="flex items-center justify-between gap-4">
-                      <span className="text-muted">Battery</span>
-                      <BatteryReading voltage={latestCheck.readings.batteryVoltage} />
-                    </li>
-                    <li className="flex items-center justify-between gap-4">
-                      <span className="text-muted">Odometer</span>
-                      <span className="tabular">{formatMiles(latestCheck.readings.mileage)}</span>
-                    </li>
-                    {(
-                      [
-                        ["Fluids", latestCheck.readings.fluidsOk],
-                        ["Exterior", latestCheck.readings.exteriorOk],
-                        ["Interior", latestCheck.readings.interiorOk],
-                      ] as const
-                    ).map(([label, ok]) => (
-                      <li key={label} className="flex items-center justify-between gap-4">
-                        <span className="text-muted">{label}</span>
-                        <span className={cn("inline-flex items-center gap-1.5", ok ? "text-success" : "text-warning")}>
-                          {ok ? <CircleCheck className="size-4" aria-hidden /> : <CircleX className="size-4" aria-hidden />}
-                          {ok ? "OK" : "Needs attention"}
-                        </span>
+                <>
+                  <p className="text-[0.82rem] text-white/50">
+                    {latestCheck.title} · {formatDateTime(latestCheck.at)} · {latestCheck.by}
+                  </p>
+                  <div className="mt-6 grid gap-8 md:grid-cols-[1fr_auto] [&>*]:min-w-0">
+                    <TyreDiagram current={latestCheck.readings.tyres} target={v.tyres.target} unit={v.tyres.unit} />
+                    <ul className="space-y-3.5 text-sm md:min-w-48 md:border-l md:border-white/[0.08] md:pl-7">
+                      <li className="flex items-center justify-between gap-4">
+                        <span className="text-white/55">Battery</span>
+                        <BatteryReading voltage={latestCheck.readings.batteryVoltage} />
                       </li>
-                    ))}
-                    <li className="flex items-center justify-between gap-4">
-                      <span className="text-muted">Conditioner</span>
-                      <span>{v.battery.onConditioner ? "Connected" : "Not connected"}</span>
-                    </li>
-                  </ul>
-                </div>
+                      <li className="flex items-center justify-between gap-4">
+                        <span className="text-white/55">Odometer</span>
+                        <span className="tabular">{formatMiles(latestCheck.readings.mileage)}</span>
+                      </li>
+                      {(
+                        [
+                          ["Fluids", latestCheck.readings.fluidsOk],
+                          ["Exterior", latestCheck.readings.exteriorOk],
+                          ["Interior", latestCheck.readings.interiorOk],
+                        ] as const
+                      ).map(([label, ok]) => (
+                        <li key={label} className="flex items-center justify-between gap-4">
+                          <span className="text-white/55">{label}</span>
+                          <span className={cn("inline-flex items-center gap-1.5", ok ? "text-white" : "text-warning")}>
+                            {ok ? <CircleCheck className="size-4 text-success" aria-hidden /> : <CircleX className="size-4" aria-hidden />}
+                            {ok ? "OK" : "Needs attention"}
+                          </span>
+                        </li>
+                      ))}
+                      <li className="flex items-center justify-between gap-4">
+                        <span className="text-white/55">Conditioner</span>
+                        <span>{v.battery.onConditioner ? "Connected" : "Not connected"}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  {latestCheck.detail ? (
+                    <p className="glass-inset mt-7 rounded-2xl px-4 py-3 text-sm leading-relaxed text-white/70">{latestCheck.detail}</p>
+                  ) : null}
+                </>
               ) : (
-                <p className="text-sm text-muted">Readings appear here after our first visit.</p>
+                <p className="text-sm text-white/60">Readings appear here after our first visit.</p>
               )}
-              {latestCheck?.detail ? (
-                <p className="mt-6 rounded-lg border border-border bg-surface-2 p-3 text-sm text-muted">{latestCheck.detail}</p>
-              ) : null}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div>
-                <p className="eyebrow mb-1.5">Valuation</p>
-                <CardTitle className="text-lg tabular">{formatGBP(current)}</CardTitle>
-                <p className="mt-1 text-xs text-muted">
-                  <ValueDelta from={v.purchasePrice} to={current} className="text-xs" /> since purchase in{" "}
-                  {formatDate(v.purchaseDate, { month: "long", year: "numeric" })}
-                </p>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ValueChart points={v.valuations} purchasePrice={v.purchasePrice} />
-              <p className="mt-3 text-xs leading-relaxed text-subtle">
-                Guidance only, not a formal valuation.
-                {lastValuation ? ` Last reviewed ${formatDate(lastValuation.date)} (${lastValuation.source}).` : ""} Ask us for a formal
-                report for insurance or sale.
-              </p>
-            </CardContent>
-          </Card>
+            </Card>
+          </section>
 
           <section>
-            <SectionHeader eyebrow="Provenance record" title="Service history" />
+            <SectionHeader title="Value" />
+            <Card className="rounded-[24px] p-5 sm:p-7">
+              <p className="font-display text-4xl leading-none font-normal tabular">{formatGBP(current)}</p>
+              <p className="mt-2 text-[0.82rem] text-white/50">
+                <ValueDelta from={v.purchasePrice} to={current} className="text-[0.82rem]" /> since purchase in{" "}
+                {formatDate(v.purchaseDate, { month: "long", year: "numeric" })}
+              </p>
+              <div className="mt-6">
+                <ValueChart points={v.valuations} purchasePrice={v.purchasePrice} />
+              </div>
+              <p className="mt-4 text-[0.78rem] leading-relaxed text-white/40">
+                Guidance only, not a formal valuation.
+                {lastValuation ? ` Last reviewed ${formatDate(lastValuation.date)} (${lastValuation.source}).` : ""} Ask us for a formal report for
+                insurance or sale.
+              </p>
+            </Card>
+          </section>
+
+          <section>
+            <SectionHeader title="History" />
             {history.length ? (
-              <Card className="p-5">
+              <Card className="rounded-[24px] p-5 sm:p-7">
                 <HistoryTimeline events={history} />
               </Card>
             ) : (
               <EmptyState icon={Route} title="No history recorded yet" body="Every check, service and movement we carry out will be logged here." />
             )}
+            <p className="mt-3 px-1 text-[0.8rem] text-white/40">The complete record is part of the car&apos;s value. It comes with you if you sell.</p>
           </section>
         </div>
 
         {/* Side column */}
-        <aside className="space-y-6">
-          <Card className="p-5">
-            <p className="eyebrow mb-1.5">Next check</p>
-            <p className="font-display text-lg font-semibold">{formatDayDate(v.nextCheckAt)}</p>
-            <p className={cn("mt-1 text-sm", checkDays < 0 ? "text-warning" : "text-muted")}>
-              {checkDays < 0 ? `Overdue by ${Math.abs(checkDays)} days, we're arranging it` : `${relativeDays(v.nextCheckAt)}`} · checked{" "}
+        <aside className="space-y-4 lg:pt-12">
+          <Card className="rounded-[22px] p-5">
+            <PaneTitle>Next visit</PaneTitle>
+            <p className="mt-2 font-display text-2xl leading-tight font-normal">{formatDayDate(v.nextCheckAt)}</p>
+            <p className={cn("mt-1 text-[0.82rem]", checkDays < 0 ? "text-warning" : "text-white/50")}>
+              {checkDays < 0 ? `Overdue by ${Math.abs(checkDays)} days, we're arranging it` : relativeDays(v.nextCheckAt)} · checked{" "}
               {v.checkFrequency}
             </p>
             {jobs.length ? (
-              <ul className="mt-4 space-y-2 border-t border-border pt-4">
+              <ul className="mt-4 space-y-2.5 border-t border-white/[0.08] pt-4">
                 {jobs.slice(0, 3).map((j) => (
-                  <li key={j.id} className="flex items-start gap-2 text-sm">
-                    <CalendarClock className="mt-0.5 size-4 shrink-0 text-subtle" aria-hidden />
-                    <span>
-                      {j.title}
-                      <span className="block text-xs text-muted">{formatDateTime(j.start)}</span>
-                    </span>
+                  <li key={j.id} className="text-sm">
+                    {j.title}
+                    <span className="block text-[0.78rem] text-white/45">{formatDateTime(j.start)}</span>
                   </li>
                 ))}
               </ul>
             ) : null}
           </Card>
 
-          <Card className="p-5">
-            <p className="eyebrow mb-3">Deadlines</p>
+          <Card className="rounded-[22px] p-5">
+            <PaneTitle>Deadlines</PaneTitle>
             {due.length ? (
-              <ul className="space-y-3">
+              <ul className="mt-3 space-y-3">
                 {due.map((d) => {
                   const days = daysUntil(d.dueDate);
                   return (
                     <li key={d.id} className="flex items-start justify-between gap-3 text-sm">
-                      <span>
+                      <span className="min-w-0">
                         <span className="font-medium">{d.kind}</span>
-                        {d.notes ? <span className="block text-xs text-muted">{d.notes}</span> : null}
+                        {d.notes ? <span className="block text-[0.78rem] text-white/45">{d.notes}</span> : null}
                       </span>
-                      <Badge tone={days < 0 ? "warning" : days <= 30 ? "gold" : "neutral"}>
+                      <span className={cn("shrink-0 tabular text-[0.82rem]", days < 0 ? "text-warning" : "text-white/70")}>
                         {days < 0 ? "Overdue" : formatDate(d.dueDate, { day: "numeric", month: "short" })}
-                      </Badge>
+                      </span>
                     </li>
                   );
                 })}
               </ul>
             ) : (
-              <p className="text-sm text-muted">No deadlines on file.</p>
+              <p className="mt-2 text-sm text-white/50">No deadlines on file.</p>
             )}
           </Card>
 
           {openRequests.length ? (
-            <Card className="p-5">
-              <p className="eyebrow mb-3">Open requests</p>
-              <ul className="space-y-3">
+            <Card className="rounded-[22px] p-5">
+              <PaneTitle>Open requests</PaneTitle>
+              <ul className="mt-3 space-y-3">
                 {openRequests.map((r) => {
-                  const Icon = REQUEST_ICON[r.type];
                   const status = REQUEST_STATUS_META[r.status];
                   return (
-                    <li key={r.id} className="flex items-start gap-2.5 text-sm">
-                      <Icon className="mt-0.5 size-4 shrink-0 text-subtle" aria-hidden />
-                      <span className="min-w-0 flex-1">
+                    <li key={r.id} className="flex items-start justify-between gap-3 text-sm">
+                      <span className="min-w-0">
                         {r.title}
-                        <span className="block text-xs text-muted">{formatDateTime(r.when)}</span>
+                        <span className="block text-[0.78rem] text-white/45">{formatDateTime(r.when)}</span>
                       </span>
-                      <Badge tone={status.tone}>{status.label}</Badge>
+                      <StatusText tone={status.tone} className="mt-0.5">
+                        {status.label}
+                      </StatusText>
                     </li>
                   );
                 })}
@@ -323,39 +282,36 @@ export default async function CarPage({ params }: Props) {
             </Card>
           ) : null}
 
-          <Card className="p-5">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="eyebrow">Documents</p>
-              <Link href="/garage/documents" className="text-xs text-muted hover:text-gold">
+          <Card className="rounded-[22px] p-5">
+            <div className="flex items-center justify-between gap-3">
+              <PaneTitle>Documents</PaneTitle>
+              <SectionLink href="/garage/documents" className="text-[0.78rem]">
                 Vault
-              </Link>
+              </SectionLink>
             </div>
             {docs.length ? (
-              <ul className="space-y-3">
+              <ul className="mt-3 space-y-3">
                 {docs.map((d) => (
                   <li key={d.id} className="flex items-start gap-2.5 text-sm">
-                    <FileText className="mt-0.5 size-4 shrink-0 text-subtle" aria-hidden />
+                    <FileText className="mt-0.5 size-4 shrink-0 text-white/35" aria-hidden />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate">{d.title}</span>
-                      <span className="block text-xs text-muted">
-                        {formatDate(d.date)} · {sizeLabel(d.sizeKb)}
+                      <span className="block text-[0.78rem] text-white/45">
+                        {d.kind} · {formatDate(d.date)} · {sizeLabel(d.sizeKb)}
                       </span>
                     </span>
-                    <Badge tone={DOC_TONE[d.kind]} className="hidden sm:inline-flex lg:hidden xl:inline-flex">
-                      {d.kind}
-                    </Badge>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-muted">No documents yet.</p>
+              <p className="mt-2 text-sm text-white/50">No documents yet.</p>
             )}
           </Card>
 
           {v.specialistNotes ? (
-            <Card className="border-gold/25 p-5">
-              <p className="eyebrow mb-2">Specialist notes</p>
-              <p className="text-sm leading-relaxed text-muted">{v.specialistNotes}</p>
+            <Card className="rounded-[22px] p-5">
+              <PaneTitle>From the specialist</PaneTitle>
+              <p className="mt-3 font-display text-lg leading-snug font-normal text-white/85 italic">{v.specialistNotes}</p>
             </Card>
           ) : null}
         </aside>

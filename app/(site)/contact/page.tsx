@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { FileDown, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
-import { Container, PageHero } from "@/components/site/section";
+import { BackdropLayer, Container, PhotoHero } from "@/components/site/section";
 import { LeadForm } from "@/components/site/lead-form";
 import { CONTACT } from "@/components/site/content";
 
@@ -12,72 +11,55 @@ export const metadata: Metadata = {
 };
 
 const CHANNELS = [
-  { icon: Phone, label: "Phone, 24/7", value: CONTACT.phone, href: CONTACT.phoneHref },
-  { icon: MessageCircle, label: "WhatsApp", value: "Message the same number", href: CONTACT.whatsappHref },
-  { icon: Mail, label: "Email", value: CONTACT.email, href: CONTACT.emailHref },
+  { label: "Phone, answered 24/7", value: CONTACT.phone, href: CONTACT.phoneHref },
+  { label: "WhatsApp", value: "Message the same number", href: CONTACT.whatsappHref },
+  { label: "Email", value: CONTACT.email, href: CONTACT.emailHref },
 ];
 
 export default function ContactPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Contact"
+      <PhotoHero
+        image="/images/showroom-green.jpg"
+        position="62% 50%"
         title="Request a call"
-        lead="Whether you own the cars, look after someone who does, or manage their wealth, every arrangement starts with a private conversation. Tell us a little and Lawrence will call you, usually the same day."
+        lead="Whether you own the cars, look after someone who does, or manage their wealth, it starts with a private conversation. Lawrence will call you, usually the same day."
       />
-      <section className="py-14 sm:py-20">
-        <Container className="grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
-          <div className="rounded-2xl border border-border bg-surface p-5 sm:p-8">
-            <h2 className="font-display text-xl font-semibold tracking-tight">Tell us about the cars</h2>
-            <p className="mt-1 mb-6 text-sm text-muted">Only your name and email are required.</p>
+      <section className="relative isolate overflow-hidden py-16 sm:py-24">
+        <BackdropLayer />
+        <Container className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8 [&>*]:min-w-0">
+          <div className="glass-dark rounded-[28px] p-6 sm:p-10">
+            <h2 className="font-display text-3xl font-normal">Tell us about the cars</h2>
+            <p className="mt-2 mb-8 text-sm text-white/50">Only your name and email are required.</p>
             <LeadForm source="Website" idPrefix="contact" />
           </div>
 
-          <aside className="grid content-start gap-5">
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <p className="eyebrow">Talk to us directly</p>
-              <ul className="mt-5 grid gap-4">
-                {CHANNELS.map((c) => {
-                  const Icon = c.icon;
-                  return (
-                    <li key={c.label}>
-                      <a href={c.href} className="group flex items-center gap-4">
-                        <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-gold-soft">
-                          <Icon className="size-4 text-gold" aria-hidden />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-xs text-subtle">{c.label}</span>
-                          <span className="block truncate text-sm font-medium text-text group-hover:text-gold">{c.value}</span>
-                        </span>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <div className="flex items-center gap-2">
-                <MapPin className="size-4 text-gold" aria-hidden />
-                <p className="font-display font-semibold">Where we work</p>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                Run from Jersey, covering the Channel Islands, with trusted associates throughout the UK and Europe. Shipping and logistics coordinated worldwide on request.
+          <aside className="glass-dark self-start rounded-[28px] p-6 sm:p-9">
+            <h2 className="text-sm font-medium text-white/50">Talk to us directly</h2>
+            <ul className="mt-4 divide-y divide-white/[0.08]">
+              {CHANNELS.map((c) => (
+                <li key={c.label}>
+                  <a href={c.href} className="group block py-4">
+                    <span className="block text-xs text-white/45">{c.label}</span>
+                    <span className="mt-1 block truncate text-lg text-white group-hover:text-white/80">{c.value}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 border-t border-white/[0.08] pt-6">
+              <h3 className="font-semibold">Where we work</h3>
+              <p className="mt-2 text-sm leading-relaxed text-white/60">
+                Run from Jersey, covering the Channel Islands, with associates across the UK and Europe. Worldwide shipping on request.
               </p>
             </div>
-
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <div className="flex items-center gap-2">
-                <FileDown className="size-4 text-gold" aria-hidden />
-                <p className="font-display font-semibold">Prefer to read first?</p>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                Our brochure covers every service, how onboarding works and who you&apos;ll be dealing with. Ask for a copy in the form and we&apos;ll send it over, or request one on WhatsApp.
+            <div className="mt-6 border-t border-white/[0.08] pt-6">
+              <h3 className="font-semibold">Prefer to read first?</h3>
+              <p className="mt-2 text-sm leading-relaxed text-white/60">
+                Our brochure covers every service and how onboarding works. Ask for a copy in the form or on WhatsApp.
               </p>
             </div>
-
-            <p className="px-1 text-xs leading-relaxed text-subtle">
-              Discretion is not an add-on. NDAs are offered as standard and every arrangement is private. Your details are used only to respond to your enquiry.
+            <p className="mt-8 text-xs leading-relaxed text-white/40">
+              NDAs are offered as standard and every arrangement is private. Your details are only used to respond to you.
             </p>
           </aside>
         </Container>

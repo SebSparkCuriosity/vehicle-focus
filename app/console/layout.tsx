@@ -21,13 +21,17 @@ export default async function ConsoleLayout({ children }: { children: React.Reac
 
   const account = (
     <div className="flex items-center gap-3">
-      <Initials initials={member?.initials ?? "VF"} className="size-8 text-xs" />
+      <Initials initials={member?.initials ?? "VF"} className="size-9 text-xs" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{member?.name ?? "Vehicle Focus"}</p>
-        <p className="truncate text-xs text-subtle">{member?.role ?? "Team"}</p>
+        <p className="truncate text-[0.75rem] text-subtle">{member?.role ?? "Team"}</p>
       </div>
       <form action={signOut}>
-        <button className="grid size-8 place-items-center rounded-md text-subtle hover:bg-surface-2 hover:text-text" aria-label="Sign out" title="Sign out">
+        <button
+          className="grid size-8 place-items-center rounded-full text-subtle transition-colors hover:bg-white/[0.07] hover:text-text"
+          aria-label="Sign out"
+          title="Sign out"
+        >
           <LogOut className="size-4" />
         </button>
       </form>
@@ -35,21 +39,25 @@ export default async function ConsoleLayout({ children }: { children: React.Reac
   );
 
   return (
-    <div className="flex min-h-screen w-full">
-      <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-surface/40 lg:flex">
-        <div className="flex h-16 items-center px-5">
-          <Logo href="/console" />
+    <div className="relative flex min-h-screen w-full">
+      <div className="app-backdrop" aria-hidden />
+
+      <aside className="no-print sticky top-0 hidden h-screen w-[17rem] shrink-0 p-3 lg:block">
+        <div className="glass-dark flex h-full flex-col rounded-[24px]">
+          <div className="flex h-[4.5rem] items-center px-6">
+            <Logo href="/console" />
+          </div>
+          <div className="flex-1 overflow-y-auto px-3">
+            <SidebarNav badges={badges} />
+          </div>
+          <div className="mx-4 h-px bg-white/[0.07]" aria-hidden />
+          <div className="p-4">{account}</div>
         </div>
-        <div className="px-3">
-          <p className="mb-2 px-2.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-subtle">Operations</p>
-          <SidebarNav badges={badges} />
-        </div>
-        <div className="mt-auto border-t border-border p-4">{account}</div>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
         <MobileNav badges={badges} footer={account} />
-        <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="mx-auto w-full max-w-[1360px] flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">{children}</main>
       </div>
     </div>
   );

@@ -1,19 +1,18 @@
 import { Inbox } from "lucide-react";
-import { EmptyState, PageHeader } from "@/components/console/ui";
+import { EmptyState, Lane, PageHeader } from "@/components/console/ui";
 import { RequestCard } from "@/components/console/rows";
 import { getLookups } from "@/components/console/lookups";
 import { getRequests } from "@/lib/data/queries";
 import { REQUEST_STATUS_META } from "@/lib/domain";
-import { cn } from "@/lib/utils";
 import type { RequestStatus } from "@/lib/types";
 
 export const metadata = { title: "Requests" };
 
-const COLUMNS: { status: RequestStatus; hint: string; accent: string }[] = [
-  { status: "new", hint: "Review, quote and schedule", accent: "bg-gold" },
-  { status: "scheduled", hint: "Booked, with a job on the schedule", accent: "bg-info" },
-  { status: "in-progress", hint: "Under way right now", accent: "bg-warning" },
-  { status: "done", hint: "Completed and on the record", accent: "bg-success" },
+const COLUMNS: { status: RequestStatus; hint: string }[] = [
+  { status: "new", hint: "Review, quote and schedule" },
+  { status: "scheduled", hint: "Booked, with a job on the schedule" },
+  { status: "in-progress", hint: "Under way right now" },
+  { status: "done", hint: "Completed and on the record" },
 ];
 
 export default async function RequestsPage() {
@@ -42,9 +41,8 @@ export default async function RequestsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Requests"
-        title="Request board"
-        description="Everything clients, their assistants and advisers have asked for through The Garage. New requests need a time, a person and, where relevant, a quote."
+        title="Requests"
+        description="Everything clients and their assistants have asked for. New requests need a time, a person and, where relevant, a quote."
       />
 
       <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
@@ -52,29 +50,25 @@ export default async function RequestsPage() {
           {COLUMNS.map((col) => {
             const list = sortFor(col.status);
             return (
-              <section key={col.status} className="flex flex-col rounded-xl border border-border bg-surface/60">
-                <header className="border-b border-border px-3 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className={cn("size-2 rounded-full", col.accent)} aria-hidden />
-                    <h2 className="font-display text-sm font-semibold">{REQUEST_STATUS_META[col.status].label}</h2>
-                    <span className="ml-auto rounded-full bg-surface-3 px-2 text-xs text-muted tabular">{list.length}</span>
-                  </div>
-                  <p className="mt-1 text-[0.7rem] text-subtle">{col.hint}</p>
-                </header>
-                <div className="flex flex-1 flex-col gap-2.5 p-2.5">
-                  {list.length ? list.map((r) => card(r.id)) : <EmptyState icon={Inbox} title="Empty" />}
-                </div>
-              </section>
+              <Lane
+                key={col.status}
+                title={REQUEST_STATUS_META[col.status].label}
+                hint={col.hint}
+                count={list.length}
+                tone={REQUEST_STATUS_META[col.status].tone}
+              >
+                {list.length ? list.map((r) => card(r.id)) : <EmptyState icon={Inbox} title="Nothing here" />}
+              </Lane>
             );
           })}
         </div>
       </div>
 
-      <details className="mt-6 rounded-xl border border-border bg-surface">
-        <summary className="cursor-pointer px-4 py-3 text-sm text-muted hover:text-text">
-          Cancelled requests <span className="tabular">({cancelled.length})</span>
+      <details className="glass mt-6 rounded-2xl">
+        <summary className="cursor-pointer px-5 py-3.5 text-sm text-muted transition-colors hover:text-text">
+          Cancelled <span className="text-subtle tabular">{cancelled.length}</span>
         </summary>
-        <div className="grid gap-2.5 border-t border-border p-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-2.5 border-t border-white/[0.07] p-3 sm:grid-cols-2 lg:grid-cols-3">
           {cancelled.length ? cancelled.map((r) => card(r.id, true)) : <p className="text-sm text-subtle">None cancelled.</p>}
         </div>
       </details>

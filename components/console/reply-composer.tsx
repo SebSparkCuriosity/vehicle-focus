@@ -15,7 +15,7 @@ export function ReplyComposer({ clientId, clientName }: { clientId: string; clie
   }, [state]);
 
   return (
-    <form ref={ref} action={action} className="border-t border-border p-3">
+    <form ref={ref} action={action} className="border-t border-white/[0.07] p-4">
       <input type="hidden" name="clientId" value={clientId} />
       <label htmlFor="reply-body" className="sr-only">
         Reply to {clientName}

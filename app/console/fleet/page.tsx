@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Car, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/form";
-import { CarArt } from "@/components/brand/car-art";
+import { CarMedia } from "@/components/brand/car-art";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
-import { EmptyState, PageHeader, TableWrap, td, th } from "@/components/console/ui";
+import { EmptyState, PageHeader, TableWrap, td, th, tr } from "@/components/console/ui";
 import { getLookups } from "@/components/console/lookups";
 import { STATUS_META, isCheckOverdue, latestValue, tyreDeviation, vehicleName } from "@/lib/domain";
 import { formatGBPCompact, relativeDays } from "@/lib/format";
@@ -46,35 +46,37 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
   return (
     <>
       <PageHeader
-        eyebrow="Fleet"
-        title="Every car under care"
+        title="Fleet"
         description={`${rows.length} of ${lookups.vehicles.length} cars shown, worth about ${formatGBPCompact(totalValue)} on latest valuations.`}
       />
 
       <div className="mb-4 flex flex-wrap gap-2" aria-label="Quick status filters">
         <Link
           href="/console/fleet"
-          className={cn("rounded-full border px-3 py-1 text-xs transition-colors", !filtered ? "border-gold/50 bg-gold-soft text-gold" : "border-border text-muted hover:text-text")}
+          className={cn(
+            "rounded-full border px-3.5 py-1.5 text-[0.78rem] transition-colors",
+            !filtered ? "border-white/25 bg-white/[0.1] text-text" : "border-white/10 text-muted hover:border-white/20 hover:text-text",
+          )}
         >
-          All <span className="tabular">{lookups.vehicles.length}</span>
+          All <span className="ml-0.5 text-subtle tabular">{lookups.vehicles.length}</span>
         </Link>
         {(Object.keys(STATUS_META) as VehicleStatus[]).map((s) => (
           <Link
             key={s}
             href={`/console/fleet?status=${s}`}
             className={cn(
-              "rounded-full border px-3 py-1 text-xs transition-colors",
-              status === s ? "border-gold/50 bg-gold-soft text-gold" : "border-border text-muted hover:text-text",
+              "rounded-full border px-3.5 py-1.5 text-[0.78rem] transition-colors",
+              status === s ? "border-white/25 bg-white/[0.1] text-text" : "border-white/10 text-muted hover:border-white/20 hover:text-text",
             )}
           >
-            {STATUS_META[s].label} <span className="tabular">{counts[s]}</span>
+            {STATUS_META[s].label} <span className="ml-0.5 text-subtle tabular">{counts[s]}</span>
           </Link>
         ))}
       </div>
 
-      <form method="get" className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-border bg-surface p-3">
+      <form method="get" className="glass mb-5 flex flex-wrap items-end gap-3 rounded-2xl p-4">
         <div className="min-w-40 flex-1 sm:flex-none">
-          <label htmlFor="status" className="mb-1 block text-xs text-subtle">
+          <label htmlFor="status" className="mb-1.5 block text-[0.75rem] text-subtle">
             Status
           </label>
           <Select id="status" name="status" defaultValue={status ?? ""}>
@@ -87,7 +89,7 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
           </Select>
         </div>
         <div className="min-w-40 flex-1 sm:flex-none">
-          <label htmlFor="client" className="mb-1 block text-xs text-subtle">
+          <label htmlFor="client" className="mb-1.5 block text-[0.75rem] text-subtle">
             Client
           </label>
           <Select id="client" name="client" defaultValue={clientId ?? ""}>
@@ -100,7 +102,7 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
           </Select>
         </div>
         <div className="min-w-40 flex-1 sm:flex-none">
-          <label htmlFor="loc" className="mb-1 block text-xs text-subtle">
+          <label htmlFor="loc" className="mb-1.5 block text-[0.75rem] text-subtle">
             Location
           </label>
           <Select id="loc" name="loc" defaultValue={loc ?? ""}>
@@ -116,7 +118,7 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
           <Filter /> Apply
         </Button>
         {filtered ? (
-          <Link href="/console/fleet" className="px-2 py-2 text-xs text-muted hover:text-text">
+          <Link href="/console/fleet" className="px-2 py-2.5 text-[0.8rem] text-muted underline-offset-4 hover:text-text hover:underline">
             Clear
           </Link>
         ) : null}
@@ -125,7 +127,7 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
       {rows.length ? (
         <TableWrap>
           <table className="w-full min-w-[1040px]">
-            <thead className="border-b border-border">
+            <thead>
               <tr>
                 <th className={th}>Car</th>
                 <th className={th}>Client</th>
@@ -138,21 +140,19 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
                 <th className={cn(th, "text-right")}>Value</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody>
               {rows.map((v) => {
                 const client = lookups.client.get(v.clientId);
                 const overdue = isCheckOverdue(v);
                 const off = tyreDeviation(v);
                 return (
-                  <tr key={v.id} className="transition-colors hover:bg-surface-2/60">
+                  <tr key={v.id} className={tr}>
                     <td className={td}>
                       <Link href={`/console/fleet/${v.id}`} className="group flex items-center gap-3">
-                        <span className="w-16 shrink-0">
-                          <CarArt bodyStyle={v.bodyStyle} paint={v.paintHex} title={vehicleName(v)} />
-                        </span>
+                        <CarMedia vehicle={v} sizes="56px" className="h-10 w-14 shrink-0 rounded-lg ring-1 ring-white/10" />
                         <span>
-                          <span className="block font-medium group-hover:text-gold">{vehicleName(v)}</span>
-                          <span className="block text-xs text-subtle">
+                          <span className="block font-medium decoration-white/30 underline-offset-4 group-hover:underline">{vehicleName(v)}</span>
+                          <span className="block text-[0.75rem] text-subtle">
                             {v.year} · {v.registration}
                           </span>
                         </span>
@@ -173,7 +173,7 @@ export default async function FleetPage({ searchParams }: { searchParams: Promis
                       <BatteryReading voltage={v.battery.voltage} />
                     </td>
                     <td className={td}>
-                      {off >= 1 ? <span className="text-warning">{off} psi off</span> : <span className="text-success">On target</span>}
+                      {off >= 1 ? <span className="text-warning">{off} psi off</span> : <span className="text-muted">On target</span>}
                     </td>
                     <td className={cn(td, "text-muted")}>{relativeDays(v.lastCheckAt)}</td>
                     <td className={cn(td, overdue ? "font-medium text-danger" : "text-muted")}>

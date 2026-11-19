@@ -41,10 +41,10 @@ export function LeadForm({
 
   if (state?.ok) {
     return (
-      <div className={cn("rounded-xl border border-success/30 bg-success-soft p-6", className)} role="status">
+      <div className={cn("glass-inset rounded-2xl p-7", className)} role="status">
         <CheckCircle2 className="size-6 text-success" aria-hidden />
-        <p className="mt-3 font-display text-lg font-semibold">{successTitle}</p>
-        <p className="mt-1 text-sm text-muted">{state.message}</p>
+        <p className="mt-4 font-display text-3xl font-normal">{successTitle}</p>
+        <p className="mt-2 text-sm leading-relaxed text-white/65">{state.message}</p>
       </div>
     );
   }
@@ -99,7 +99,7 @@ export function LeadForm({
       ) : null}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-subtle">Private and confidential. We&apos;re happy to sign an NDA before you share details.</p>
+        <p className="text-xs leading-relaxed text-white/40">Private and confidential. Happy to sign an NDA before you share details.</p>
         <Button type="submit" size="lg" disabled={pending} className="sm:min-w-44">
           {pending ? <Loader2 className="animate-spin" aria-hidden /> : null}
           {pending ? "Sending" : submitLabel}

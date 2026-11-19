@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FileText, FolderLock, Lock, Upload } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { CarMedia } from "@/components/brand/car-art";
 import { Card } from "@/components/ui/card";
-import { DOC_TONE, EmptyState, Plate } from "@/components/garage/bits";
+import { EmptyState, PageTitle, Plate } from "@/components/garage/bits";
 import { getDocuments, getVehicles } from "@/lib/data/queries";
 import { vehicleName } from "@/lib/domain";
 import { formatDate, sizeLabel } from "@/lib/format";
@@ -17,62 +17,64 @@ export default async function DocumentsPage() {
   const groups = vehicles.map((v) => ({ vehicle: v, docs: docs.filter((d) => d.vehicleId === v.id) })).filter((g) => g.docs.length);
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="eyebrow">Document vault</p>
-          <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight">Every paper, in one place</h1>
-          <p className="mt-2 max-w-xl text-muted">
-            Registration, insurance, service records and condition reports for every car. Ready for a sale, an insurer or a valuer.
-          </p>
-        </div>
-        <div className="flex flex-col items-start gap-1.5 sm:items-end">
-          <button
-            type="button"
-            disabled
-            aria-disabled
-            className="inline-flex h-10 cursor-not-allowed items-center gap-2 rounded-md border border-dashed border-border-strong px-4 text-sm text-subtle"
-          >
-            <Upload className="size-4" aria-hidden />
-            Upload
-          </button>
-          <p className="text-xs text-subtle">Uploads go live with secure storage. Coming soon.</p>
-        </div>
-      </div>
-
-      <p className="flex items-center gap-2 text-sm text-muted">
-        <span className="tabular font-medium text-text">{docs.length}</span> documents across{" "}
-        <span className="tabular font-medium text-text">{groups.length}</span> {groups.length === 1 ? "car" : "cars"}
-      </p>
+    <div className="space-y-10">
+      <PageTitle
+        title="Documents"
+        intro={
+          <>
+            Registration, insurance, service records and condition reports, ready for a sale, an insurer or a valuer.{" "}
+            <span className="text-white/45">
+              {docs.length} {docs.length === 1 ? "file" : "files"} across {groups.length} {groups.length === 1 ? "car" : "cars"}.
+            </span>
+          </>
+        }
+        action={
+          <div className="flex flex-col items-start gap-1.5 sm:items-end">
+            <button
+              type="button"
+              disabled
+              aria-disabled
+              className="inline-flex h-11 cursor-not-allowed items-center gap-2 rounded-full border border-dashed border-white/20 px-5 text-sm text-white/45"
+            >
+              <Upload className="size-4" aria-hidden />
+              Upload
+            </button>
+            <p className="text-[0.75rem] text-white/40">Coming soon, with secure storage.</p>
+          </div>
+        }
+      />
 
       {groups.length ? (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {groups.map(({ vehicle: v, docs: list }) => (
-            <Card key={v.id} className="overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-surface-2/60 px-4 py-3 sm:px-5">
-                <Link href={`/garage/cars/${v.id}`} className="flex min-w-0 items-center gap-3 hover:text-gold">
-                  <span className="truncate font-display font-semibold">{vehicleName(v)}</span>
-                  <Plate reg={v.registration} />
-                </Link>
-                <span className="text-xs text-subtle">
-                  {list.length} {list.length === 1 ? "file" : "files"}
+            <Card key={v.id} className="overflow-hidden rounded-[24px]">
+              <Link
+                href={`/garage/cars/${v.id}`}
+                className="flex items-center gap-4 border-b border-white/[0.07] p-4 transition-colors hover:bg-white/[0.03] sm:px-5"
+              >
+                <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl border border-white/10">
+                  <CarMedia vehicle={v} sizes="56px" className="absolute inset-0" />
                 </span>
-              </div>
-              <ul className="divide-y divide-border">
-                {list.map((d) => (
-                  <li key={d.id} className="flex items-center gap-3 px-4 py-3 sm:px-5">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-surface-2 text-muted">
-                      <FileText className="size-4" aria-hidden />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{d.title}</p>
-                      <p className="text-xs text-muted">
-                        <span className="tabular">{formatDate(d.date)}</span> · {sizeLabel(d.sizeKb)}
-                      </p>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-display text-xl leading-tight font-normal">{vehicleName(v)}</span>
+                  <span className="mt-1 flex items-center gap-2 text-[0.78rem] text-white/45">
+                    <Plate reg={v.registration} />
+                    {list.length} {list.length === 1 ? "file" : "files"}
+                  </span>
+                </span>
+              </Link>
+              <ul>
+                {list.map((d, i) => (
+                  <li key={d.id} className={i > 0 ? "border-t border-white/[0.05]" : undefined}>
+                    <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5">
+                      <FileText className="size-4 shrink-0 text-white/35" aria-hidden />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[0.92rem]">{d.title}</p>
+                        <p className="text-[0.78rem] text-white/45">
+                          {d.kind} · <span className="tabular">{formatDate(d.date)}</span> · {sizeLabel(d.sizeKb)}
+                        </p>
+                      </div>
                     </div>
-                    <Badge tone={DOC_TONE[d.kind]} className="hidden sm:inline-flex">
-                      {d.kind}
-                    </Badge>
                   </li>
                 ))}
               </ul>
@@ -87,7 +89,7 @@ export default async function DocumentsPage() {
         />
       )}
 
-      <p className="flex items-start gap-2 text-xs leading-relaxed text-subtle">
+      <p className="flex items-start gap-2 px-1 text-[0.78rem] leading-relaxed text-white/45">
         <Lock className="mt-0.5 size-3.5 shrink-0" aria-hidden />
         Only you, your authorised contacts and the Vehicle Focus team can see these files.
       </p>

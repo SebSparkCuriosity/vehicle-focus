@@ -1,20 +1,9 @@
 import Link from "next/link";
-import {
-  CalendarClock,
-  Car,
-  ChevronRight,
-  ClipboardList,
-  KeyRound,
-  MessageCircle,
-  Route,
-  Truck,
-  Wrench,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { CalendarClock, Car, ClipboardList, Route } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CarCard } from "@/components/garage/car-card";
-import { EmptyState, REQUEST_ICON, SectionHeader, SectionLink, ValueDelta } from "@/components/garage/bits";
+import { EmptyState, SectionHeader, SectionLink, StatusText, ValueDelta } from "@/components/garage/bits";
 import { HistoryTimeline } from "@/components/garage/history-timeline";
 import {
   getClient,
@@ -38,10 +27,10 @@ function greeting(): string {
 }
 
 const QUICK_ACTIONS = [
-  { href: "/garage/requests/new?type=ready", label: "Have it ready", icon: KeyRound },
-  { href: "/garage/requests/new?type=relocation", label: "Move a car", icon: Truck },
-  { href: "/garage/requests/new?type=service", label: "Book a service", icon: Wrench },
-  { href: "/garage/messages", label: "Message us", icon: MessageCircle },
+  { href: "/garage/requests/new?type=ready", label: "Have it ready" },
+  { href: "/garage/requests/new?type=relocation", label: "Move a car" },
+  { href: "/garage/requests/new?type=service", label: "Book a service" },
+  { href: "/garage/messages", label: "Message us" },
 ];
 
 type ComingUp = { id: string; at: string; title: string; detail: string; kind: "job" | "due"; overdue?: boolean };
@@ -84,76 +73,73 @@ export default async function GarageDashboard() {
     })),
   ]
     .sort((a, b) => a.at.localeCompare(b.at))
-    .slice(0, 7);
+    .slice(0, 6);
 
   const nextDueCar = summary.nextDue ? carName(summary.nextDue.vehicleId) : undefined;
+  const allReady = summary.count > 0 && summary.ready === summary.count;
 
   return (
-    <div className="space-y-12">
-      {/* Greeting + summary */}
+    <div className="space-y-14">
+      {/* Greeting */}
       <section>
-        <p className="eyebrow">{client ? `${TIERS[client.tier].label} member` : "The Garage"}</p>
-        <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+        {client ? <p className="eyebrow">{TIERS[client.tier].label} member</p> : null}
+        <h1 className="mt-3 font-display text-[2.75rem] leading-[1.02] font-normal text-balance sm:text-6xl">
           {greeting()}, {client?.firstName}.
         </h1>
-        <p className="mt-2 max-w-xl text-muted">
-          {summary.ready === summary.count
-            ? `All ${summary.count} cars are ready to drive.`
-            : `${summary.ready} of ${summary.count} cars ready to drive. Here's where everything stands.`}
+        <p className="mt-3 text-lg text-white/65">
+          {summary.count === 0
+            ? "Your collection will appear here after the vehicle audit."
+            : allReady
+              ? `All ${summary.count} cars are ready to drive.`
+              : `${summary.ready} of ${summary.count} cars ready to drive.`}
         </p>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          <Card className="p-4">
-            <p className="text-xs text-muted">In the collection</p>
-            <p className="mt-1 font-display text-2xl font-semibold tabular">{summary.count}</p>
-            <p className="mt-1 text-xs text-subtle">{summary.ready} ready now</p>
-          </Card>
-          <Card className="p-4">
-            <p className="text-xs text-muted">Estimated value</p>
-            <p className="mt-1 font-display text-2xl font-semibold tabular">{formatGBPCompact(summary.totalValue)}</p>
-            <ValueDelta from={summary.totalPaid} to={summary.totalValue} className="mt-1 block text-xs" />
-          </Card>
-          <Card className="col-span-2 p-4">
-            <p className="text-xs text-muted">Next deadline</p>
+        {/* Collection summary: one pane, three figures */}
+        <Card className="mt-8 grid grid-cols-2 rounded-[26px] md:grid-cols-[1fr_1fr_1.4fr] [&>*]:min-w-0">
+          <div className="p-5 sm:p-6">
+            <p className="text-[0.78rem] text-white/50">In the collection</p>
+            <p className="mt-1.5 font-display text-4xl leading-none font-normal tabular">{summary.count}</p>
+            <p className="mt-2 text-[0.78rem] text-white/45">{summary.ready} ready now</p>
+          </div>
+          <div className="border-l border-white/[0.08] p-5 sm:p-6">
+            <p className="text-[0.78rem] text-white/50">Estimated value</p>
+            <p className="mt-1.5 font-display text-4xl leading-none font-normal tabular">{formatGBPCompact(summary.totalValue)}</p>
+            <ValueDelta from={summary.totalPaid} to={summary.totalValue} className="mt-2 block text-[0.78rem]" />
+          </div>
+          <div className="col-span-2 border-t border-white/[0.08] p-5 sm:p-6 md:col-span-1 md:border-t-0 md:border-l">
+            <p className="text-[0.78rem] text-white/50">Next deadline</p>
             {summary.nextDue ? (
               <>
-                <p className="mt-1 font-display text-lg font-semibold">
+                <p className="mt-1.5 truncate font-display text-2xl leading-tight font-normal">
                   {summary.nextDue.kind}
-                  <span className="font-normal text-muted"> · {nextDueCar}</span>
+                  <span className="text-white/50"> · {nextDueCar}</span>
                 </p>
-                <p className={cn("mt-1 text-xs", daysUntil(summary.nextDue.dueDate) < 0 ? "text-warning" : "text-subtle")}>
+                <p className={cn("mt-2 text-[0.78rem]", daysUntil(summary.nextDue.dueDate) < 0 ? "text-warning" : "text-white/45")}>
                   Due {relativeDays(summary.nextDue.dueDate)}, {formatDayDate(summary.nextDue.dueDate)}. We&apos;re on it.
                 </p>
               </>
             ) : (
-              <p className="mt-1 text-sm text-muted">Nothing due. Every deadline is covered.</p>
+              <p className="mt-2 text-sm text-white/60">Nothing due. Every deadline is covered.</p>
             )}
-          </Card>
-        </div>
+          </div>
+        </Card>
 
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {QUICK_ACTIONS.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={label}
-              href={href}
-              className="group flex items-center gap-3 rounded-lg border border-border bg-surface-2 px-3 py-3 text-sm transition-colors hover:border-gold/50"
-            >
-              <span className="grid size-8 shrink-0 place-items-center rounded-md bg-gold-soft text-gold">
-                <Icon className="size-4" aria-hidden />
-              </span>
-              <span className="font-medium">{label}</span>
-            </Link>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {QUICK_ACTIONS.map(({ href, label }) => (
+            <ButtonLink key={label} href={href} variant="secondary" className="h-11">
+              {label}
+            </ButtonLink>
           ))}
         </div>
       </section>
 
       {/* Cars */}
       <section>
-        <SectionHeader eyebrow="Your collection" title="Where every car is right now" />
+        <SectionHeader title="Your collection" />
         {vehicles.length ? (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {vehicles.map((v) => (
-              <CarCard key={v.id} vehicle={v} />
+          <div className="grid gap-4 md:grid-cols-2 [&>*]:min-w-0">
+            {vehicles.map((v, i) => (
+              <CarCard key={v.id} vehicle={v} priority={i < 2} />
             ))}
           </div>
         ) : (
@@ -161,7 +147,11 @@ export default async function GarageDashboard() {
             icon={Car}
             title="No cars on your account yet"
             body="Once we've completed your vehicle audit, each car appears here with its live status."
-            action={<ButtonLink href="/garage/messages" variant="secondary" size="sm">Message the team</ButtonLink>}
+            action={
+              <ButtonLink href="/garage/messages" variant="secondary" size="sm">
+                Message the team
+              </ButtonLink>
+            }
           />
         )}
       </section>
@@ -169,27 +159,33 @@ export default async function GarageDashboard() {
       <div className="grid gap-10 lg:grid-cols-5 [&>*]:min-w-0">
         {/* Coming up */}
         <section className="lg:col-span-3">
-          <SectionHeader eyebrow="Diary" title="Coming up" />
+          <SectionHeader title="Coming up" />
           {comingUp.length ? (
-            <Card>
-              <ul className="divide-y divide-border">
-                {comingUp.map((item) => (
-                  <li key={item.id} className="flex items-start gap-4 px-4 py-3.5">
-                    <div className="w-12 shrink-0 text-center">
-                      <p className="text-[0.68rem] tracking-wide text-subtle uppercase">
+            <Card className="rounded-[24px] p-2">
+              <ul>
+                {comingUp.map((item, i) => (
+                  <li
+                    key={item.id}
+                    className={cn("flex items-center gap-4 rounded-[18px] px-3 py-3", i > 0 && "border-t border-white/[0.06]")}
+                  >
+                    <div className="w-11 shrink-0 text-center">
+                      <p className="text-[0.68rem] tracking-[0.12em] text-white/45 uppercase">
                         {new Date(item.at).toLocaleDateString("en-GB", { month: "short" })}
                       </p>
-                      <p className="font-display text-xl font-semibold tabular">{new Date(item.at).getDate()}</p>
+                      <p className="font-display text-2xl leading-none font-normal tabular">{new Date(item.at).getDate()}</p>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium">{item.title}</p>
-                      <p className="mt-0.5 truncate text-xs text-muted">{item.detail}</p>
+                      <p className="truncate text-[0.92rem] font-medium">{item.title}</p>
+                      <p className="mt-0.5 truncate text-[0.78rem] text-white/50">{item.detail}</p>
                     </div>
-                    {item.kind === "due" ? (
-                      <Badge tone={item.overdue ? "warning" : "neutral"}>{item.overdue ? "Overdue" : "Deadline"}</Badge>
-                    ) : (
-                      <Badge tone="info">{relativeDays(item.at)}</Badge>
-                    )}
+                    <p
+                      className={cn(
+                        "shrink-0 text-right text-[0.75rem]",
+                        item.overdue ? "text-warning" : item.kind === "due" ? "text-white/45" : "text-white/70",
+                      )}
+                    >
+                      {item.overdue ? "Overdue" : item.kind === "due" ? "Deadline" : relativeDays(item.at)}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -201,39 +197,43 @@ export default async function GarageDashboard() {
 
         {/* Open requests */}
         <section className="lg:col-span-2">
-          <SectionHeader eyebrow="Requests" title="In hand" action={<SectionLink href="/garage/requests">All requests</SectionLink>} />
+          <SectionHeader title="In hand" action={<SectionLink href="/garage/requests">All requests</SectionLink>} />
           {openRequests.length ? (
-            <ul className="space-y-2">
-              {openRequests.slice(0, 4).map((r) => {
-                const Icon = REQUEST_ICON[r.type];
-                const status = REQUEST_STATUS_META[r.status];
-                return (
-                  <li key={r.id}>
-                    <Link
-                      href="/garage/requests"
-                      className="flex items-start gap-3 rounded-lg border border-border bg-surface p-3 transition-colors hover:border-border-strong"
-                    >
-                      <span className="grid size-8 shrink-0 place-items-center rounded-md bg-surface-2 text-muted">
-                        <Icon className="size-4" aria-hidden />
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium">{r.title}</span>
-                        <span className="block truncate text-xs text-muted">
-                          {REQUEST_TYPE_META[r.type].label} · {formatDateTime(r.when)}
+            <Card className="rounded-[24px] p-2">
+              <ul>
+                {openRequests.slice(0, 4).map((r, i) => {
+                  const status = REQUEST_STATUS_META[r.status];
+                  return (
+                    <li key={r.id} className={cn(i > 0 && "border-t border-white/[0.06]")}>
+                      <Link
+                        href="/garage/requests"
+                        className="flex items-start gap-3 rounded-[18px] px-3 py-3 transition-colors hover:bg-white/[0.04]"
+                      >
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[0.92rem] font-medium">{r.title}</span>
+                          <span className="mt-0.5 block truncate text-[0.78rem] text-white/50">
+                            {REQUEST_TYPE_META[r.type].label} · {formatDateTime(r.when)}
+                          </span>
                         </span>
-                      </span>
-                      <Badge tone={status.tone}>{status.label}</Badge>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+                        <StatusText tone={status.tone} className="mt-0.5">
+                          {status.label}
+                        </StatusText>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
           ) : (
             <EmptyState
               icon={ClipboardList}
               title="Nothing open"
-              body="Need a car ready, moved or serviced? Raise it here and we'll confirm."
-              action={<ButtonLink href="/garage/requests/new" size="sm">New request</ButtonLink>}
+              body="Need a car ready, moved or serviced? Ask here and we'll confirm."
+              action={
+                <ButtonLink href="/garage/requests/new" size="sm">
+                  New request
+                </ButtonLink>
+              }
             />
           )}
         </section>
@@ -242,21 +242,17 @@ export default async function GarageDashboard() {
       {/* Activity */}
       <section>
         <SectionHeader
-          eyebrow="Recorded"
-          title="Recent activity"
+          title="Recently recorded"
           action={vehicles[0] ? <SectionLink href={`/garage/cars/${vehicles[0].id}`}>Full history per car</SectionLink> : null}
         />
         {activity.length ? (
-          <Card className="p-5">
+          <Card className="rounded-[24px] p-5 sm:p-7">
             <HistoryTimeline events={activity} carLabel={carName} />
           </Card>
         ) : (
           <EmptyState icon={Route} title="No activity yet" body="Every check, service and movement will be recorded here." />
         )}
-        <p className="mt-3 flex items-center gap-1.5 text-xs text-subtle">
-          <ChevronRight className="size-3" aria-hidden />
-          Every job we do is written down, so the history protects the value.
-        </p>
+        <p className="mt-4 px-1 text-[0.8rem] text-white/40">Every job we do is written down, so the history protects the value.</p>
       </section>
     </div>
   );

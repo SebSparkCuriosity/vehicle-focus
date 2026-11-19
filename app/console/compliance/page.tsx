@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CircleCheck, ShieldCheck } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { EmptyState, PageHeader, TableWrap, td, th } from "@/components/console/ui";
+import { Dot, EmptyState, KpiStrip, PageHeader, TableWrap, td, th, tr } from "@/components/console/ui";
 import { getLookups } from "@/components/console/lookups";
 import { getDueItems } from "@/lib/data/queries";
 import { isCheckOverdue, vehicleName } from "@/lib/domain";
@@ -27,37 +26,38 @@ export default async function CompliancePage() {
   return (
     <>
       <PageHeader
-        eyebrow="Compliance"
-        title="Deadlines across the fleet"
-        description="MOT, insurance, registration, servicing and warranties for every car, so paperwork is handled before it becomes urgent."
+        title="Compliance"
+        description="MOT, insurance, registration, servicing and warranties for every car, handled before they become urgent."
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <KpiStrip columns="grid-cols-2 md:grid-cols-4" label="Deadline figures" className="mb-6">
         {[
-          { label: "Overdue", value: overdue.length, tone: overdue.length ? "text-danger" : "text-text" },
-          { label: "Due in 30 days", value: soon.length, tone: soon.length ? "text-warning" : "text-text" },
-          { label: "Later", value: later.length, tone: "text-text" },
-          { label: "Overdue checks", value: overdueChecks.length, tone: overdueChecks.length ? "text-danger" : "text-text" },
+          { label: "Overdue", value: overdue.length, tone: overdue.length ? "text-danger" : "" },
+          { label: "Due in 30 days", value: soon.length, tone: soon.length ? "text-warning" : "" },
+          { label: "Later", value: later.length, tone: "" },
+          { label: "Overdue checks", value: overdueChecks.length, tone: overdueChecks.length ? "text-danger" : "" },
         ].map((k) => (
-          <div key={k.label} className="rounded-xl border border-border bg-surface p-4">
-            <p className="text-xs text-muted">{k.label}</p>
-            <p className={cn("mt-1 font-display text-2xl font-semibold tabular", k.tone)}>{k.value}</p>
+          <div key={k.label} className="px-5 py-4">
+            <p className="text-[0.78rem] text-muted">{k.label}</p>
+            <p className={cn("mt-1.5 font-display text-[1.9rem] leading-none tabular", k.tone)}>{k.value}</p>
           </div>
         ))}
-      </div>
+      </KpiStrip>
 
       {overdueChecks.length ? (
-        <section className="mb-6 rounded-xl border border-danger/30 bg-danger-soft/40">
-          <header className="border-b border-danger/20 px-4 py-3">
-            <h2 className="font-display text-sm font-semibold text-danger">Care-cycle checks overdue</h2>
+        <section className="glass mb-6 rounded-2xl border-danger/25">
+          <header className="px-5 pt-4 pb-3">
+            <Dot tone="danger" className="text-[0.92rem] font-semibold text-text">
+              Care-cycle checks overdue
+            </Dot>
           </header>
-          <ul className="divide-y divide-danger/15">
+          <ul className="divide-y divide-white/[0.06] border-t border-white/[0.07]">
             {overdueChecks.map((v) => (
-              <li key={v.id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-3">
-                <Link href={`/console/fleet/${v.id}`} className="text-sm font-medium hover:text-gold">
+              <li key={v.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3">
+                <Link href={`/console/fleet/${v.id}`} className="text-sm font-medium decoration-white/30 underline-offset-4 hover:underline">
                   {vehicleName(v)} <span className="text-subtle">· {v.registration}</span>
                 </Link>
-                <span className="text-xs text-muted">
+                <span className="text-[0.78rem] text-muted">
                   {lookups.client.get(v.clientId)?.name} · {v.checkFrequency} check due {relativeDays(v.nextCheckAt)}
                 </span>
               </li>
@@ -69,14 +69,14 @@ export default async function CompliancePage() {
       <div className="space-y-6">
         {groups.map((g) => (
           <section key={g.title}>
-            <div className="mb-2 flex items-baseline gap-2">
-              <h2 className="font-display text-base font-semibold">{g.title}</h2>
-              <span className="text-xs text-subtle">{g.hint}</span>
+            <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h2 className="font-display text-[1.4rem] font-normal">{g.title}</h2>
+              <span className="text-[0.78rem] text-subtle">{g.hint}</span>
             </div>
             {g.items.length ? (
               <TableWrap>
                 <table className="w-full min-w-[760px]">
-                  <thead className="border-b border-border">
+                  <thead>
                     <tr>
                       <th className={th}>Due</th>
                       <th className={th}>What</th>
@@ -85,25 +85,27 @@ export default async function CompliancePage() {
                       <th className={th}>Notes</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border">
+                  <tbody>
                     {g.items.map((d) => {
                       const v = lookups.vehicle.get(d.vehicleId);
                       const c = v ? lookups.client.get(v.clientId) : undefined;
                       return (
-                        <tr key={d.id} className="transition-colors hover:bg-surface-2/60">
+                        <tr key={d.id} className={tr}>
                           <td className={td}>
                             <span className="block tabular">{formatDate(d.dueDate)}</span>
-                            <span className={cn("text-xs", g.tone === "danger" ? "text-danger" : g.tone === "warning" ? "text-warning" : "text-subtle")}>
+                            <span className={cn("text-[0.75rem]", g.tone === "danger" ? "text-danger" : g.tone === "warning" ? "text-warning" : "text-subtle")}>
                               {relativeDays(d.dueDate)}
                             </span>
                           </td>
                           <td className={td}>
-                            <Badge tone={g.tone}>{d.kind}</Badge>
+                            <Dot tone={g.tone} className="text-text">
+                              {d.kind}
+                            </Dot>
                           </td>
                           <td className={td}>
                             {v ? (
-                              <Link href={`/console/fleet/${v.id}`} className="hover:text-gold">
-                                {vehicleName(v)} <span className="text-xs text-subtle">{v.registration}</span>
+                              <Link href={`/console/fleet/${v.id}`} className="decoration-white/30 underline-offset-4 hover:underline">
+                                {vehicleName(v)} <span className="text-[0.75rem] text-subtle">{v.registration}</span>
                               </Link>
                             ) : null}
                           </td>

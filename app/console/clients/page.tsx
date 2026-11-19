@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Lock, Users } from "lucide-react";
-import { EmptyState, PageHeader, TableWrap, TierBadge, td, th } from "@/components/console/ui";
+import { EmptyState, KpiStrip, PageHeader, TableWrap, TierBadge, td, th, tr } from "@/components/console/ui";
 import { getLookups } from "@/components/console/lookups";
 import { getRequests } from "@/lib/data/queries";
 import { TIERS, latestValue } from "@/lib/domain";
@@ -33,30 +33,29 @@ export default async function ClientsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Clients"
-        title="Client book"
+        title="Clients"
         description={`${rows.length} clients, ${lookups.vehicles.length} cars, ${formatGBP(mrr)} a month in demo fees.`}
       />
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-3">
+      <KpiStrip columns="grid-cols-1 sm:grid-cols-3" label="Clients by tier" className="mb-6">
         {byTier.map((t) => (
-          <div key={t.tier} className="rounded-xl border border-border bg-surface p-4">
-            <div className="flex items-center justify-between">
+          <div key={t.tier} className="px-5 py-4">
+            <div className="flex items-center justify-between gap-2">
               <TierBadge tier={t.tier} />
-              <span className="text-xs text-subtle">{TIERS[t.tier].cadence}</span>
+              <span className="text-[0.72rem] text-subtle">{TIERS[t.tier].cadence}</span>
             </div>
-            <p className="mt-3 font-display text-2xl font-semibold tabular">{t.count}</p>
-            <p className="text-xs text-muted">
+            <p className="mt-3 font-display text-[1.9rem] leading-none tabular">{t.count}</p>
+            <p className="mt-1.5 text-[0.75rem] text-muted">
               {t.count === 1 ? "client" : "clients"} · {formatGBP(t.fees)} a month
             </p>
           </div>
         ))}
-      </div>
+      </KpiStrip>
 
       {rows.length ? (
         <TableWrap>
           <table className="w-full min-w-[960px]">
-            <thead className="border-b border-border">
+            <thead>
               <tr>
                 <th className={th}>Client</th>
                 <th className={th}>Tier</th>
@@ -68,16 +67,16 @@ export default async function ClientsPage() {
                 <th className={th}>Delegates</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody>
               {rows.map(({ client: c, cars, value, open }) => (
-                <tr key={c.id} className="transition-colors hover:bg-surface-2/60">
+                <tr key={c.id} className={tr}>
                   <td className={td}>
                     <Link href={`/console/clients/${c.id}`} className="group block">
-                      <span className="flex items-center gap-1.5 font-medium group-hover:text-gold">
+                      <span className="flex items-center gap-1.5 font-medium decoration-white/30 underline-offset-4 group-hover:underline">
                         {c.name}
                         {c.preferences.nda ? <Lock className="size-3 text-warning" aria-label="NDA in place" /> : null}
                       </span>
-                      <span className="block text-xs text-subtle">Client since {formatDate(c.clientSince, { month: "short", year: "numeric" })}</span>
+                      <span className="block text-[0.75rem] text-subtle">Client since {formatDate(c.clientSince, { month: "short", year: "numeric" })}</span>
                     </Link>
                   </td>
                   <td className={td}>
@@ -87,7 +86,7 @@ export default async function ClientsPage() {
                   <td className={cn(td, "text-right tabular")}>{cars.length}</td>
                   <td className={cn(td, "text-right tabular")}>{formatGBPCompact(value)}</td>
                   <td className={cn(td, "text-right tabular")}>{formatGBP(c.monthlyFee)}</td>
-                  <td className={cn(td, "text-right tabular", open ? "text-gold" : "text-subtle")}>{open}</td>
+                  <td className={cn(td, "text-right tabular", open ? "text-text" : "text-subtle")}>{open}</td>
                   <td className={cn(td, "text-muted")}>
                     {c.contacts.length ? c.contacts.map((ct) => `${ct.name} (${ct.role})`).join(", ") : <span className="text-subtle">Deals direct</span>}
                   </td>

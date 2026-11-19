@@ -9,8 +9,8 @@ import type { TyrePressures } from "@/lib/types";
 
 function Toggle({ name, label, defaultChecked = true }: { name: string; label: string; defaultChecked?: boolean }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2.5 rounded-md border border-border bg-surface-2 px-3 py-2 text-sm text-muted has-[:checked]:border-success/40 has-[:checked]:text-text">
-      <input type="checkbox" name={name} defaultChecked={defaultChecked} className="size-4 accent-[var(--gold)]" />
+    <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-muted transition-colors has-[:checked]:border-white/20 has-[:checked]:bg-white/[0.05] has-[:checked]:text-text">
+      <input type="checkbox" name={name} defaultChecked={defaultChecked} className="size-4 accent-[var(--accent)]" />
       {label}
     </label>
   );
@@ -45,11 +45,11 @@ export function LogCheckForm({
       </div>
 
       <fieldset>
-        <legend className="mb-1.5 text-xs font-medium tracking-wide text-muted">Tyre pressures ({unit}), prefilled with targets</legend>
+        <legend className="mb-1.5 text-[0.78rem] font-medium text-muted">Tyre pressures ({unit}), prefilled with targets</legend>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {(["fl", "fr", "rl", "rr"] as const).map((k) => (
             <div key={k}>
-              <label htmlFor={`tyre-${k}`} className="mb-1 block text-[0.7rem] uppercase tracking-wider text-subtle">
+              <label htmlFor={`tyre-${k}`} className="mb-1 block text-[0.72rem] text-subtle">
                 {{ fl: "Front left", fr: "Front right", rl: "Rear left", rr: "Rear right" }[k]}
               </label>
               <Input id={`tyre-${k}`} name={k} type="number" step={step} min={10} max={60} inputMode="decimal" defaultValue={target[k]} required />
@@ -63,9 +63,9 @@ export function LogCheckForm({
         <Toggle name="exteriorOk" label="Exterior OK" />
         <Toggle name="interiorOk" label="Interior OK" />
         <Toggle name="onConditioner" label="Left on conditioner" defaultChecked={onConditioner} />
-        <label className="flex cursor-pointer items-center gap-2.5 rounded-md border border-border bg-surface-2 px-3 py-2 text-sm text-muted has-[:checked]:text-text sm:col-span-2">
+        <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-white/10 bg-black/20 px-3.5 py-2.5 text-sm text-muted transition-colors has-[:checked]:border-white/20 has-[:checked]:bg-white/[0.05] has-[:checked]:text-text sm:col-span-2">
           {/* Checkbox first: FormData.get returns the first value, so an unchecked box falls through to "off" */}
-          <input type="checkbox" name="visibleToClient" value="on" defaultChecked className="size-4 accent-[var(--gold)]" />
+          <input type="checkbox" name="visibleToClient" value="on" defaultChecked className="size-4 accent-[var(--accent)]" />
           <input type="hidden" name="visibleToClient" value="off" />
           Show this check to the client in The Garage
         </label>

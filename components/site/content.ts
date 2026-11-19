@@ -1,21 +1,5 @@
 // Static copy for the public site, drawn from the Vehicle Focus brochure and current website.
 
-import {
-  BatteryCharging,
-  Camera,
-  ClipboardCheck,
-  FileCheck2,
-  Gem,
-  LineChart,
-  MapPin,
-  Search,
-  ShieldCheck,
-  Sparkles,
-  Truck,
-  Warehouse,
-  type LucideIcon,
-} from "lucide-react";
-
 export const CONTACT = {
   phone: "+44 7797 738888",
   phoneHref: "tel:+447797738888",
@@ -37,7 +21,6 @@ export const NAV = [
 export type Service = {
   number: string;
   title: string;
-  icon: LucideIcon;
   points: string[];
 };
 
@@ -57,7 +40,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "01",
         title: "Scheduled maintenance checks",
-        icon: ClipboardCheck,
         points: [
           "Weekly, monthly or quarterly inspection cycles",
           "Tyre pressures, wheel rotation and tread checks",
@@ -69,7 +51,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "02",
         title: "Battery & electrical care",
-        icon: BatteryCharging,
         points: [
           "Regular trickle charging and battery health monitoring",
           "Lithium-ion battery care for modern and hybrid systems",
@@ -80,7 +61,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "03",
         title: "Detailing & protection",
-        icon: Sparkles,
         points: [
           "Pre- and post-use detailing",
           "Ceramic coating application and maintenance",
@@ -91,7 +71,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "04",
         title: "Secure storage",
-        icon: Warehouse,
         points: [
           "Short-term secure storage solutions",
           "Condition-appropriate environments for long layups",
@@ -109,7 +88,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "05",
         title: "Relocation & logistics",
-        icon: Truck,
         points: [
           "Secure transport to events, circuits or second homes",
           "Airport and dockside delivery for clients travelling abroad",
@@ -120,7 +98,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "06",
         title: "Registration & compliance",
-        icon: FileCheck2,
         points: [
           "MOT, insurance and road tax deadline tracking",
           "Cross-jurisdiction registration support",
@@ -131,7 +108,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "07",
         title: "24/7 concierge",
-        icon: ShieldCheck,
         points: [
           "Vehicle pick-up and drop-off for services or events",
           "Access to supercar meet-ups and owner events",
@@ -142,7 +118,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "08",
         title: "Live vehicle tracking",
-        icon: MapPin,
         points: [
           "Tracking fitted and monitored on request",
           "Visibility of the vehicle during transport",
@@ -159,7 +134,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "09",
         title: "Asset management reporting",
-        icon: LineChart,
         points: [
           "Detailed reports on vehicle condition",
           "Valuation trend analysis across the collection",
@@ -170,7 +144,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "10",
         title: "Sourcing & pre-purchase inspection",
-        icon: Search,
         points: [
           "Acquisition support for specific cars and specifications",
           "Independent pre-purchase inspections",
@@ -181,7 +154,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "11",
         title: "Photography & film",
-        icon: Camera,
         points: [
           "Professional vehicle photography and videography arranged",
           "Imagery for sale listings, insurance or records",
@@ -192,7 +164,6 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         number: "12",
         title: "Bespoke requests",
-        icon: Gem,
         points: [
           "Requirements outside this list are usually possible",
           "Long-standing network of specialists and vendors",
@@ -206,35 +177,23 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
 export const PRINCIPLES = [
   {
     title: "Preventative, not reactive",
-    body: "We work to a schedule rather than to a breakdown. Batteries, fluids, tyres and storage conditions are monitored on a defined cycle, so problems are caught while they're still small and cheap.",
+    body: "We work to a schedule, not a breakdown, so problems are caught while they're small and cheap.",
   },
   {
     title: "Discreet by default",
-    body: "Our clients value privacy as much as performance. NDAs are offered as standard, cars are moved without fanfare, and nothing about your collection is discussed outside the arrangement.",
+    body: "NDAs as standard. Cars move without fanfare. Nothing about your collection leaves the arrangement.",
   },
   {
     title: "Documented, always",
-    body: "Every check, service and movement is recorded. When it comes time to sell, insure or value a car, the history is complete, ordered and ready, because provenance is part of the asset.",
+    body: "Every check, service and movement is recorded, because provenance is part of the asset.",
   },
 ];
 
 export const STEPS = [
-  {
-    title: "Conversation",
-    body: "A private call to understand the cars, how you use them, where they live and what currently frustrates you.",
-  },
-  {
-    title: "Vehicle audit",
-    body: "We inspect each car, review its history and paperwork, and flag anything that needs attention now.",
-  },
-  {
-    title: "Care schedule",
-    body: "An agreed cycle of checks, services and deadlines, built around your calendar rather than ours.",
-  },
-  {
-    title: "Ongoing reporting",
-    body: "Regular condition updates in The Garage and a complete record, with a single point of contact whenever you need something.",
-  },
+  { title: "Conversation", body: "A private call about the cars, how you use them and what currently frustrates you." },
+  { title: "Vehicle audit", body: "We inspect each car, review its paperwork and flag anything that needs attention now." },
+  { title: "Care schedule", body: "An agreed cycle of checks, services and deadlines, built around your calendar." },
+  { title: "Ongoing reporting", body: "Condition updates in The Garage and one point of contact for everything." },
 ];
 
 export const TIER_DETAILS = {

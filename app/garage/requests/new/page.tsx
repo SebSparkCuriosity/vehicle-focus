@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { PageTitle } from "@/components/garage/bits";
 import { RequestForm } from "@/components/garage/request-form";
 import { getClient, getVehicles } from "@/lib/data/queries";
 import { REQUEST_TYPE_META, vehicleName } from "@/lib/domain";
@@ -38,13 +39,14 @@ export default async function NewRequestPage({ searchParams }: { searchParams: P
 
   return (
     <div className="mx-auto max-w-3xl">
-      <Link href="/garage/requests" className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-text">
+      <Link
+        href="/garage/requests"
+        className="glass-dark inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[0.85rem] text-white/75 transition-colors hover:text-white"
+      >
         <ArrowLeft className="size-4" aria-hidden />
         Requests
       </Link>
-      <p className="eyebrow mt-6">New request</p>
-      <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight">What do you need?</h1>
-      <p className="mt-2 text-muted">Tell us what, which car, when and where. We&apos;ll confirm personally, usually within the hour.</p>
+      <PageTitle className="mt-8" title="What do you need?" intro="What, which car, when and where. We confirm personally." />
 
       <div className="mt-8">
         <RequestForm

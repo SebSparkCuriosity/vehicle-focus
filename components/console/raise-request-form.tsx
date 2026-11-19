@@ -51,7 +51,7 @@ export function RaiseRequestForm({ vehicleId, defaultLocation, defaultDate }: { 
             <p role="status" className="text-sm text-success">
               Request raised.{" "}
               {state.id ? (
-                <Link href={`/console/requests/${state.id}`} className="underline underline-offset-4 hover:text-gold">
+                <Link href={`/console/requests/${state.id}`} className="underline underline-offset-4 hover:text-text">
                   Schedule it now
                 </Link>
               ) : null}

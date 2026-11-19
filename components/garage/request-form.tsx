@@ -2,33 +2,14 @@
 
 import Link from "next/link";
 import { useActionState, useState } from "react";
-import {
-  CircleCheck,
-  KeyRound,
-  MessageSquare,
-  Sparkles,
-  TrendingUp,
-  Truck,
-  Warehouse,
-  Wrench,
-  type LucideIcon,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Field, Input, Select, Textarea } from "@/components/ui/form";
 import { createRequest, type ActionResult } from "@/lib/actions";
 import { REQUEST_TYPE_META } from "@/lib/domain";
 import { cn } from "@/lib/utils";
 import type { RequestType } from "@/lib/types";
-
-const ICONS: Record<RequestType, LucideIcon> = {
-  ready: KeyRound,
-  relocation: Truck,
-  service: Wrench,
-  detailing: Sparkles,
-  storage: Warehouse,
-  valuation: TrendingUp,
-  other: MessageSquare,
-};
 
 const LOCATION_HINT: Record<RequestType, string> = {
   ready: "Where should it be waiting?",
@@ -64,48 +45,52 @@ export function RequestForm({
 
   if (state?.ok) {
     return (
-      <div className="rounded-2xl border border-success/30 bg-success-soft p-8 text-center">
-        <CircleCheck className="mx-auto size-10 text-success" aria-hidden />
-        <h2 className="mt-4 font-display text-2xl font-semibold">Request received</h2>
-        <p className="mx-auto mt-2 max-w-md text-muted">{state.message ?? "We'll confirm shortly."}</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
+      <Card className="rounded-[28px] px-6 py-12 text-center sm:px-10">
+        <span className="mx-auto grid size-12 place-items-center rounded-full border border-success/40 text-success">
+          <Check className="size-5" aria-hidden />
+        </span>
+        <h2 className="mt-5 font-display text-4xl font-normal">Request received.</h2>
+        <p className="mx-auto mt-3 max-w-md text-white/65">{state.message ?? "We'll confirm shortly."}</p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           <ButtonLink href="/garage/requests">View requests</ButtonLink>
           <ButtonLink href="/garage" variant="secondary">
             Back to collection
           </ButtonLink>
         </div>
-      </div>
+      </Card>
     );
   }
 
   if (!vehicles.length) {
     return (
-      <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted">
+      <Card className="rounded-[24px] p-8 text-center text-sm text-white/65">
         There are no cars on your account yet.{" "}
-        <Link href="/garage/messages" className="text-gold hover:underline">
+        <Link href="/garage/messages" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/70">
           Message the team
         </Link>{" "}
         and we&apos;ll help.
-      </div>
+      </Card>
     );
   }
 
   return (
-    <form action={formAction} className="space-y-8">
+    <Card className="rounded-[28px] p-5 sm:p-8">
+    <form action={formAction} className="space-y-9">
       <fieldset>
-        <legend className="mb-3 text-xs font-medium tracking-wide text-muted">Type of request</legend>
+        <legend className="mb-3 text-[0.82rem] font-semibold text-white/85">Type of request</legend>
         <div className="grid gap-2 sm:grid-cols-2">
           {(Object.keys(REQUEST_TYPE_META) as RequestType[]).map((t) => {
-            const Icon = ICONS[t];
             const meta = REQUEST_TYPE_META[t];
             const active = type === t;
             return (
               <label
                 key={t}
                 className={cn(
-                  "flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors",
-                  active ? "border-gold/70 bg-gold-soft" : "border-border bg-surface hover:border-border-strong",
-                  "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-gold/40",
+                  "relative flex min-h-[68px] cursor-pointer flex-col justify-center rounded-2xl border px-4 py-3.5 transition-all",
+                  active
+                    ? "border-accent/60 bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-accent/40"
+                    : "border-white/10 bg-white/[0.035] hover:border-white/20 hover:bg-white/[0.06]",
+                  "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white/40",
                 )}
               >
                 <input
@@ -116,18 +101,9 @@ export function RequestForm({
                   onChange={() => setType(t)}
                   className="sr-only"
                 />
-                <span
-                  className={cn(
-                    "grid size-9 shrink-0 place-items-center rounded-lg",
-                    active ? "bg-gold text-[#0b0b0c]" : "bg-surface-2 text-muted",
-                  )}
-                >
-                  <Icon className="size-4" aria-hidden />
-                </span>
-                <span>
-                  <span className="block text-sm font-medium">{meta.label}</span>
-                  <span className="block text-xs text-muted">{meta.description}</span>
-                </span>
+                <span className={cn("block pr-6 text-[0.95rem] font-medium", active ? "text-white" : "text-white/85")}>{meta.label}</span>
+                <span className="mt-0.5 block text-[0.78rem] leading-snug text-white/50">{meta.description}</span>
+                {active ? <Check className="absolute top-3.5 right-3.5 size-4 text-accent" aria-hidden /> : null}
               </label>
             );
           })}
@@ -176,17 +152,18 @@ export function RequestForm({
       </div>
 
       {state && !state.ok ? (
-        <p role="alert" className="rounded-lg border border-danger/30 bg-danger-soft px-3 py-2 text-sm text-danger">
+        <p role="alert" className="rounded-2xl border border-danger/30 bg-danger-soft px-4 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
 
-      <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-subtle">Discreet by default. Only the Vehicle Focus team sees your requests.</p>
+      <div className="flex flex-col-reverse gap-4 border-t border-white/[0.08] pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-[0.78rem] text-white/45">Only the Vehicle Focus team sees your requests.</p>
         <Button type="submit" size="lg" disabled={pending}>
           {pending ? "Sending..." : "Send request"}
         </Button>
       </div>
     </form>
+    </Card>
   );
 }

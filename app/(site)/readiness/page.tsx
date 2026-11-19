@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Container, PageHero } from "@/components/site/section";
+import { BackdropLayer, Container, PhotoHero } from "@/components/site/section";
 import { ReadinessTool } from "@/components/site/readiness-tool";
 
 export const metadata: Metadata = {
@@ -12,16 +12,22 @@ export const metadata: Metadata = {
 export default function ReadinessPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Readiness check"
-        title="How ready is your car right now?"
-        lead="Cars that sit lose condition quietly: batteries discharge, tyres flat-spot, fluids age and paperwork drifts. Answer six questions and see where your car stands. It takes about two minutes and you don't need to give us any details to see the result."
+      <PhotoHero
+        image="/images/cars/porsche-interior.jpg"
+        position="50% 45%"
+        title={
+          <>
+            How ready is your car <em className="text-white/70">right now</em>?
+          </>
+        }
+        lead="Cars that sit lose condition quietly. Answer six questions and see where yours stands. About two minutes, and you don't need to give us any details to see the result."
       />
-      <section className="py-14 sm:py-20">
+      <section className="relative isolate overflow-hidden py-16 sm:py-24">
+        <BackdropLayer />
         <Container>
           <ReadinessTool />
-          <p className="mt-10 max-w-3xl text-xs leading-relaxed text-subtle">
-            This check gives general guidance based on typical behaviour of modern performance, hybrid, electric and classic cars. It isn&apos;t a substitute for an inspection. Manufacturer storage advice for your specific car always takes priority.
+          <p className="mt-12 max-w-2xl text-xs leading-relaxed text-white/40">
+            General guidance based on how modern performance, hybrid, electric and classic cars typically behave. It isn&apos;t a substitute for an inspection, and manufacturer storage advice for your car always takes priority.
           </p>
         </Container>
       </section>

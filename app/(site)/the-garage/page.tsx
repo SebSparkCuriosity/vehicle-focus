@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { ArrowRight, Fingerprint, KeyRound, MessageSquare, ShieldCheck, Truck, Wrench, ClipboardCheck, LineChart, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { Container, Section, SectionHeading } from "@/components/site/section";
-import { CheckMock, GarageMock, RequestMock, VaultMock } from "@/components/site/garage-mock";
+import { BackdropLayer, Container, PhotoBand, PhotoHero } from "@/components/site/section";
+import { CheckMock, PhoneMock, RequestMock, VaultMock } from "@/components/site/garage-mock";
 import { CtaBand } from "@/components/site/blocks";
 import { ValueChart } from "@/components/charts";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -29,29 +28,22 @@ const VALUE_POINTS = [
   { date: monthsAgo(1), value: 286000 },
 ];
 
-const TIMELINE = [
-  { icon: ClipboardCheck, title: "Fortnightly storage check", meta: "Battery 12.3V · tyres rotated", when: "2 weeks ago" },
-  { icon: Truck, title: "Returned from specialist", meta: "Enclosed transport, condition photos on arrival", when: "2 months ago" },
-  { icon: Wrench, title: "Annual service", meta: "Marque specialist · invoice in vault", when: "4 months ago" },
-  { icon: LineChart, title: "Agreed-value review for insurer", meta: "Valuation report supplied to broker", when: "4 months ago" },
-  { icon: Sparkles, title: "Paint correction and ceramic coating", meta: "Before and after photos attached", when: "7 months ago" },
-];
-
-const DELEGATES = [
-  { initials: "PA", name: "Personal assistant", rights: "Book and track requests", tone: "gold" as const },
-  { initials: "FO", name: "Family office", rights: "Reports and valuations only", tone: "info" as const },
-  { initials: "DR", name: "Driver", rights: "Handover details for assigned cars", tone: "neutral" as const },
+const HISTORY = [
+  ["Fortnightly storage check", "2 weeks ago"],
+  ["Returned from specialist", "2 months ago"],
+  ["Annual service", "4 months ago"],
+  ["Agreed-value review for insurer", "4 months ago"],
 ];
 
 function FeatureRow({
-  eyebrow,
+  n,
   title,
   body,
   points,
   visual,
   flip = false,
 }: {
-  eyebrow: string;
+  n: string;
   title: string;
   body: string;
   points?: string[];
@@ -59,17 +51,16 @@ function FeatureRow({
   flip?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
+    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
       <div className={cn(flip && "lg:order-2")}>
-        <p className="eyebrow">{eyebrow}</p>
-        <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{title}</h3>
-        <p className="mt-4 leading-relaxed text-muted">{body}</p>
+        <span className="text-sm text-white/35 tabular">{n}</span>
+        <h2 className="mt-4 font-display text-[2rem] leading-[1.08] font-normal text-balance sm:text-[2.6rem]">{title}</h2>
+        <p className="mt-5 max-w-md leading-relaxed text-white/62">{body}</p>
         {points ? (
-          <ul className="mt-6 grid gap-2.5 text-sm">
+          <ul className="mt-7 max-w-md divide-y divide-white/[0.08] border-y border-white/[0.08] text-[0.95rem] text-white/75">
             {points.map((p) => (
-              <li key={p} className="flex gap-3">
-                <span className="mt-2 size-1 shrink-0 rounded-full bg-gold" aria-hidden />
-                <span className="text-text/90">{p}</span>
+              <li key={p} className="py-3">
+                {p}
               </li>
             ))}
           </ul>
@@ -83,127 +74,71 @@ function FeatureRow({
 export default function TheGaragePage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border hairline-grid">
-        <div className="pointer-events-none absolute inset-0 spotlight" aria-hidden />
-        <Container className="relative grid gap-14 py-16 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:items-center [&>*]:min-w-0">
-          <div>
-            <p className="eyebrow">The Garage, client portal</p>
-            <h1 className="mt-5 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Your collection, visible the moment we touch it.
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-              Most concierge services ask you to take their word for it. The Garage shows you: live status, the readings from every check, the paperwork, the history and what the cars are worth. On your phone, whenever you want to look.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/login" size="lg">
-                Try the demo
-                <ArrowRight aria-hidden />
-              </ButtonLink>
-              <ButtonLink href="/contact" size="lg" variant="outline">
-                Talk to Lawrence
-              </ButtonLink>
-            </div>
-            <p className="mt-4 text-xs text-subtle">The demo uses example cars and owners. Nothing in it is real client data.</p>
-          </div>
-          <GarageMock />
-        </Container>
-      </section>
+      <PhotoHero
+        image="/images/showroom-blue.jpg"
+        position="25% 50%"
+        title={
+          <>
+            Your collection, visible the moment we <em className="text-white/70">touch</em> it.
+          </>
+        }
+        lead="The Garage is the client portal every member gets: live status, the readings from every check, the paperwork, the history and the value. On your phone."
+        aside={<PhoneMock className="hidden lg:block" />}
+      >
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/login" size="lg">
+            Try the demo
+            <ArrowRight aria-hidden />
+          </ButtonLink>
+          <ButtonLink href="/contact" size="lg" variant="secondary">
+            Talk to Lawrence
+          </ButtonLink>
+        </div>
+        <p className="mt-5 text-xs text-white/40">The demo uses example cars and owners. None of it is client data.</p>
+      </PhotoHero>
 
-      <Section>
-        <SectionHeading
-          align="center"
-          eyebrow="Why it exists"
-          title="Trust is easier when you can see the work"
-          lead="When your cars are looked after while you're away, the question is always the same: are they actually alright? The Garage answers it without you having to ask."
-        />
-        <div className="mt-20 grid gap-24">
+      <section className="relative isolate overflow-hidden py-24 sm:py-32">
+        <BackdropLayer />
+        <Container className="grid gap-28">
           <FeatureRow
-            eyebrow="Status & readiness"
+            n="01"
             title="Know which car is ready before you pick up the keys"
-            body="Every car shows where it is, what state it's in and when it was last checked. Each visit records real readings, so you can see a battery tiring or a tyre losing pressure weeks before it matters."
-            points={["Ready, charging, in storage, at service or in transit", "Battery voltage, tyre pressures against target, fluids and mileage", "Flags when something needs a decision, with a recommendation"]}
+            body="Every car shows where it is, what state it's in and when it was last checked. Each visit records real readings, so a tiring battery shows up weeks before it matters."
+            points={["Ready, charging, in storage, at service or in transit", "Battery, tyres against target, fluids and mileage", "A flag and a recommendation when something needs a decision"]}
             visual={<CheckMock className="mx-auto max-w-md" />}
           />
           <FeatureRow
             flip
-            eyebrow="One-tap requests"
+            n="02"
             title="Ready for Saturday at nine, at the airport"
-            body="Ask for a car to be ready, moved, serviced, detailed, stored or valued. Pick the car, the time and the place. The request lands with the team, is scheduled, and comes back confirmed in the same thread."
-            points={["Requests from you or anyone you've given access to", "Confirmation, quote and assigned technician in writing", "Every request becomes part of the car's record"]}
+            body="Pick the car, the time and the place. The request lands with the team and comes back confirmed in the same thread, with a quote if there is one."
+            points={["Raised by you or anyone you've given access to", "Every request becomes part of the car's record"]}
             visual={<RequestMock className="mx-auto max-w-md" />}
           />
           <FeatureRow
-            eyebrow="Documents vault"
+            n="03"
             title="The paperwork, finally in one place"
-            body="Registration, insurance schedules, service books, invoices, certificates of authenticity and condition reports. Digitised, filed against the right car and ready when a broker, buyer or customs officer asks."
-            points={["Due dates for MOT, insurance, registration and servicing tracked for you", "Shipping and import documents kept with the car", "Nothing lost when a car changes hands or homes"]}
+            body="Registration, insurance, service books, invoices and certificates, filed against the right car and ready when a broker, buyer or customs officer asks."
+            points={["MOT, insurance, registration and service dates tracked for you", "Shipping and import papers kept with the car"]}
             visual={<VaultMock className="mx-auto max-w-md" />}
           />
           <FeatureRow
             flip
-            eyebrow="Provenance"
+            n="04"
             title="A history that protects what the car is worth"
-            body="Every check, service, movement and valuation is written down by the person who did it and kept in order. When it's time to sell, insure or pass a car on, the story is already told."
+            body="Every check, service, movement and valuation, written down by the person who did it and kept in order. When it's time to sell, insure or pass a car on, the story is already told."
             visual={
-              <div className="mx-auto max-w-md rounded-xl border border-border bg-surface p-5" role="img" aria-label="Illustration of a service history timeline">
-                <p className="text-sm font-medium">History</p>
-                <ol className="mt-4 grid gap-0">
-                  {TIMELINE.map((t, i) => {
-                    const Icon = t.icon;
-                    return (
-                      <li key={t.title} className="relative flex gap-3 pb-5 last:pb-0">
-                        {i < TIMELINE.length - 1 ? <span className="absolute left-4 top-8 bottom-0 w-px bg-border" aria-hidden /> : null}
-                        <span className="relative grid size-8 shrink-0 place-items-center rounded-full border border-border bg-surface-2">
-                          <Icon className="size-3.5 text-gold" aria-hidden />
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline justify-between gap-3">
-                            <p className="truncate text-sm">{t.title}</p>
-                            <p className="shrink-0 text-xs text-subtle">{t.when}</p>
-                          </div>
-                          <p className="mt-0.5 text-xs text-muted">{t.meta}</p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </div>
-            }
-          />
-          <FeatureRow
-            eyebrow="Valuation"
-            title="What the collection is worth, and which way it's moving"
-            body="Each car carries a valuation history from market reviews, auction comparables and formal reports, plotted against what you paid. Collection totals sit on the dashboard for owners who think of their cars as a portfolio."
-            visual={
-              <div className="mx-auto max-w-md rounded-xl border border-border bg-surface p-5" role="img" aria-label="Illustration of a valuation chart">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-medium">Porsche 911 Carrera RS, 1992</p>
-                    <p className="mt-0.5 text-xs text-muted">Example car · auction comparables</p>
-                  </div>
-                  <Badge tone="success">+44% since purchase</Badge>
+              <div className="glass-dark mx-auto max-w-md rounded-[28px] p-6" role="img" aria-label="Illustration of a car's history and valuation">
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="text-sm font-medium">Porsche 911 Carrera RS, 1992</p>
+                  <p className="text-xs text-success">+44% since purchase</p>
                 </div>
                 <ValueChart points={VALUE_POINTS} purchasePrice={198000} className="mt-4" />
-              </div>
-            }
-          />
-          <FeatureRow
-            flip
-            eyebrow="Delegate access"
-            title="Let the people who help you help themselves"
-            body="Give a PA, partner, family office or driver their own sign-in, with only the access they need. They can book and track without you being copied into every message, and you can see everything they've done."
-            visual={
-              <div className="mx-auto max-w-md rounded-xl border border-border bg-surface p-5" role="img" aria-label="Illustration of delegate access settings">
-                <p className="text-sm font-medium">People with access</p>
-                <ul className="mt-4 divide-y divide-border">
-                  {DELEGATES.map((d) => (
-                    <li key={d.name} className="flex items-center gap-3 py-3">
-                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-3 font-display text-xs font-semibold">{d.initials}</span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-sm">{d.name}</span>
-                        <span className="block text-xs text-muted">{d.rights}</span>
-                      </span>
-                      <Badge tone={d.tone}>Active</Badge>
+                <ul className="mt-4 divide-y divide-white/[0.07] border-t border-white/[0.07]">
+                  {HISTORY.map(([t, when]) => (
+                    <li key={t} className="flex items-baseline justify-between gap-4 py-2.5 text-sm">
+                      <span className="truncate text-white/80">{t}</span>
+                      <span className="shrink-0 text-xs text-white/40">{when}</span>
                     </li>
                   ))}
                 </ul>
@@ -211,57 +146,53 @@ export default function TheGaragePage() {
             }
           />
           <FeatureRow
-            eyebrow="Messaging"
-            title="One thread, with the people who actually do the work"
-            body="Talk to Lawrence and the team in one private conversation per collection. Updates arrive when there's something worth telling you, not because a system needed to send something."
+            n="05"
+            title="Let the people who help you help themselves"
+            body="A PA, family office or driver gets their own sign-in with only the access they need. One private thread connects everyone with the people who actually do the work."
             visual={
-              <div className="mx-auto grid max-w-md gap-3 rounded-xl border border-border bg-surface p-5" role="img" aria-label="Illustration of the message thread">
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  <MessageSquare className="size-4 text-gold" aria-hidden />
-                  Vehicle Focus
+              <div className="glass-dark mx-auto grid max-w-md gap-3 rounded-[28px] p-6" role="img" aria-label="Illustration of the message thread">
+                <p className="text-sm font-medium">Vehicle Focus</p>
+                <div className="glass-inset max-w-[85%] rounded-2xl rounded-tl-md px-4 py-3 text-sm">
+                  <p className="text-xs text-white/45">Technician</p>
+                  <p className="mt-1 text-white/85">The 964&apos;s battery is resting at 12.1V even on the conditioner. I&apos;d replace it before spring.</p>
                 </div>
-                <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-2 px-4 py-3 text-sm">
-                  <p className="text-xs text-gold">Technician</p>
-                  <p className="mt-1 text-text/90">The 964&apos;s battery is resting at 12.1V even on the conditioner. I&apos;d replace it before spring rather than risk the electrics.</p>
+                <div className="ml-auto max-w-[85%] rounded-2xl rounded-tr-md bg-white px-4 py-3 text-sm text-black">
+                  <p className="text-xs text-black/50">Your PA</p>
+                  <p className="mt-1">Go ahead, and keep the old one with the car&apos;s records.</p>
                 </div>
-                <div className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-gold px-4 py-3 text-sm text-[#0b0b0c]">
-                  Go ahead, and keep the old one with the car&apos;s records.
-                </div>
-                <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-2 px-4 py-3 text-sm">
-                  <p className="text-xs text-gold">Lawrence</p>
-                  <p className="mt-1 text-text/90">Booked for next Thursday. I&apos;ll add the invoice to the vault.</p>
+                <div className="glass-inset max-w-[85%] rounded-2xl rounded-tl-md px-4 py-3 text-sm">
+                  <p className="text-xs text-white/45">Lawrence</p>
+                  <p className="mt-1 text-white/85">Booked for Thursday. The invoice will be in the vault.</p>
                 </div>
               </div>
             }
           />
-        </div>
-      </Section>
-
-      <section className="border-y border-border bg-surface/40 py-20 sm:py-24">
-        <Container>
-          <SectionHeading eyebrow="Private by design" title="Built for owners who don't want to be found" />
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {[
-              { icon: Fingerprint, title: "Two-factor sign-in", body: "Every account is protected by a second factor. Delegates sign in as themselves, never with your details." },
-              { icon: KeyRound, title: "Access you control", body: "Choose what each delegate can see and do. Remove access in one click when circumstances change." },
-              { icon: ShieldCheck, title: "Discretion as standard", body: "Your collection is never shared, published or sold. NDAs are offered as standard and cover the portal too." },
-            ].map((f) => {
-              const Icon = f.icon;
-              return (
-                <div key={f.title} className="rounded-xl border border-border bg-bg p-6">
-                  <Icon className="size-5 text-gold" aria-hidden />
-                  <h3 className="mt-4 font-display text-lg font-semibold tracking-tight">{f.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
-                </div>
-              );
-            })}
-          </div>
         </Container>
       </section>
 
+      <PhotoBand image="/images/cars/cullinan-mayfair.jpg" position="50% 65%" scrim="full">
+        <Container className="py-24 sm:py-32">
+          <h2 className="max-w-2xl font-display text-[2.4rem] leading-[1.04] font-normal text-balance sm:text-5xl">
+            Built for owners who don&apos;t want to be found.
+          </h2>
+          <div className="glass-dark mt-12 grid divide-y divide-white/[0.08] rounded-[28px] md:grid-cols-3 md:divide-x md:divide-y-0">
+            {[
+              ["Two-factor sign-in", "Every account has a second factor. Delegates sign in as themselves, never with your details."],
+              ["Access you control", "Choose what each delegate can see and do, and remove it in one click."],
+              ["Locations, not addresses", "The portal says where a car is in words. Street addresses and garage codes stay with the team."],
+            ].map(([t, b]) => (
+              <div key={t} className="p-7 sm:p-8">
+                <h3 className="font-semibold">{t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/60">{b}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </PhotoBand>
+
       <CtaBand
         title="See it with your own cars in it"
-        lead="Every member gets The Garage from the first day of their care schedule. Start with a conversation and a free vehicle audit, and your audit findings become the first entries in your record."
+        lead="Every member gets The Garage from day one. Your audit findings become the first entries in your record."
       />
     </>
   );

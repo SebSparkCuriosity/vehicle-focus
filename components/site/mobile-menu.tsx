@@ -30,7 +30,7 @@ export function MobileMenu({ links }: { links: readonly { href: string; label: s
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="grid size-10 place-items-center rounded-md text-text hover:bg-surface-2"
+        className="relative z-[51] grid size-10 place-items-center rounded-full text-white hover:bg-white/10"
         aria-expanded={open}
         aria-controls="mobile-menu"
         aria-label={open ? "Close menu" : "Open menu"}
@@ -40,24 +40,24 @@ export function MobileMenu({ links }: { links: readonly { href: string; label: s
       <div
         id="mobile-menu"
         className={cn(
-          "fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-border bg-bg/98 backdrop-blur transition-opacity",
-          open ? "opacity-100" : "pointer-events-none opacity-0",
+          "glass-dark fixed inset-x-3 top-[4.75rem] z-40 max-h-[calc(100svh-6rem)] overflow-y-auto rounded-[28px] transition-all duration-200",
+          open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
         )}
       >
-        <nav className="flex flex-col gap-1 px-4 py-6" aria-label="Mobile">
+        <nav className="flex flex-col p-3" aria-label="Mobile">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-lg px-3 py-3 font-display text-lg tracking-tight",
-                pathname === l.href ? "bg-surface-2 text-gold" : "text-text hover:bg-surface-2",
+                "rounded-2xl px-4 py-3.5 font-display text-2xl",
+                pathname === l.href ? "bg-white/[0.07] text-white" : "text-white/80 hover:bg-white/[0.05]",
               )}
             >
               {l.label}
             </Link>
           ))}
-          <div className="mt-6 grid gap-3 border-t border-border pt-6">
+          <div className="mt-3 grid gap-2.5 border-t border-white/[0.08] p-2 pt-5">
             <ButtonLink href="/contact" size="lg">
               Request a call
             </ButtonLink>

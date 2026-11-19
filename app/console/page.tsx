@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, Car, CalendarDays, CircleCheck, Inbox, PoundSterling, TrendingUp, TriangleAlert, Users, Gem } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowRight, CalendarDays, CircleCheck, Inbox, TrendingUp, TriangleAlert } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { EmptyState, Kpi, PageHeader, Panel, SourceBadge } from "@/components/console/ui";
+import { Dot, EmptyState, Kpi, KpiStrip, PageHeader, Panel, PanelLink, SourceBadge } from "@/components/console/ui";
 import { HistoryItem, JobRow } from "@/components/console/rows";
 import { getLookups } from "@/components/console/lookups";
 import { startOfDay, isSameDay } from "@/components/console/dates";
@@ -58,14 +57,14 @@ export default async function ConsoleToday() {
         }
       />
 
-      <section className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6" aria-label="Key figures">
-        <Kpi label="Clients" value={stats.clients} icon={Users} href="/console/clients" />
-        <Kpi label="Cars under care" value={stats.vehicles} icon={Car} href="/console/fleet" />
-        <Kpi label="Value under care" value={formatGBPCompact(stats.valueUnderCare)} sub="Latest valuations" icon={Gem} />
-        <Kpi label="Open requests" value={stats.openRequests} sub={`${stats.newRequests} awaiting review`} icon={Inbox} href="/console/requests" />
-        <Kpi label="Checks due in 7 days" value={stats.checksDueThisWeek} icon={CircleCheck} href="/console/schedule" />
-        <Kpi label="Monthly recurring" value={formatGBPCompact(stats.mrr)} sub={`${formatGBPCompact(stats.arr)} a year · demo fees`} icon={PoundSterling} />
-      </section>
+      <KpiStrip>
+        <Kpi label="Clients" value={stats.clients} href="/console/clients" />
+        <Kpi label="Cars under care" value={stats.vehicles} href="/console/fleet" />
+        <Kpi label="Value under care" value={formatGBPCompact(stats.valueUnderCare)} sub="Latest valuations" />
+        <Kpi label="Open requests" value={stats.openRequests} sub={`${stats.newRequests} awaiting review`} href="/console/requests" />
+        <Kpi label="Checks due in 7 days" value={stats.checksDueThisWeek} href="/console/schedule" />
+        <Kpi label="Monthly recurring" value={formatGBPCompact(stats.mrr)} sub={`${formatGBPCompact(stats.arr)} a year, demo fees`} />
+      </KpiStrip>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3 [&>*]:min-w-0">
         <div className="space-y-6 xl:col-span-2">
@@ -73,9 +72,7 @@ export default async function ConsoleToday() {
             title="Jobs"
             description="Today and tomorrow, in time order"
             action={
-              <Link href="/console/schedule" className="text-xs text-muted hover:text-gold">
-                Full schedule
-              </Link>
+              <PanelLink href="/console/schedule">Full schedule</PanelLink>
             }
           >
             <div className="grid gap-6 md:grid-cols-2">
@@ -84,11 +81,11 @@ export default async function ConsoleToday() {
                 { label: "Tomorrow", list: tomorrowJobs },
               ].map((group) => (
                 <div key={group.label}>
-                  <p className="mb-1 text-xs font-medium uppercase tracking-wider text-subtle">
-                    {group.label} <span className="text-muted">({group.list.length})</span>
+                  <p className="mb-1 text-[0.8rem] font-medium text-muted">
+                    {group.label} <span className="text-subtle tabular">{group.list.length}</span>
                   </p>
                   {group.list.length ? (
-                    <ul className="divide-y divide-border">
+                    <ul className="divide-y divide-white/[0.06]">
                       {group.list.map((j) => {
                         const v = lookups.vehicle.get(j.vehicleId);
                         return <JobRow key={j.id} job={j} vehicle={v} client={v ? lookups.client.get(v.clientId) : undefined} member={lookups.member.get(j.assigneeId)} />;
@@ -106,19 +103,17 @@ export default async function ConsoleToday() {
             title="Needs attention"
             description="Batteries, overdue checks, tyres off target and deadlines within 14 days"
             action={
-              <Link href="/console/compliance" className="text-xs text-muted hover:text-gold">
-                Compliance
-              </Link>
+              <PanelLink href="/console/compliance">Compliance</PanelLink>
             }
             bodyClassName="p-0"
           >
             {attention.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {attention.map((a, i) => {
                   const client = lookups.client.get(a.vehicle.clientId);
                   return (
                     <li key={`${a.vehicleId}-${a.label}-${i}`}>
-                      <Link href={`/console/fleet/${a.vehicleId}`} className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-2">
+                      <Link href={`/console/fleet/${a.vehicleId}`} className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/[0.03]">
                         <span
                           className={cn(
                             "grid size-7 shrink-0 place-items-center rounded-full",
@@ -133,14 +128,16 @@ export default async function ConsoleToday() {
                           </span>
                           <span className="block truncate text-xs text-muted">{client?.name}</span>
                         </span>
-                        <Badge tone={a.severity === "high" ? "danger" : "warning"}>{a.label}</Badge>
+                        <Dot tone={a.severity === "high" ? "danger" : "warning"} className="text-white/80">
+                          {a.label}
+                        </Dot>
                       </Link>
                     </li>
                   );
                 })}
               </ul>
             ) : (
-              <div className="p-4">
+              <div className="p-5">
                 <EmptyState icon={CircleCheck} title="Nothing needs attention" description="Every car is within spec and nothing is due in the next fortnight." />
               </div>
             )}
@@ -164,23 +161,21 @@ export default async function ConsoleToday() {
             title="New requests"
             description="From The Garage, waiting for you to schedule"
             action={
-              <Link href="/console/requests" className="text-xs text-muted hover:text-gold">
-                All requests
-              </Link>
+              <PanelLink href="/console/requests">All requests</PanelLink>
             }
             bodyClassName="p-0"
           >
             {newRequests.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {newRequests.map((r) => {
                   const v = lookups.vehicle.get(r.vehicleId);
                   const c = lookups.client.get(r.clientId);
                   return (
-                    <li key={r.id} className="px-4 py-3">
+                    <li key={r.id} className="px-5 py-3.5">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="text-sm font-medium leading-snug">{r.title}</p>
-                          <p className="mt-0.5 text-xs text-muted">
+                          <p className="mt-0.5 text-[0.78rem] text-muted">
                             {c?.name} · {v ? vehicleName(v) : ""}
                           </p>
                           <p className="mt-1 text-xs text-subtle">
@@ -199,7 +194,7 @@ export default async function ConsoleToday() {
                 })}
               </ul>
             ) : (
-              <div className="p-4">
+              <div className="p-5">
                 <EmptyState icon={Inbox} title="Inbox zero" description="No new requests. Clients raise them from The Garage." />
               </div>
             )}
@@ -209,16 +204,14 @@ export default async function ConsoleToday() {
             title="New leads"
             description="Website, readiness checks and referrals"
             action={
-              <Link href="/console/leads" className="text-xs text-muted hover:text-gold">
-                Pipeline
-              </Link>
+              <PanelLink href="/console/leads">Pipeline</PanelLink>
             }
             bodyClassName="p-0"
           >
             {newLeads.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {newLeads.map((l) => (
-                  <li key={l.id} className="px-4 py-3">
+                  <li key={l.id} className="px-5 py-3.5">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm font-medium">{l.name}</p>
                       <span className="text-[0.7rem] text-subtle">{timeAgo(l.createdAt)}</span>
@@ -226,7 +219,7 @@ export default async function ConsoleToday() {
                     <div className="mt-1 flex flex-wrap items-center gap-2">
                       <SourceBadge source={l.source} />
                       {l.readinessScore !== undefined ? (
-                        <Badge tone={l.readinessScore >= 60 ? "danger" : l.readinessScore >= 30 ? "warning" : "success"}>Risk {l.readinessScore}</Badge>
+                        <Dot tone={l.readinessScore >= 60 ? "danger" : l.readinessScore >= 30 ? "warning" : "success"}>Risk {l.readinessScore}</Dot>
                       ) : null}
                     </div>
                     {l.cars ? <p className="mt-1.5 text-xs text-muted">{l.cars}</p> : null}
@@ -234,7 +227,7 @@ export default async function ConsoleToday() {
                 ))}
               </ul>
             ) : (
-              <div className="p-4">
+              <div className="p-5">
                 <EmptyState icon={TrendingUp} title="No new leads" description="Enquiries from the website land here automatically." />
               </div>
             )}
@@ -246,17 +239,17 @@ export default async function ConsoleToday() {
                 .sort((a, b) => b.monthlyFee - a.monthlyFee)
                 .map((c) => (
                   <li key={c.id} className="flex items-center gap-3">
-                    <Link href={`/console/clients/${c.id}`} className="min-w-0 flex-1 truncate text-sm hover:text-gold">
+                    <Link href={`/console/clients/${c.id}`} className="min-w-0 flex-1 truncate text-sm underline-offset-4 hover:underline">
                       {c.name}
                     </Link>
-                    <span className="relative h-1.5 w-24 overflow-hidden rounded-full bg-surface-3" aria-hidden>
-                      <span className="absolute inset-y-0 left-0 rounded-full bg-gold" style={{ width: `${(c.monthlyFee / stats.mrr) * 100}%` }} />
+                    <span className="relative h-1 w-24 overflow-hidden rounded-full bg-white/[0.08]" aria-hidden>
+                      <span className="absolute inset-y-0 left-0 rounded-full bg-white/70" style={{ width: `${(c.monthlyFee / stats.mrr) * 100}%` }} />
                     </span>
                     <span className="w-16 text-right text-sm tabular text-muted">{formatGBP(c.monthlyFee)}</span>
                   </li>
                 ))}
             </ul>
-            <Link href="/console/clients" className="mt-4 inline-flex items-center gap-1 text-xs text-muted hover:text-gold">
+            <Link href="/console/clients" className="mt-5 inline-flex items-center gap-1 text-[0.78rem] text-muted transition-colors hover:text-text">
               Client book <ArrowRight className="size-3" />
             </Link>
           </Panel>

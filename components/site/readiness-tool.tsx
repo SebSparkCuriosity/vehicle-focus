@@ -9,9 +9,9 @@ import { LeadForm } from "@/components/site/lead-form";
 type Inputs = Parameters<typeof readinessRisk>[0];
 
 const LEVEL_META = {
-  ok: { label: "Fine", icon: CheckCircle2, text: "text-success", ring: "border-success/30 bg-success-soft" },
-  watch: { label: "Watch", icon: Eye, text: "text-warning", ring: "border-warning/30 bg-warning-soft" },
-  risk: { label: "At risk", icon: AlertTriangle, text: "text-danger", ring: "border-danger/30 bg-danger-soft" },
+  ok: { label: "Fine", icon: CheckCircle2, text: "text-success" },
+  watch: { label: "Watch", icon: Eye, text: "text-warning" },
+  risk: { label: "At risk", icon: AlertTriangle, text: "text-danger" },
 } as const;
 
 function band(score: number) {
@@ -43,8 +43,8 @@ function Choice<T extends string | number | boolean>({
             aria-checked={active}
             onClick={() => onChange(o.value)}
             className={cn(
-              "rounded-md border px-3 py-2 text-sm transition-colors",
-              active ? "border-gold bg-gold-soft text-gold" : "border-border bg-surface-2 text-muted hover:border-border-strong hover:text-text",
+              "rounded-full border px-4 py-2.5 text-sm transition-colors",
+              active ? "border-white/45 bg-white/[0.12] text-white" : "border-white/10 bg-white/[0.03] text-white/60 hover:border-white/25 hover:text-white",
             )}
           >
             {o.label}
@@ -57,9 +57,9 @@ function Choice<T extends string | number | boolean>({
 
 function Question({ n, label, children }: { n: number; label: string; children: React.ReactNode }) {
   return (
-    <div className="border-t border-border py-6 first:border-t-0 first:pt-0">
-      <p className="mb-3 flex items-baseline gap-3 text-sm font-medium">
-        <span className="font-display text-xs text-gold tabular">{String(n).padStart(2, "0")}</span>
+    <div className="border-t border-white/[0.08] py-7 first:border-t-0 first:pt-0 last:pb-0">
+      <p className="mb-4 flex items-baseline gap-3 text-[0.98rem] font-medium">
+        <span className="text-xs text-white/35 tabular">{String(n).padStart(2, "0")}</span>
         {label}
       </p>
       {children}
@@ -75,23 +75,23 @@ function Dial({ score, stroke }: { score: number; stroke: string }) {
   return (
     <svg viewBox="0 0 140 140" className="size-40" aria-hidden>
       <g transform="rotate(135 70 70)">
-        <circle cx="70" cy="70" r={r} fill="none" stroke="var(--surface-3)" strokeWidth="10" strokeDasharray={`${arc} ${c}`} strokeLinecap="round" />
+        <circle cx="70" cy="70" r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="8" strokeDasharray={`${arc} ${c}`} strokeLinecap="round" />
         <circle
           cx="70"
           cy="70"
           r={r}
           fill="none"
           stroke={stroke}
-          strokeWidth="10"
+          strokeWidth="8"
           strokeDasharray={`${filled} ${c}`}
           strokeLinecap="round"
           style={{ transition: "stroke-dasharray 400ms ease, stroke 400ms ease" }}
         />
       </g>
-      <text x="70" y="74" textAnchor="middle" fontSize="34" fontWeight="600" fill="var(--text)" style={{ fontFamily: "var(--font-display)" }}>
+      <text x="70" y="76" textAnchor="middle" fontSize="38" fontWeight="400" fill="var(--text)" style={{ fontFamily: "var(--font-display)" }}>
         {score}
       </text>
-      <text x="70" y="94" textAnchor="middle" fontSize="10" fill="var(--subtle)" letterSpacing="2">
+      <text x="70" y="96" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.45)" letterSpacing="2">
         RISK / 100
       </text>
     </svg>
@@ -112,8 +112,8 @@ export function ReadinessTool() {
   const b = band(result.score);
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
-      <div className="rounded-2xl border border-border bg-surface p-5 sm:p-8">
+    <div className="grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:gap-8 [&>*]:min-w-0">
+      <div className="glass-dark rounded-[28px] p-6 sm:p-9">
         <Question n={1} label="When was the car last driven?">
           <div className="flex items-center gap-4">
             <input
@@ -123,10 +123,10 @@ export function ReadinessTool() {
               step={1}
               value={inputs.weeksSinceDriven}
               onChange={(e) => set("weeksSinceDriven")(Number(e.target.value))}
-              className="w-full accent-[var(--gold)]"
+              className="w-full accent-white"
               aria-label="Weeks since last driven"
             />
-            <span className="w-24 shrink-0 text-right text-sm tabular text-text">
+            <span className="w-24 shrink-0 text-right text-sm text-white/85 tabular">
               {inputs.weeksSinceDriven === 0 ? "This week" : inputs.weeksSinceDriven >= 26 ? "6 months+" : `${inputs.weeksSinceDriven} weeks ago`}
             </span>
           </div>
@@ -194,39 +194,39 @@ export function ReadinessTool() {
       </div>
 
       <div className="lg:sticky lg:top-24 lg:self-start">
-        <div className="rounded-2xl border border-border bg-surface p-5 sm:p-8" aria-live="polite">
+        <div className="glass-dark rounded-[28px] p-6 sm:p-9" aria-live="polite">
           <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
             <Dial score={result.score} stroke={b.stroke} />
             <div>
-              <p className="eyebrow">Your result</p>
-              <p className={cn("mt-2 font-display text-2xl font-semibold tracking-tight", b.text)}>{b.label}</p>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{b.summary}</p>
+              <p className="text-xs text-white/45">Your result</p>
+              <p className={cn("mt-1.5 font-display text-3xl font-normal", b.text)}>{b.label}</p>
+              <p className="mt-2 text-sm leading-relaxed text-white/60">{b.summary}</p>
             </div>
           </div>
-          <ul className="mt-6 grid gap-2.5">
+          <ul className="mt-7 grid gap-2">
             {result.findings.map((f) => {
               const m = LEVEL_META[f.level];
               const Icon = m.icon;
               return (
-                <li key={f.area} className="rounded-lg border border-border bg-surface-2 p-3.5">
+                <li key={f.area} className="glass-inset rounded-2xl p-4">
                   <div className="flex items-center justify-between gap-3">
                     <p className="flex items-center gap-2 text-sm font-medium">
                       <Icon className={cn("size-4", m.text)} aria-hidden />
                       {f.area}
                     </p>
-                    <span className={cn("rounded-full border px-2 py-0.5 text-[0.7rem] font-medium", m.ring, m.text)}>{m.label}</span>
+                    <span className={cn("text-[0.72rem] font-medium", m.text)}>{m.label}</span>
                   </div>
-                  <p className="mt-1.5 text-xs leading-relaxed text-muted">{f.note}</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-white/55">{f.note}</p>
                 </li>
               );
             })}
           </ul>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-gold/30 bg-surface p-5 sm:p-8">
-          <p className="font-display text-lg font-semibold tracking-tight">Get a free vehicle audit</p>
-          <p className="mt-1 mb-5 text-sm text-muted">
-            Leave your details and Lawrence will call to arrange an inspection. Your score comes with the request, so the first conversation starts in the right place.
+        <div className="glass-dark mt-6 rounded-[28px] p-6 sm:p-9">
+          <p className="font-display text-3xl font-normal">Get a free vehicle audit</p>
+          <p className="mt-2 mb-6 text-sm leading-relaxed text-white/60">
+            Leave your details and Lawrence will call to arrange an inspection. Your score comes with the request.
           </p>
           <LeadForm
             source="Readiness check"

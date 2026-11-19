@@ -50,14 +50,17 @@ function NavLinks({ badges, onNavigate }: { badges: Badges; onNavigate?: () => v
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
-              active ? "bg-surface-2 text-text" : "text-muted hover:bg-surface-2/60 hover:text-text",
+              "flex items-center gap-3 rounded-xl px-3 py-2 text-[0.88rem] transition-colors",
+              active ? "glass-inset text-text" : "border border-transparent text-muted hover:bg-white/[0.04] hover:text-text",
             )}
           >
-            <Icon className={cn("size-4", active ? "text-gold" : "text-subtle")} aria-hidden />
+            <Icon className={cn("size-4", active ? "text-white/85" : "text-white/35")} aria-hidden />
             <span className="flex-1">{item.label}</span>
             {count > 0 ? (
-              <span className="grid min-w-5 place-items-center rounded-full bg-gold px-1.5 text-[0.65rem] font-semibold text-[#0b0b0c] tabular">
+              <span
+                className={cn("text-[0.75rem] font-medium tabular", item.badge === "requests" ? "text-accent" : "text-muted")}
+                aria-label={`${count} new`}
+              >
                 {count}
               </span>
             ) : null}
@@ -75,25 +78,28 @@ export function SidebarNav({ badges }: { badges: Badges }) {
 export function MobileNav({ badges, footer }: { badges: Badges; footer: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="no-print sticky top-0 z-30 border-b border-border bg-bg/95 backdrop-blur lg:hidden">
-      <div className="flex h-14 items-center justify-between px-4">
-        <Logo href="/console" />
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          className="grid size-9 place-items-center rounded-md text-muted hover:bg-surface-2 hover:text-text"
-          aria-expanded={open}
-          aria-label={open ? "Close menu" : "Open menu"}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
-      </div>
-      {open ? (
-        <div className="border-t border-border px-3 pb-4 pt-2">
-          <NavLinks badges={badges} onNavigate={() => setOpen(false)} />
-          <div className="mt-3 border-t border-border pt-3">{footer}</div>
+    <div className="no-print sticky top-0 z-30 p-2 lg:hidden">
+      <div className="glass-dark rounded-2xl">
+        <div className="flex h-14 items-center justify-between pr-2 pl-4">
+          <Logo href="/console" />
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            className="grid size-10 place-items-center rounded-full text-muted transition-colors hover:bg-white/[0.07] hover:text-text"
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
-      ) : null}
+        {open ? (
+          <div className="px-2 pt-1 pb-3">
+            <NavLinks badges={badges} onNavigate={() => setOpen(false)} />
+            <div className="mx-2 mt-3 h-px bg-white/[0.07]" aria-hidden />
+            <div className="px-2 pt-3">{footer}</div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Ban, Check, Lock, MapPin, Play, RotateCcw, CalendarDays } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CarArt } from "@/components/brand/car-art";
+import { CarMedia } from "@/components/brand/car-art";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
-import { Detail, EmptyState, PageHeader, Panel, TierBadge } from "@/components/console/ui";
+import { Detail, Dot, EmptyState, PageHeader, Panel, PanelLink, TierBadge } from "@/components/console/ui";
 import { JobRow } from "@/components/console/rows";
 import { ScheduleForm } from "@/components/console/schedule-form";
 import { toDateInput, toTimeInput } from "@/components/console/dates";
@@ -48,14 +47,14 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <PageHeader
-        back={{ href: "/console/requests", label: "Request board" }}
+        back={{ href: "/console/requests", label: "Requests" }}
         eyebrow={REQUEST_TYPE_META[request.type].label}
         title={request.title}
         description={
           <span className="flex flex-wrap items-center gap-2">
-            <Badge tone={status.tone} dot>
+            <Dot tone={status.tone} className="text-white/85">
               {status.label}
-            </Badge>
+            </Dot>
             <span>
               Raised by {request.createdBy} {timeAgo(request.createdAt)}
             </span>
@@ -71,13 +70,13 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
         }
       />
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <div className="grid gap-6 xl:grid-cols-3 [&>*]:min-w-0">
         <div className="space-y-6 xl:col-span-2">
           <Panel title={"What's needed"}>
             <dl className="grid gap-4 sm:grid-cols-2">
               <Detail label="Needed">
                 <span className="tabular">{formatDateTime(request.when)}</span>{" "}
-                <span className="text-xs text-subtle">({relativeDays(request.when)})</span>
+                <span className="text-[0.75rem] text-subtle">({relativeDays(request.when)})</span>
               </Detail>
               <Detail label="Where">
                 <span className="inline-flex items-center gap-1.5">
@@ -91,8 +90,8 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
               <Detail label="Request type">{REQUEST_TYPE_META[request.type].description}</Detail>
             </dl>
             {request.notes ? (
-              <div className="mt-4 rounded-lg border border-border bg-surface-2 p-3">
-                <p className="text-xs text-subtle">Notes from {request.createdBy}</p>
+              <div className="glass-inset mt-5 rounded-xl p-3.5">
+                <p className="text-[0.75rem] text-subtle">Notes from {request.createdBy}</p>
                 <p className="mt-1 text-sm">{request.notes}</p>
               </div>
             ) : null}
@@ -123,7 +122,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
 
           <Panel title="Jobs for this request" bodyClassName="py-1">
             {requestJobs.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {requestJobs.map((j) => (
                   <JobRow key={j.id} job={j} vehicle={vehicle} client={client} member={lookups.member.get(j.assigneeId)} />
                 ))}
@@ -140,9 +139,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
           <Panel
             title="Client"
             action={
-              <Link href={`/console/clients/${client.id}`} className="text-xs text-muted hover:text-gold">
-                Profile
-              </Link>
+              <PanelLink href={`/console/clients/${client.id}`}>Profile</PanelLink>
             }
           >
             <div className="flex items-center justify-between gap-2">
@@ -166,7 +163,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
                   <ul className="space-y-1">
                     {client.contacts.map((c) => (
                       <li key={c.email} className="text-sm">
-                        {c.name} <span className="text-xs text-subtle">· {c.role}{c.canBook ? ", can book" : ""}</span>
+                        {c.name} <span className="text-[0.75rem] text-subtle">· {c.role}{c.canBook ? ", can book" : ""}</span>
                       </li>
                     ))}
                   </ul>
@@ -178,14 +175,12 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
           <Panel
             title="The car right now"
             action={
-              <Link href={`/console/fleet/${vehicle.id}`} className="text-xs text-muted hover:text-gold">
-                Full record
-              </Link>
+              <PanelLink href={`/console/fleet/${vehicle.id}`}>Full record</PanelLink>
             }
           >
-            <CarArt bodyStyle={vehicle.bodyStyle} paint={vehicle.paintHex} title={vehicleFullName(vehicle)} className="mx-auto max-w-xs" />
-            <p className="mt-2 text-sm font-medium">{vehicleFullName(vehicle)}</p>
-            <p className="text-xs text-muted">
+            <CarMedia vehicle={vehicle} sizes="(min-width: 1280px) 400px, 100vw" className="aspect-[16/9] w-full rounded-xl ring-1 ring-white/10" />
+            <p className="mt-3 text-sm font-medium">{vehicleFullName(vehicle)}</p>
+            <p className="text-[0.78rem] text-muted">
               {vehicle.registration} · {vehicle.colour}
             </p>
             <dl className="mt-4 grid grid-cols-2 gap-3">
@@ -195,7 +190,7 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
               <Detail label="Battery">
                 <BatteryReading voltage={vehicle.battery.voltage} />
               </Detail>
-              <Detail label="Tyres">{tyreDeviation(vehicle) >= 1 ? <span className="text-warning">Off target</span> : <span className="text-success">On target</span>}</Detail>
+              <Detail label="Tyres">{tyreDeviation(vehicle) >= 1 ? <span className="text-warning">Off target</span> : <span className="text-muted">On target</span>}</Detail>
               <Detail label="Mileage">
                 <span className="tabular">{formatMiles(vehicle.mileage)}</span>
               </Detail>
@@ -203,13 +198,13 @@ export default async function RequestDetailPage({ params }: { params: Promise<{ 
                 {vehicle.location.name}
               </Detail>
             </dl>
-            {vehicle.statusNote ? <p className="mt-3 text-xs text-muted">{vehicle.statusNote}</p> : null}
+            {vehicle.statusNote ? <p className="mt-4 text-[0.8rem] text-muted">{vehicle.statusNote}</p> : null}
             {reasons.length ? (
-              <div className="mt-3 flex flex-wrap gap-1.5">
+              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
                 {reasons.map((r) => (
-                  <Badge key={r.label} tone={r.severity === "high" ? "danger" : "warning"}>
+                  <Dot key={r.label} tone={r.severity === "high" ? "danger" : "warning"} className="text-white/80">
                     {r.label}
-                  </Badge>
+                  </Dot>
                 ))}
               </div>
             ) : null}

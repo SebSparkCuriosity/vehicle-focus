@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { BarChart3, FileSignature, Handshake, KeyRound, Landmark, ScrollText, UserCheck } from "lucide-react";
-import { Container, PageHero, Section, SectionHeading } from "@/components/site/section";
+import { BackdropLayer, Container, PhotoHero, SectionHeading } from "@/components/site/section";
 import { LeadForm } from "@/components/site/lead-form";
 import { ButtonLink } from "@/components/ui/button";
 import { CONTACT } from "@/components/site/content";
@@ -14,123 +13,122 @@ export const metadata: Metadata = {
 
 const AUDIENCES = [
   {
-    icon: Landmark,
     title: "Wealth managers",
-    body: "Your clients' cars are often among their most visible and least managed assets. We give you a trusted name to refer to and condition and valuation reporting you can rely on.",
+    body: "A client's cars are often their most visible and least managed assets. You get a trusted name to refer to, and condition and valuation reporting you can rely on.",
   },
   {
-    icon: ScrollText,
     title: "Family offices",
-    body: "One accountable provider across the family's vehicles, with a single schedule, consolidated records and reports formatted for the people who need them.",
+    body: "One accountable provider across the family's vehicles. A single schedule, consolidated records, and reports for the people who need them.",
   },
   {
-    icon: UserCheck,
     title: "Personal assistants",
-    body: "Stop chasing garages, transporters and insurers. Raise a request in The Garage or call one number, and get a confirmation back in writing.",
+    body: "Stop chasing garages, transporters and insurers. Raise a request in The Garage or call one number, and get the confirmation in writing.",
   },
 ];
 
 const HOW = [
   {
-    icon: KeyRound,
     title: "Delegate access with limits",
-    body: "Each adviser or assistant gets their own sign-in to The Garage. Assistants can book and track. Family offices can see reports and valuations without seeing private messages. The owner sees everything and can remove access at any time.",
+    body: "Each adviser or assistant has their own sign-in. Assistants can book and track. Family offices see reports and valuations, not private messages. The owner sees everything.",
   },
   {
-    icon: FileSignature,
     title: "Discretion in writing",
-    body: "NDAs are offered as standard, for the owner and for the advisers around them. Cars are moved without fanfare and nothing about a collection is discussed outside the arrangement.",
+    body: "NDAs as standard, for the owner and the advisers around them. Nothing about a collection is discussed outside the arrangement.",
   },
   {
-    icon: BarChart3,
     title: "Reporting that stands up",
-    body: "Condition reports, recorded check readings, service records and valuation history, ordered by car. Useful for agreed-value insurance, for audits and for succession planning when cars pass between generations.",
+    body: "Condition reports, recorded readings, service records and valuation history by car. Useful for agreed-value insurance, audits and succession.",
   },
   {
-    icon: Handshake,
     title: "A simple referral arrangement",
-    body: "Introduce a client and Lawrence handles the conversation personally. You're kept informed to the degree your client wants, and never left wondering what happened.",
+    body: "Introduce a client and Lawrence handles the conversation personally. You're kept informed as far as your client wants.",
   },
 ];
 
 export default function AdvisersPage() {
   return (
     <>
-      <PageHero
-        eyebrow="For advisers"
-        title="For the people who look after the people with the cars"
-        lead="A collection of supercars or classics needs the same care as any other significant asset: a schedule, records and someone accountable. We work alongside wealth managers, family offices and personal assistants to provide exactly that, with discretion as standard."
+      <PhotoHero
+        image="/images/cars/vantage-rear.jpg"
+        position="50% 60%"
+        title={
+          <>
+            For the people who look after the people with the <em className="text-white/70">cars</em>.
+          </>
+        }
+        lead="A collection needs what any significant asset needs: a schedule, records and someone accountable. We work alongside wealth managers, family offices and assistants to provide it."
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <ButtonLink href="#refer" size="lg">
             Make an introduction
           </ButtonLink>
-          <ButtonLink href="/the-garage" size="lg" variant="outline">
+          <ButtonLink href="/the-garage" size="lg" variant="secondary">
             See delegate access
           </ButtonLink>
         </div>
-      </PageHero>
+      </PhotoHero>
 
-      <Section>
-        <div className="grid gap-5 md:grid-cols-3">
-          {AUDIENCES.map((a) => {
-            const Icon = a.icon;
-            return (
-              <div key={a.title} className="rounded-xl border border-border bg-surface p-6 sm:p-7">
-                <Icon className="size-6 text-gold" aria-hidden />
-                <h2 className="mt-5 font-display text-xl font-semibold tracking-tight">{a.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{a.body}</p>
-              </div>
-            );
-          })}
-        </div>
-      </Section>
+      <section className="py-24 sm:py-32">
+        <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 [&>*]:min-w-0">
+          <SectionHeading title="Who we work alongside" />
+          <ol className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            {AUDIENCES.map((a, i) => (
+              <li key={a.title} className="grid grid-cols-[2.5rem_1fr] gap-4 py-8">
+                <span className="pt-1 text-sm text-white/35 tabular">0{i + 1}</span>
+                <div>
+                  <h3 className="font-display text-3xl font-normal">{a.title}</h3>
+                  <p className="mt-3 max-w-lg leading-relaxed text-white/62">{a.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
 
-      <section className="border-y border-border bg-surface/40 py-20 sm:py-24">
+      <section className="relative isolate overflow-hidden py-24 sm:py-32">
+        <BackdropLayer />
         <Container>
           <SectionHeading
-            eyebrow="How we work with you"
             title="Built for arrangements with more than one person in them"
             lead="Owners of significant collections rarely manage them alone. The service and The Garage are designed around that."
           />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            {HOW.map((h) => {
-              const Icon = h.icon;
-              return (
-                <div key={h.title} className="flex gap-5 rounded-xl border border-border bg-bg p-6">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-gold-soft">
-                    <Icon className="size-5 text-gold" aria-hidden />
-                  </span>
-                  <div>
-                    <h3 className="font-display text-lg font-semibold tracking-tight">{h.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{h.body}</p>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="glass-dark mt-14 grid rounded-[28px] sm:grid-cols-2">
+            {HOW.map((h, i) => (
+              <div
+                key={h.title}
+                className={[
+                  "p-7 sm:p-9",
+                  i % 2 === 0 ? "sm:border-r sm:border-white/[0.08]" : "",
+                  i < 2 ? "border-b border-white/[0.08]" : i === 2 ? "border-b border-white/[0.08] sm:border-b-0" : "",
+                ].join(" ")}
+              >
+                <h3 className="text-lg font-semibold tracking-tight">{h.title}</h3>
+                <p className="mt-2.5 leading-relaxed text-white/60">{h.body}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
-      <Section id="refer" className="scroll-mt-20">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+      <section id="refer" className="relative isolate scroll-mt-24 overflow-hidden py-24 sm:py-32">
+        <BackdropLayer />
+        <Container className="grid gap-12 lg:grid-cols-[0.9fr_1.2fr] lg:gap-16 [&>*]:min-w-0">
           <div>
             <SectionHeading
-              eyebrow="Make an introduction"
               title="Start a confidential conversation"
-              lead="Tell us a little about who you represent and what they need. There's no need to name your client at this stage. Lawrence will come back to you personally."
+              lead="Tell us who you represent and what they need. There's no need to name your client yet. Lawrence will come back to you personally."
             />
-            <div className="mt-8 rounded-xl border border-border bg-surface p-5 text-sm">
-              <p className="text-muted">Prefer to talk first?</p>
-              <a href={CONTACT.phoneHref} className="mt-1 block font-display text-lg font-semibold text-text hover:text-gold">
+            <div className="mt-10 text-sm">
+              <p className="text-white/45">Prefer to talk first?</p>
+              <a href={CONTACT.phoneHref} className="mt-2 block font-display text-3xl text-white hover:text-white/80">
                 {CONTACT.phone}
               </a>
-              <a href={CONTACT.emailHref} className="mt-1 block text-gold hover:text-gold-bright">
+              <a href={CONTACT.emailHref} className="mt-2 inline-block text-white/70 underline decoration-white/25 underline-offset-4 hover:text-white">
                 {CONTACT.email}
               </a>
             </div>
           </div>
-          <div className="rounded-2xl border border-border bg-surface p-5 sm:p-8">
+          <div className="glass-dark rounded-[28px] p-6 sm:p-9">
             <LeadForm
               source="Adviser"
               idPrefix="adviser"
@@ -143,8 +141,8 @@ export default function AdvisersPage() {
               submitLabel="Send introduction"
             />
           </div>
-        </div>
-      </Section>
+        </Container>
+      </section>
     </>
   );
 }

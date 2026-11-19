@@ -1,58 +1,45 @@
 import Link from "next/link";
-import { ClipboardCheck, MapPin } from "lucide-react";
-import { CarArt } from "@/components/brand/car-art";
+import { CarMedia } from "@/components/brand/car-art";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
-import { Plate } from "@/components/garage/bits";
+import { PaintLabel, Plate } from "@/components/garage/bits";
 import { relativeDays } from "@/lib/format";
 import type { Vehicle } from "@/lib/types";
 
-export function CarCard({ vehicle: v }: { vehicle: Vehicle }) {
+/** Photo-led card: the car fills it, a smoked-glass strip carries the facts. */
+export function CarCard({ vehicle: v, priority = false }: { vehicle: Vehicle; priority?: boolean }) {
   return (
     <Link
       href={`/garage/cars/${v.id}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-border-strong"
+      className="group relative block aspect-[4/5] overflow-hidden rounded-[26px] border border-white/10 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.85)] focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none lg:aspect-[4/3]"
     >
-      <div className="relative bg-gradient-to-b from-surface-2 to-surface px-6 pt-8 pb-2">
-        <div className="absolute inset-0 spotlight opacity-70" aria-hidden />
-        <div className="absolute top-3 left-3">
-          <VehicleStatusBadge status={v.status} />
-        </div>
-        <CarArt
-          bodyStyle={v.bodyStyle}
-          paint={v.paintHex}
-          title={`${v.make} ${v.model} in ${v.colour}`}
-          className="relative mx-auto max-w-[300px] transition-transform duration-500 group-hover:-translate-y-0.5"
-        />
+      <CarMedia
+        vehicle={v}
+        priority={priority}
+        sizes="(min-width: 768px) 50vw, 100vw"
+        className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/30" aria-hidden />
+      <PaintLabel vehicle={v} className="top-[28%]" />
+
+      <div className="absolute inset-x-3 top-3 flex items-start justify-between gap-2">
+        <VehicleStatusBadge status={v.status} />
+        <Plate reg={v.registration} />
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4 pt-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-xs text-muted">
-              {v.year} {v.make}
-            </p>
-            <h3 className="truncate font-display text-base font-semibold tracking-tight">
-              {v.model}
-              {v.variant ? <span className="font-normal text-muted"> {v.variant}</span> : null}
-            </h3>
-          </div>
-          <Plate reg={v.registration} className="mt-1 shrink-0" />
-        </div>
-
-        {v.statusNote ? <p className="line-clamp-2 text-sm text-muted">{v.statusNote}</p> : null}
-
-        <div className="mt-auto space-y-2 border-t border-border pt-3 text-xs text-muted">
-          <p className="flex items-center gap-2">
-            <MapPin className="size-3.5 shrink-0 text-subtle" aria-hidden />
-            <span className="truncate">{v.location.name}</span>
-          </p>
-          <div className="flex items-center justify-between gap-2">
-            <p className="flex items-center gap-2">
-              <ClipboardCheck className="size-3.5 shrink-0 text-subtle" aria-hidden />
-              Checked {relativeDays(v.lastCheckAt)}
-            </p>
-            <BatteryReading voltage={v.battery.voltage} />
-          </div>
+      <div className="glass-dark absolute inset-x-2.5 bottom-2.5 rounded-[20px] p-4">
+        <p className="text-[0.75rem] text-white/55">
+          {v.year} {v.make}
+        </p>
+        <h3 className="mt-0.5 truncate font-display text-[1.6rem] leading-tight font-normal">
+          {v.model}
+          {v.variant ? <span className="text-white/50"> {v.variant}</span> : null}
+        </h3>
+        {v.statusNote ? <p className="mt-1.5 line-clamp-2 text-[0.82rem] leading-snug text-white/65">{v.statusNote}</p> : null}
+        <div className="mt-3 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-3 text-[0.78rem] text-white/55">
+          <span className="min-w-0 truncate">
+            {v.location.name} · checked {relativeDays(v.lastCheckAt)}
+          </span>
+          <BatteryReading voltage={v.battery.voltage} className="shrink-0" />
         </div>
       </div>
     </Link>

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { BatteryWarning, Flame, PlugZap, Zap } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { Container, PageHero, Section, SectionHeading } from "@/components/site/section";
-import { CtaBand, ServiceGroupGrid } from "@/components/site/blocks";
+import { BackdropLayer, Container, PhotoBand, PhotoHero, SectionHeading } from "@/components/site/section";
+import { CtaBand, ServiceList } from "@/components/site/blocks";
 import { SERVICE_GROUPS } from "@/components/site/content";
 
 export const metadata: Metadata = {
@@ -13,85 +12,101 @@ export const metadata: Metadata = {
 };
 
 const BATTERY_POINTS = [
-  { icon: PlugZap, title: "Trickle charging and health monitoring", body: "Regular conditioning keeps batteries at a safe resting voltage and extends their life." },
-  { icon: Flame, title: "Charger testing", body: "Portable appliance testing on chargers to prevent overheating or electrical fire risk in your garage." },
-  { icon: Zap, title: "Optimised storage charging", body: "The right charging regime for each car's chemistry, so there are no sudden failures when you want to drive." },
-  { icon: BatteryWarning, title: "Voltage checks and diagnostics", body: "Recorded readings at every visit, so a tired battery is caught weeks before it strands you." },
+  ["Trickle charging and health monitoring", "Regular conditioning keeps batteries at a safe resting voltage and extends their life."],
+  ["Charger testing", "Portable appliance testing on chargers, so a conditioner never becomes a fire risk in your garage."],
+  ["The right regime for each chemistry", "Lead-acid, AGM, lithium-ion and hybrid high-voltage systems all need different handling between drives."],
+  ["Readings at every visit", "Recorded voltages mean a tired battery is caught weeks before it strands you."],
 ];
 
 export default function ServicesPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Services"
+      <PhotoHero
+        image="/images/cars/f8-bond-street.jpg"
+        position="40% 60%"
         title="Specialist care, movement and record-keeping"
-        lead="Twelve services in three groups, delivered by our own team across the Channel Islands and by trusted associates throughout the UK and Europe. Every job is logged in The Garage, your client portal."
+        lead="Twelve services in three groups. Our own team in the Channel Islands, trusted associates across the UK and Europe, and every job logged in The Garage."
       >
         <nav aria-label="Service groups" className="flex flex-wrap gap-2">
           {SERVICE_GROUPS.map((g) => (
             <a
               key={g.id}
               href={`#${g.id}`}
-              className="rounded-full border border-border bg-surface px-4 py-2 text-sm text-muted transition-colors hover:border-gold hover:text-gold"
+              className="rounded-full border border-white/15 bg-black/30 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition-colors hover:border-white/35 hover:text-white"
             >
               {g.title}
             </a>
           ))}
-          <a href="#battery" className="rounded-full border border-border bg-surface px-4 py-2 text-sm text-muted transition-colors hover:border-gold hover:text-gold">
+          <a
+            href="#battery"
+            className="rounded-full border border-white/15 bg-black/30 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition-colors hover:border-white/35 hover:text-white"
+          >
             Battery care
           </a>
         </nav>
-      </PageHero>
+      </PhotoHero>
 
       {SERVICE_GROUPS.map((g, i) => (
-        <section key={g.id} id={g.id} className={i % 2 === 1 ? "scroll-mt-20 border-y border-border bg-surface/40 py-20 sm:py-24" : "scroll-mt-20 py-20 sm:py-24"}>
-          <Container className="grid gap-10 lg:grid-cols-[0.75fr_1.5fr] lg:gap-16">
-            <div className="lg:sticky lg:top-24 lg:self-start">
-              <p className="eyebrow">Part {i + 1} of 3</p>
-              <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-4xl">{g.title}</h2>
-              <p className="mt-4 leading-relaxed text-muted">{g.summary}</p>
-            </div>
-            <ServiceGroupGrid group={g} />
-          </Container>
-        </section>
+        <div key={g.id}>
+          <section id={g.id} className="scroll-mt-24 py-20 sm:py-28">
+            <Container className="grid gap-10 lg:grid-cols-[0.8fr_1.6fr] lg:gap-20 [&>*]:min-w-0">
+              <div className="lg:sticky lg:top-28 lg:self-start">
+                <span className="text-sm text-white/35 tabular">Part {i + 1}</span>
+                <h2 className="mt-3 font-display text-[2.4rem] leading-[1.04] font-normal sm:text-5xl">{g.title}</h2>
+                <p className="mt-4 max-w-xs leading-relaxed text-white/60">{g.summary}</p>
+              </div>
+              <ServiceList group={g} detailed />
+            </Container>
+          </section>
+          {i === 0 ? (
+            <PhotoBand image="/images/cars/vantage-rear.jpg" position="50% 60%" scrim="full">
+              <Container className="py-28 sm:py-36">
+                <p className="max-w-2xl font-display text-[2rem] leading-[1.15] font-normal text-balance sm:text-[2.8rem]">
+                  Every check, service and movement goes into the car&apos;s record. The history builds itself.
+                </p>
+              </Container>
+            </PhotoBand>
+          ) : null}
+        </div>
       ))}
 
-      <Section id="battery" className="scroll-mt-20 border-t border-border">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <section id="battery" className="relative isolate scroll-mt-24 overflow-hidden py-24 sm:py-32">
+        <BackdropLayer />
+        <Container className="grid items-start gap-12 lg:grid-cols-2 lg:gap-20 [&>*]:min-w-0">
           <div>
             <SectionHeading
-              eyebrow="Battery care in depth"
-              title="Preventing failure and fire risk"
-              lead="Unlike everyday cars, many supercars use high-performance lithium-ion batteries that degrade without use and are costly to replace. A flat battery isn't just an inconvenience: it can mean full system resets, ECU errors and lost performance data."
+              title="Batteries are the first thing to fail in a car that sits"
+              lead="Many supercars use lithium-ion batteries that degrade without use and cost a lot to replace. A flat one can mean full system resets, ECU errors and lost performance data."
             />
-            <p className="mt-6 leading-relaxed text-muted">
-              Hybrids such as the SF90, Artura and Revuelto add a high-voltage system that needs its own state of charge managed between drives. We treat batteries as the single most common point of failure for cars that sit, because that is what they are.
+            <p className="mt-6 max-w-md leading-relaxed text-white/60">
+              Hybrids add a high-voltage system with its own state of charge to manage between drives. We treat batteries as the most common point of failure, because they are.
             </p>
-            <div className="mt-8">
-              <ButtonLink href="/readiness" variant="outline">
+            <div className="mt-9">
+              <ButtonLink href="/readiness" variant="secondary">
                 Check your car&apos;s battery risk
               </ButtonLink>
             </div>
           </div>
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {BATTERY_POINTS.map((p) => {
-              const Icon = p.icon;
-              return (
-                <li key={p.title} className="rounded-xl border border-border bg-surface p-6">
-                  <Icon className="size-5 text-gold" aria-hidden />
-                  <h3 className="mt-4 font-display text-base font-semibold tracking-tight">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </Section>
+          <ol className="glass-dark divide-y divide-white/[0.08] rounded-[28px] px-7 sm:px-8">
+            {BATTERY_POINTS.map(([t, b], i) => (
+              <li key={t} className="grid grid-cols-[2rem_1fr] gap-4 py-6">
+                <span className="pt-0.5 text-sm text-white/35 tabular">0{i + 1}</span>
+                <div>
+                  <h3 className="font-semibold">{t}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-white/60">{b}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
 
       <CtaBand
         title="Not sure which services you need?"
-        lead="Most clients start with a vehicle audit. We inspect each car, review its history and paperwork, and recommend a care schedule. It costs nothing and commits you to nothing."
+        lead="Most clients start with a vehicle audit. We inspect each car, review its history and recommend a care schedule. It commits you to nothing."
         primaryLabel="Book a vehicle audit"
+        image="/images/showroom-green.jpg"
+        position="60% 50%"
       />
     </>
   );

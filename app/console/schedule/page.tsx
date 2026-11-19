@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { CalendarDays, ChevronLeft, ChevronRight, CircleCheck, TriangleAlert } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { EmptyState, Initials, JobKindBadge, JOB_BAR, PageHeader } from "@/components/console/ui";
+import { Dot, EmptyState, Initials, JOB_BAR, JobKindBadge, PageHeader } from "@/components/console/ui";
 import { durationLabel, isSameDay, startOfDay } from "@/components/console/dates";
 import { getLookups } from "@/components/console/lookups";
 import { getJobs } from "@/lib/data/queries";
@@ -57,21 +56,23 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
         }
       />
 
-      <div className="mb-6 grid grid-cols-7 gap-1.5 rounded-xl border border-border bg-surface p-2" aria-label="Week at a glance">
+      <div className="glass mb-6 grid grid-cols-7 gap-1 rounded-2xl p-1.5" aria-label="Week at a glance">
         {days.map((d) => {
           const count = jobs.filter((j) => isSameDay(j.start, d)).length + impliedChecks.filter((v) => isSameDay(v.nextCheckAt, d)).length;
           const isToday = isSameDay(d, new Date());
           return (
-            <a key={d.toISOString()} href={`#day-${d.getDate()}`} className={cn("rounded-lg px-1 py-2 text-center transition-colors hover:bg-surface-2", isToday && "bg-gold-soft")}>
-              <p className={cn("text-[0.65rem] uppercase tracking-wider", isToday ? "text-gold" : "text-subtle")}>
-                {formatDate(d.toISOString(), { weekday: "short" })}
-              </p>
-              <p className="font-display text-lg font-semibold tabular">{d.getDate()}</p>
+            <a
+              key={d.toISOString()}
+              href={`#day-${d.getDate()}`}
+              className={cn("rounded-xl px-1 py-2.5 text-center transition-colors hover:bg-white/[0.05]", isToday && "glass-inset")}
+            >
+              <p className={cn("text-[0.7rem]", isToday ? "text-text" : "text-subtle")}>{formatDate(d.toISOString(), { weekday: "short" })}</p>
+              <p className="font-display text-xl tabular">{d.getDate()}</p>
               <div className="mt-1 flex justify-center gap-0.5" aria-label={`${count} items`}>
                 {Array.from({ length: Math.min(count, 5) }, (_, i) => (
-                  <span key={i} className="size-1 rounded-full bg-gold" />
+                  <span key={i} className="size-1 rounded-full bg-white/60" />
                 ))}
-                {count === 0 ? <span className="size-1 rounded-full bg-surface-3" /> : null}
+                {count === 0 ? <span className="size-1 rounded-full bg-white/10" /> : null}
               </div>
             </a>
           );
@@ -79,16 +80,19 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
       </div>
 
       {overdueChecks.length ? (
-        <section className="mb-6 rounded-xl border border-danger/30 bg-danger-soft p-4">
+        <section className="glass mb-6 rounded-2xl border-danger/25 p-5">
           <div className="flex items-center gap-2 text-danger">
             <TriangleAlert className="size-4" />
-            <h2 className="font-display text-sm font-semibold">Overdue checks, fit these in first</h2>
+            <h2 className="text-[0.92rem] font-semibold text-text">Overdue checks, fit these in first</h2>
           </div>
           <ul className="mt-3 flex flex-wrap gap-2">
             {overdueChecks.map((v) => (
               <li key={v.id}>
-                <Link href={`/console/fleet/${v.id}`} className="inline-flex items-center gap-2 rounded-md border border-danger/30 bg-bg/40 px-3 py-1.5 text-sm hover:border-danger">
-                  {vehicleName(v)} <span className="text-xs text-danger">due {relativeDays(v.nextCheckAt)}</span>
+                <Link
+                  href={`/console/fleet/${v.id}`}
+                  className="glass-inset inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm transition-colors hover:border-danger/40"
+                >
+                  {vehicleName(v)} <span className="text-[0.75rem] text-danger">due {relativeDays(v.nextCheckAt)}</span>
                 </Link>
               </li>
             ))}
@@ -102,49 +106,45 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
           const dayChecks = impliedChecks.filter((v) => isSameDay(v.nextCheckAt, d));
           const isToday = isSameDay(d, new Date());
           return (
-            <section key={d.toISOString()} id={`day-${d.getDate()}`} className="scroll-mt-20 rounded-xl border border-border bg-surface">
-              <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
-                <h2 className="font-display text-sm font-semibold">
+            <section key={d.toISOString()} id={`day-${d.getDate()}`} className="glass scroll-mt-24 rounded-2xl">
+              <header className="flex items-center justify-between gap-3 border-b border-white/[0.07] px-5 py-3">
+                <h2 className="text-[0.92rem] font-semibold">
                   {formatDate(d.toISOString(), { weekday: "long", day: "numeric", month: "long" })}
-                  {isToday ? (
-                    <Badge tone="gold" className="ml-2">
-                      Today
-                    </Badge>
-                  ) : null}
+                  {isToday ? <span className="ml-2 text-[0.78rem] font-medium text-accent">Today</span> : null}
                 </h2>
-                <span className="text-xs text-subtle tabular">
+                <span className="text-[0.75rem] text-subtle tabular">
                   {dayJobs.length} {dayJobs.length === 1 ? "job" : "jobs"}
                   {dayChecks.length ? `, ${dayChecks.length} cycle ${dayChecks.length === 1 ? "check" : "checks"}` : ""}
                 </span>
               </header>
               {dayJobs.length || dayChecks.length ? (
-                <ul className="divide-y divide-border">
+                <ul className="divide-y divide-white/[0.06]">
                   {dayJobs.map((j) => {
                     const v = lookups.vehicle.get(j.vehicleId);
                     const c = v ? lookups.client.get(v.clientId) : undefined;
                     const m = lookups.member.get(j.assigneeId);
                     return (
-                      <li key={j.id} className="flex items-stretch gap-3 px-4 py-3">
+                      <li key={j.id} className="flex items-stretch gap-3 px-5 py-3">
                         <span className={cn("w-1 shrink-0 rounded-full", JOB_BAR[j.kind])} aria-hidden />
                         <div className="w-24 shrink-0">
                           <p className="text-sm font-medium tabular">{formatTime(j.start)}</p>
-                          <p className="text-xs text-subtle tabular">{durationLabel(j.durationMins)}</p>
+                          <p className="text-[0.75rem] text-subtle tabular">{durationLabel(j.durationMins)}</p>
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <Link href={j.requestId ? `/console/requests/${j.requestId}` : `/console/fleet/${j.vehicleId}`} className="text-sm font-medium hover:text-gold">
+                            <Link href={j.requestId ? `/console/requests/${j.requestId}` : `/console/fleet/${j.vehicleId}`} className="text-sm font-medium decoration-white/30 underline-offset-4 hover:underline">
                               {j.title}
                             </Link>
                             <JobKindBadge kind={j.kind} />
                           </div>
-                          <p className="mt-0.5 truncate text-xs text-muted">
+                          <p className="mt-0.5 truncate text-[0.78rem] text-muted">
                             {c?.name} · {v ? `${vehicleName(v)}, ${v.registration}` : ""} · {j.location}
                           </p>
                         </div>
                         {m ? (
                           <span className="hidden items-center gap-2 sm:flex">
                             <Initials initials={m.initials} />
-                            <span className="text-xs text-muted">{m.name.split(" ")[0]}</span>
+                            <span className="text-[0.78rem] text-muted">{m.name.split(" ")[0]}</span>
                           </span>
                         ) : null}
                       </li>
@@ -153,20 +153,20 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
                   {dayChecks.map((v) => {
                     const c = lookups.client.get(v.clientId);
                     return (
-                      <li key={`check-${v.id}`} className="flex items-stretch gap-3 px-4 py-3">
-                        <span className="w-1 shrink-0 rounded-full border border-dashed border-info" aria-hidden />
+                      <li key={`check-${v.id}`} className="flex items-stretch gap-3 px-5 py-3">
+                        <span className="w-1 shrink-0 rounded-full border border-dashed border-info/70" aria-hidden />
                         <div className="w-24 shrink-0">
                           <p className="text-sm text-muted tabular">{formatTime(v.nextCheckAt)}</p>
-                          <p className="text-xs text-subtle">Not booked</p>
+                          <p className="text-[0.75rem] text-subtle">Not booked</p>
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <Link href={`/console/fleet/${v.id}`} className="text-sm font-medium hover:text-gold">
+                            <Link href={`/console/fleet/${v.id}`} className="text-sm font-medium decoration-white/30 underline-offset-4 hover:underline">
                               {v.checkFrequency[0].toUpperCase() + v.checkFrequency.slice(1)} check, {vehicleName(v)}
                             </Link>
-                            <Badge tone="info">Care cycle</Badge>
+                            <Dot tone="info">Care cycle</Dot>
                           </div>
-                          <p className="mt-0.5 truncate text-xs text-muted">
+                          <p className="mt-0.5 truncate text-[0.78rem] text-muted">
                             {c?.name} · {v.location.name} · every {FREQUENCY_DAYS[v.checkFrequency]} days
                           </p>
                         </div>
@@ -176,7 +176,7 @@ export default async function SchedulePage({ searchParams }: { searchParams: Pro
                   })}
                 </ul>
               ) : (
-                <div className="p-4">
+                <div className="p-5">
                   <EmptyState icon={CalendarDays} title="Nothing booked" />
                 </div>
               )}

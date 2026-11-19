@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CalendarDays, FileText, History, Inbox, Lock, MapPin, ShieldCheck } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { CarArt } from "@/components/brand/car-art";
+import { CalendarDays, ChevronLeft, FileText, History, Inbox, Lock, MapPin, ShieldCheck } from "lucide-react";
+import { CarMedia } from "@/components/brand/car-art";
 import { ValueChart } from "@/components/charts";
 import { BatteryReading, VehicleStatusBadge } from "@/components/vehicle-status";
-import { Detail, EmptyState, PageHeader, Panel, TierBadge } from "@/components/console/ui";
+import { Detail, Dot, EmptyState, Panel, PanelLink, TierBadge } from "@/components/console/ui";
 import { HistoryItem, JobRow, RequestCard } from "@/components/console/rows";
 import { LogCheckForm } from "@/components/console/log-check-form";
 import { RaiseRequestForm } from "@/components/console/raise-request-form";
@@ -49,87 +48,96 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
 
   return (
     <>
-      <PageHeader
-        back={{ href: "/console/fleet", label: "Fleet" }}
-        eyebrow={`${v.registration} · VIN ending ${v.vinLast6}`}
-        title={vehicleFullName(v)}
-        description={
-          <span className="flex flex-wrap items-center gap-2">
-            <VehicleStatusBadge status={v.status} />
-            <span>
-              {v.colour} · {v.powertrain[0].toUpperCase() + v.powertrain.slice(1)} · {v.checkFrequency} checks
-            </span>
-          </span>
-        }
-      />
+      <Link href="/console/fleet" className="no-print mb-4 inline-flex items-center gap-1 text-[0.8rem] text-muted transition-colors hover:text-text">
+        <ChevronLeft className="size-3.5" /> Fleet
+      </Link>
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <section className="relative isolate mb-6 h-[300px] overflow-hidden rounded-[24px] ring-1 ring-white/10 sm:h-[340px]">
+        <CarMedia vehicle={v} priority sizes="(min-width: 1280px) 1300px, 100vw" className="absolute inset-0 -z-10" />
+        <div className="photo-scrim absolute inset-0 -z-10" aria-hidden />
+        <div className="flex h-full flex-col justify-end gap-5 p-5 sm:p-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="min-w-0">
+            <p className="text-[0.8rem] text-white/70">
+              {v.registration} · VIN ending {v.vinLast6}
+            </p>
+            <h1 className="mt-1.5 font-display text-[2.1rem] leading-[1.05] font-normal text-balance sm:text-5xl">{vehicleFullName(v)}</h1>
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.85rem] text-white/75">
+              <VehicleStatusBadge status={v.status} />
+              <span>
+                {v.colour} · {v.powertrain[0].toUpperCase() + v.powertrain.slice(1)} · {v.checkFrequency} checks
+              </span>
+            </div>
+          </div>
+          <dl className="glass-dark flex shrink-0 divide-x divide-white/[0.08] rounded-2xl">
+            <div className="px-5 py-3">
+              <dt className="text-[0.72rem] text-white/60">Latest value</dt>
+              <dd className="mt-0.5 font-display text-2xl tabular">
+                {formatGBP(value)}
+                <span className={cn("ml-2 font-sans text-[0.75rem] tabular", trend >= 0 ? "text-success" : "text-danger")}>
+                  {trend >= 0 ? "+" : ""}
+                  {(trend * 100).toFixed(1)}%
+                </span>
+              </dd>
+            </div>
+            <div className="px-5 py-3">
+              <dt className="text-[0.72rem] text-white/60">Mileage</dt>
+              <dd className="mt-0.5 font-display text-2xl tabular">{formatMiles(v.mileage)}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <div className="grid gap-6 xl:grid-cols-3 [&>*]:min-w-0">
         <div className="space-y-6 xl:col-span-2">
-          <section className="overflow-hidden rounded-xl border border-border bg-surface">
-            <div className="grid gap-0 md:grid-cols-5">
-              <div className="relative flex items-center justify-center bg-surface-2/60 p-6 md:col-span-2 spotlight">
-                <CarArt bodyStyle={v.bodyStyle} paint={v.paintHex} title={vehicleFullName(v)} className="max-w-sm" />
-              </div>
-              <div className="p-5 md:col-span-3">
-                <p className="eyebrow">Live state</p>
-                {v.statusNote ? <p className="mt-2 text-sm">{v.statusNote}</p> : null}
-                <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  <Detail label="Battery">
-                    <BatteryReading voltage={v.battery.voltage} />
-                    <span className="mt-0.5 block text-xs text-subtle">
-                      {v.battery.healthPct}% health{v.battery.onConditioner ? ", on conditioner" : ""}
-                    </span>
-                  </Detail>
-                  <Detail label="Mileage">
-                    <span className="tabular">{formatMiles(v.mileage)}</span>
-                  </Detail>
-                  <Detail label="Location">
-                    <span className="inline-flex items-start gap-1">
-                      <MapPin className="mt-0.5 size-3.5 shrink-0 text-subtle" />
-                      {v.location.name}
-                    </span>
-                  </Detail>
-                  <Detail label="Last check">{relativeDays(v.lastCheckAt)}</Detail>
-                  <Detail label="Next check">
-                    <span className={cn(overdue && "font-medium text-danger")}>{overdue ? `Overdue, ${relativeDays(v.nextCheckAt)}` : relativeDays(v.nextCheckAt)}</span>
-                  </Detail>
-                  <Detail label="Value">
-                    <span className="tabular">{formatGBP(value)}</span>
-                    <span className={cn("ml-1.5 text-xs tabular", trend >= 0 ? "text-success" : "text-danger")}>
-                      {trend >= 0 ? "+" : ""}
-                      {(trend * 100).toFixed(1)}%
-                    </span>
-                  </Detail>
-                </dl>
-                <div className="mt-4">
-                  <p className="text-xs text-subtle">Tyres, current against target ({v.tyres.unit})</p>
-                  <div className="mt-1.5 grid grid-cols-4 gap-2">
-                    {tyreKeys.map((k) => {
-                      const diff = v.tyres.current[k] - v.tyres.target[k];
-                      return (
-                        <div key={k} className={cn("rounded-md border px-2 py-1.5 text-center", Math.abs(diff) >= 1 ? "border-warning/40 bg-warning-soft" : "border-border bg-surface-2")}>
-                          <p className="text-[0.65rem] text-subtle">{tyreLabel[k]}</p>
-                          <p className="text-sm font-medium tabular">
-                            {v.tyres.current[k]}
-                            <span className="text-xs text-subtle">/{v.tyres.target[k]}</span>
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                {reasons.length ? (
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {reasons.map((r) => (
-                      <Badge key={r.label} tone={r.severity === "high" ? "danger" : "warning"}>
-                        {r.label}
-                      </Badge>
-                    ))}
-                  </div>
-                ) : null}
+          <Panel title="Live state" description={v.statusNote ?? "Within spec at the last check."}>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4">
+              <Detail label="Battery">
+                <BatteryReading voltage={v.battery.voltage} />
+                <span className="mt-0.5 block text-[0.75rem] text-subtle">
+                  {v.battery.healthPct}% health{v.battery.onConditioner ? ", on conditioner" : ""}
+                </span>
+              </Detail>
+              <Detail label="Location" className="col-span-2 sm:col-span-1">
+                <span className="inline-flex items-start gap-1">
+                  <MapPin className="mt-0.5 size-3.5 shrink-0 text-subtle" />
+                  {v.location.name}
+                </span>
+              </Detail>
+              <Detail label="Last check">{relativeDays(v.lastCheckAt)}</Detail>
+              <Detail label="Next check">
+                <span className={cn(overdue && "font-medium text-danger")}>{overdue ? `Overdue, ${relativeDays(v.nextCheckAt)}` : relativeDays(v.nextCheckAt)}</span>
+              </Detail>
+            </dl>
+            <div className="mt-5">
+              <p className="text-[0.75rem] text-subtle">Tyres, current against target ({v.tyres.unit})</p>
+              <div className="mt-2 grid grid-cols-4 gap-2">
+                {tyreKeys.map((k) => {
+                  const diff = v.tyres.current[k] - v.tyres.target[k];
+                  return (
+                    <div
+                      key={k}
+                      className={cn("glass-inset rounded-xl px-2 py-2 text-center", Math.abs(diff) >= 1 && "border-warning/40 bg-warning-soft")}
+                    >
+                      <p className="text-[0.68rem] text-subtle">{tyreLabel[k]}</p>
+                      <p className="text-sm font-medium tabular">
+                        {v.tyres.current[k]}
+                        <span className="text-[0.75rem] text-subtle">/{v.tyres.target[k]}</span>
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          </section>
+            {reasons.length ? (
+              <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1.5">
+                {reasons.map((r) => (
+                  <Dot key={r.label} tone={r.severity === "high" ? "danger" : "warning"} className="text-white/80">
+                    {r.label}
+                  </Dot>
+                ))}
+              </div>
+            ) : null}
+          </Panel>
 
           <Panel title="Log a check" description="Updates the car's live state, flags anything out of spec and adds an entry to the history.">
             <LogCheckForm vehicleId={v.id} target={v.tyres.target} unit={v.tyres.unit} mileage={v.mileage} onConditioner={v.battery.onConditioner} />
@@ -159,27 +167,25 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
           <Panel
             title="Owner"
             action={
-              <Link href={`/console/clients/${client.id}`} className="text-xs text-muted hover:text-gold">
-                Profile
-              </Link>
+              <PanelLink href={`/console/clients/${client.id}`}>Profile</PanelLink>
             }
           >
             <div className="flex items-center justify-between gap-2">
               <p className="font-medium">{client.name}</p>
               <TierBadge tier={client.tier} />
             </div>
-            <p className="mt-1 text-xs text-muted">
+            <p className="mt-1 text-[0.78rem] text-muted">
               {client.homeBase} · prefers {client.preferences.contactPreference}
             </p>
             {client.preferences.nda ? (
-              <p className="mt-3 inline-flex items-center gap-1.5 text-xs text-warning">
+              <p className="mt-3 inline-flex items-center gap-1.5 text-[0.78rem] text-warning">
                 <Lock className="size-3.5" /> NDA in place. Nothing about this car leaves the arrangement.
               </p>
             ) : null}
             <p className="mt-3 text-sm text-muted">{client.preferences.notes}</p>
             {v.specialistNotes ? (
-              <div className="mt-4 rounded-lg border border-border bg-surface-2 p-3">
-                <p className="text-xs text-subtle">Specialist notes</p>
+              <div className="glass-inset mt-4 rounded-xl p-3.5">
+                <p className="text-[0.75rem] text-subtle">Specialist notes</p>
                 <p className="mt-1 text-sm">{v.specialistNotes}</p>
               </div>
             ) : null}
@@ -187,25 +193,25 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
 
           <Panel title="Due dates" bodyClassName="p-0">
             {due.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {due.map((d) => {
                   const days = daysUntil(d.dueDate);
                   return (
-                    <li key={d.id} className="flex items-start justify-between gap-3 px-4 py-3">
+                    <li key={d.id} className="flex items-start justify-between gap-3 px-5 py-3">
                       <div>
                         <p className="text-sm font-medium">{d.kind}</p>
-                        {d.notes ? <p className="mt-0.5 text-xs text-muted">{d.notes}</p> : null}
+                        {d.notes ? <p className="mt-0.5 text-[0.78rem] text-muted">{d.notes}</p> : null}
                       </div>
                       <div className="text-right">
                         <p className="text-sm tabular">{formatDate(d.dueDate)}</p>
-                        <p className={cn("text-xs", days < 0 ? "text-danger" : days <= 14 ? "text-warning" : "text-subtle")}>{relativeDays(d.dueDate)}</p>
+                        <p className={cn("text-[0.75rem]", days < 0 ? "text-danger" : days <= 14 ? "text-warning" : "text-subtle")}>{relativeDays(d.dueDate)}</p>
                       </div>
                     </li>
                   );
                 })}
               </ul>
             ) : (
-              <div className="p-4">
+              <div className="p-5">
                 <EmptyState icon={ShieldCheck} title="No deadlines recorded" description="Add MOT, insurance and registration dates to track them." />
               </div>
             )}
@@ -230,7 +236,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
 
           <Panel title="Upcoming jobs" bodyClassName="py-1">
             {jobs.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {jobs.map((j) => (
                   <JobRow key={j.id} job={j} vehicle={v} client={client} member={lookups.member.get(j.assigneeId)} />
                 ))}
@@ -248,13 +254,13 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
 
           <Panel title="Documents" description={`${documents.length} in the vault`} bodyClassName="p-0">
             {documents.length ? (
-              <ul className="divide-y divide-border">
+              <ul className="divide-y divide-white/[0.06]">
                 {documents.map((d) => (
-                  <li key={d.id} className="flex items-center gap-3 px-4 py-2.5">
+                  <li key={d.id} className="flex items-center gap-3 px-5 py-3">
                     <FileText className="size-4 shrink-0 text-subtle" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm">{d.title}</p>
-                      <p className="text-xs text-subtle">
+                      <p className="text-[0.75rem] text-subtle">
                         {d.kind} · {formatDate(d.date)} · {sizeLabel(d.sizeKb)}
                       </p>
                     </div>
@@ -262,7 +268,7 @@ export default async function FleetVehiclePage({ params }: { params: Promise<{ i
                 ))}
               </ul>
             ) : (
-              <div className="p-4">
+              <div className="p-5">
                 <EmptyState icon={FileText} title="No documents yet" />
               </div>
             )}
